@@ -1,10 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
 
-using NuciLog.Core;
-
-namespace NuciLog.Core.UnitTests
+namespace NuciLog.Core.UnitTests.Helpers
 {
     public sealed class TestLogger : Logger
     {

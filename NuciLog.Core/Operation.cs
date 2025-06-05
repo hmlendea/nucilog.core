@@ -2,17 +2,14 @@
 {
     public class Operation
     {
-        protected Operation(string name)
-        {
-            Name = name;
-        }
+        protected Operation(string name) => Name = name;
 
         public string Name { get; protected set; }
 
-        public static Operation Unknown => new Operation(nameof(Unknown));
+        public static Operation Unknown => new(nameof(Unknown));
 
-        public static Operation StartUp => new Operation(nameof(StartUp));
+        public static Operation StartUp => new(nameof(StartUp));
 
-        public static Operation ShutDown => new Operation(nameof(ShutDown));
+        public static Operation ShutDown => new(nameof(ShutDown));
     }
 }

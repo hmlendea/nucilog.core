@@ -22,20 +22,20 @@ namespace NuciLog.Core
             IEnumerable<LogInfo> logInfos)
         {
             string logMessage = string.Empty;
-            
-            if (!(operation is null))
+
+            if (operation is not null)
             {
                 logMessage += $"{LogInfoKey.Operation.Name}={operation.Name},";
             }
 
-            if (!(operationStatus is null))
+            if (operationStatus is not null)
             {
                 logMessage += $"{LogInfoKey.OperationStatus.Name}={operationStatus.Name.ToUpper()},";
             }
 
             IEnumerable<LogInfo> processedDetails = GetProcessedLogInfoList(message, logInfos, exception);
 
-            if (!(processedDetails is null))
+            if (processedDetails is not null)
             {
                 foreach (LogInfo detail in processedDetails)
                 {
@@ -43,9 +43,9 @@ namespace NuciLog.Core
                 }
             }
 
-            if (logMessage.EndsWith(","))
+            if (logMessage.EndsWith(','))
             {
-                return logMessage.Substring(0, logMessage.Length - 1);
+                return logMessage[..^1];
             }
 
             return logMessage;
@@ -53,23 +53,23 @@ namespace NuciLog.Core
 
         static IEnumerable<LogInfo> GetProcessedLogInfoList(string message, IEnumerable<LogInfo> logInfos, Exception ex)
         {
-            List<LogInfo> processedLogInfos = new List<LogInfo>();
+            List<LogInfo> processedLogInfos = [];
 
             if (!string.IsNullOrWhiteSpace(message))
             {
                 processedLogInfos.Add(new LogInfo(LogInfoKey.Message, message));
             }
-            else if (!(ex is null))
+            else if (ex is not null)
             {
                 processedLogInfos.Add(new LogInfo(LogInfoKey.Message, "An exception has occurred"));
             }
 
-            if (!(logInfos is null))
+            if (logInfos is not null)
             {
                 processedLogInfos.AddRange(logInfos);
             }
 
-            if (!(ex is null))
+            if (ex is not null)
             {
                 processedLogInfos.Add(new LogInfo(LogInfoKey.Exception, ex.GetType()));
                 processedLogInfos.Add(new LogInfo(LogInfoKey.ExceptionMessage, ex.Message));

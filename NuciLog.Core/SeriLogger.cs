@@ -8,14 +8,11 @@ namespace NuciLog.Core
     {
         Serilog.ILogger logger;
 
-        public SeriLogger()
-        {
-            this.logger = Log.Logger;
-        }
+        public SeriLogger() => logger = Log.Logger;
 
         public override void SetSourceContext(Type type)
         {
-            this.logger = Log.Logger.ForContext(type);
+            logger = Log.Logger.ForContext(type);
             base.SetSourceContext(type);
         }
 

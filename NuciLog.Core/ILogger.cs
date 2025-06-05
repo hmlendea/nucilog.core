@@ -1,8 +1,8 @@
-﻿namespace NuciLog.Core
-{
-    using System;
-    using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
+namespace NuciLog.Core
+{
     public interface ILogger
     {
         Type SourceContext { get; }
