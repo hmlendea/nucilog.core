@@ -1,0 +1,8 @@
+is_global = true
+build_property.RootNamespace = NuciLog.Core
+build_property.ProjectDir = /home/horatiu/Descărcări/nucilog.core/NuciLog.Core/
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.CsWinRTUseWindowsUIXamlProjections = false
+build_property.EffectiveAnalysisLevelStyle = 
+build_property.EnableCodeStyleSeverity = 

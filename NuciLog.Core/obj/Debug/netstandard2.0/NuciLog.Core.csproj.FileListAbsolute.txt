@@ -1,0 +1,11 @@
+/home/horatiu/Descărcări/nucilog.core/NuciLog.Core/bin/Debug/netstandard2.0/NuciLog.Core.deps.json
+/home/horatiu/Descărcări/nucilog.core/NuciLog.Core/bin/Debug/netstandard2.0/NuciLog.Core.dll
+/home/horatiu/Descărcări/nucilog.core/NuciLog.Core/bin/Debug/netstandard2.0/NuciLog.Core.pdb
+/home/horatiu/Descărcări/nucilog.core/NuciLog.Core/obj/Debug/netstandard2.0/NuciLog.Core.csproj.AssemblyReference.cache
+/home/horatiu/Descărcări/nucilog.core/NuciLog.Core/obj/Debug/netstandard2.0/NuciLog.Core.GeneratedMSBuildEditorConfig.editorconfig
+/home/horatiu/Descărcări/nucilog.core/NuciLog.Core/obj/Debug/netstandard2.0/NuciLog.Core.AssemblyInfoInputs.cache
+/home/horatiu/Descărcări/nucilog.core/NuciLog.Core/obj/Debug/netstandard2.0/NuciLog.Core.AssemblyInfo.cs
+/home/horatiu/Descărcări/nucilog.core/NuciLog.Core/obj/Debug/netstandard2.0/NuciLog.Core.csproj.CoreCompileInputs.cache
+/home/horatiu/Descărcări/nucilog.core/NuciLog.Core/obj/Debug/netstandard2.0/NuciLog.Core.sourcelink.json
+/home/horatiu/Descărcări/nucilog.core/NuciLog.Core/obj/Debug/netstandard2.0/NuciLog.Core.dll
+/home/horatiu/Descărcări/nucilog.core/NuciLog.Core/obj/Debug/netstandard2.0/NuciLog.Core.pdb
