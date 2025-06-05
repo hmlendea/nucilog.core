@@ -8,15 +8,9 @@ namespace NuciLog.Core
     {
         public Type SourceContext { get; private set; }
 
-        public void SetSourceContext<T>()
-        {
-            SetSourceContext(typeof(T));
-        }
+        public void SetSourceContext<T>() => SetSourceContext(typeof(T));
 
-        public virtual void SetSourceContext(Type type)
-        {
-            SourceContext = type;
-        }
+        public virtual void SetSourceContext(Type type) => SourceContext = type;
 
         public void Verbose(Operation operation)
             => Verbose(operation, operationStatus: null, message: null, logInfos: null);

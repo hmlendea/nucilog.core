@@ -6,14 +6,10 @@ namespace NuciLog.Core
     {
         public string Name { get; protected set; }
 
-        protected LogInfoKey(string name)
-        {
-            Name = name;
-        }
+        protected LogInfoKey(string name) => Name = name;
 
-        public bool Equals(LogInfoKey other)
-            => Name == other.Name;
-        
+        public bool Equals(LogInfoKey other) => Name == other.Name;
+
         public override bool Equals(object other)
         {
             if (other is LogInfoKey)
@@ -24,21 +20,20 @@ namespace NuciLog.Core
             return false;
         }
 
-        public override int GetHashCode()
-            => Name.GetHashCode();
+        public override int GetHashCode() => Name.GetHashCode();
 
-        internal static LogInfoKey SourceContext => new LogInfoKey(nameof(SourceContext));
+        internal static LogInfoKey SourceContext => new(nameof(SourceContext));
 
-        internal static LogInfoKey Operation => new LogInfoKey(nameof(Operation));
+        internal static LogInfoKey Operation => new(nameof(Operation));
 
-        internal static LogInfoKey OperationStatus => new LogInfoKey(nameof(OperationStatus));
+        internal static LogInfoKey OperationStatus => new(nameof(OperationStatus));
 
-        internal static LogInfoKey Message => new LogInfoKey(nameof(Message));
+        internal static LogInfoKey Message => new(nameof(Message));
 
-        internal static LogInfoKey Exception => new LogInfoKey(nameof(Exception));
+        internal static LogInfoKey Exception => new(nameof(Exception));
 
-        internal static LogInfoKey ExceptionMessage => new LogInfoKey(nameof(ExceptionMessage));
+        internal static LogInfoKey ExceptionMessage => new(nameof(ExceptionMessage));
 
-        internal static LogInfoKey StackTrace => new LogInfoKey(nameof(StackTrace));
+        internal static LogInfoKey StackTrace => new(nameof(StackTrace));
     }
 }

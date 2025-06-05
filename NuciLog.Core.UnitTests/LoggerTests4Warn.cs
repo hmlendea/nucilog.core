@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 
 using NUnit.Framework;
-
-using NuciLog.Core;
 using NuciLog.Core.UnitTests.Helpers;
 
 namespace NuciLog.Core.UnitTests
@@ -13,10 +11,7 @@ namespace NuciLog.Core.UnitTests
         TestLogger logger;
 
         [SetUp]
-        public void SetUp()
-        {
-            logger = new TestLogger();
-        }
+        public void SetUp() => logger = new TestLogger();
 
         [Test]
         public void Warn_OperationIsPopulated_LogsCorrectly()
@@ -24,28 +19,28 @@ namespace NuciLog.Core.UnitTests
             Operation operation = Operation.StartUp;
 
             string expectedLogLine = $"Operation={operation.Name}";
-            
+
             logger.Warn(operation);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
         public void Warn_OperationAndException_LogsCorrectly()
         {
             Operation operation = Operation.StartUp;
-            Exception ex = new Exception();
+            Exception ex = new();
 
             string expectedLogLine =
                 $"Operation={operation.Name}," +
                 $"Message=An exception has occurred," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
-            
+
             logger.Warn(operation, ex);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -54,166 +49,166 @@ namespace NuciLog.Core.UnitTests
             Operation operation = Operation.StartUp;
 
             string expectedLogLine = $"Operation={operation.Name}";
-            
+
             logger.Warn(operation, logInfos: null);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
         public void Warn_OperationAndExtraLogInfos_LogsCorrectly()
         {
             Operation operation = Operation.StartUp;
-            LogInfo[] logInfos = new LogInfo[]
-            {
-                new LogInfo(TestLogInfoKey.TestKey, "teeestValue"),
-                new LogInfo(TestLogInfoKey.TestKey2, "teeestValue2")
-            };
+            LogInfo[] logInfos =
+            [
+                new(TestLogInfoKey.TestKey, "teeestValue"),
+                new(TestLogInfoKey.TestKey2, "teeestValue2")
+            ];
 
             string expectedLogLine = $"Operation={operation.Name},{logInfos[0].Key.Name}={logInfos[0].Value},{logInfos[1].Key.Name}={logInfos[1].Value}";
-            
+
             logger.Warn(operation, logInfos);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
         public void Warn_OperationAndLogInfos_LogsCorrectly()
         {
             Operation operation = Operation.StartUp;
-            IEnumerable<LogInfo> logInfos = new List<LogInfo> { new LogInfo(TestLogInfoKey.TestKey, "teeest") };
+            IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expectedLogLine = $"Operation={operation.Name},{TestLogInfoKey.TestKey.Name}=teeest";
-            
+
             logger.Warn(operation, logInfos);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
         public void Warn_OperationAndLogInfosAndNullExtraLogInfos_LogsCorrectly()
         {
             Operation operation = Operation.StartUp;
-            IEnumerable<LogInfo> logInfos = new List<LogInfo> { new LogInfo(TestLogInfoKey.TestKey, "teeest") };
+            IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expectedLogLine = $"Operation={operation.Name},{TestLogInfoKey.TestKey.Name}=teeest";
-            
+
             logger.Warn(operation, logInfos, extraLogInfos: null);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
         public void Warn_OperationAndLogInfosAndExtraLogInfos_LogsCorrectly()
         {
             Operation operation = Operation.StartUp;
-            IEnumerable<LogInfo> logInfos = new List<LogInfo> { new LogInfo(TestLogInfoKey.TestKey, "teeest") };
-            LogInfo extraLogInfos = new LogInfo(TestLogInfoKey.TestKey2, "teeest2");
+            IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
+            LogInfo extraLogInfos = new(TestLogInfoKey.TestKey2, "teeest2");
 
             string expectedLogLine = $"Operation={operation.Name},{TestLogInfoKey.TestKey.Name}=teeest,{TestLogInfoKey.TestKey2.Name}=teeest2";
-            
+
             logger.Warn(operation, logInfos, extraLogInfos);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
         public void Warn_OperationAndExceptionAndNullExtraLogInfos_LogsCorrectly()
         {
             Operation operation = Operation.StartUp;
-            Exception ex = new Exception();
+            Exception ex = new();
 
             string expectedLogLine =
                 $"Operation={operation.Name}," +
                 $"Message=An exception has occurred," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
-            
+
             logger.Warn(operation, ex, logInfos: null);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
         public void Warn_OperationAndExceptionAndExtraLogInfos_LogsCorrectly()
         {
             Operation operation = Operation.StartUp;
-            Exception ex = new Exception();
-            LogInfo logInfos = new LogInfo(TestLogInfoKey.TestKey, "teeest");
+            Exception ex = new();
+            LogInfo logInfos = new(TestLogInfoKey.TestKey, "teeest");
 
             string expectedLogLine =
                 $"Operation={operation.Name}," +
                 $"Message=An exception has occurred," +
                 $"{logInfos.Key.Name}={logInfos.Value}," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
-            
+
             logger.Warn(operation, ex, logInfos);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
         public void Warn_OperationAndExceptionAndLogInfos_LogsCorrectly()
         {
             Operation operation = Operation.StartUp;
-            Exception ex = new Exception();
-            IEnumerable<LogInfo> logInfos = new List<LogInfo> { new LogInfo(TestLogInfoKey.TestKey, "teeest") };
+            Exception ex = new();
+            IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expectedLogLine =
                 $"Operation={operation.Name}," +
                 $"Message=An exception has occurred," +
                 $"{TestLogInfoKey.TestKey.Name}=teeest," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
-            
+
             logger.Warn(operation, ex, logInfos);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
         public void Warn_OperationAndExceptionAndLogInfosAndNullExtraLogInfos_LogsCorrectly()
         {
             Operation operation = Operation.StartUp;
-            Exception ex = new Exception();
-            IEnumerable<LogInfo> logInfos = new List<LogInfo> { new LogInfo(TestLogInfoKey.TestKey, "teeest") };
+            Exception ex = new();
+            IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expectedLogLine =
                 $"Operation={operation.Name}," +
                 $"Message=An exception has occurred," +
                 $"{TestLogInfoKey.TestKey.Name}=teeest," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
-            
+
             logger.Warn(operation, ex, logInfos, extraLogInfos: null);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
         public void Warn_OperationAndExceptionAndLogInfosAndExtraLogInfos_LogsCorrectly()
         {
             Operation operation = Operation.StartUp;
-            Exception ex = new Exception();
-            IEnumerable<LogInfo> logInfos = new List<LogInfo> { new LogInfo(TestLogInfoKey.TestKey, "teeest") };
-            LogInfo extraLogInfos = new LogInfo(TestLogInfoKey.TestKey2, "teeest2");
+            Exception ex = new();
+            IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
+            LogInfo extraLogInfos = new(TestLogInfoKey.TestKey2, "teeest2");
 
             string expectedLogLine =
                 $"Operation={operation.Name}," +
                 $"Message=An exception has occurred," +
                 $"{TestLogInfoKey.TestKey.Name}=teeest,{TestLogInfoKey.TestKey2.Name}=teeest2," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
-            
+
             logger.Warn(operation, ex, logInfos, extraLogInfos);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -223,11 +218,11 @@ namespace NuciLog.Core.UnitTests
             OperationStatus status = OperationStatus.Started;
 
             string expectedLogLine = $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}";
-            
+
             logger.Warn(operation, status);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -235,17 +230,17 @@ namespace NuciLog.Core.UnitTests
         {
             Operation operation = Operation.StartUp;
             OperationStatus status = OperationStatus.Started;
-            Exception ex = new Exception();
+            Exception ex = new();
 
             string expectedLogLine =
                 $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
                 $"Message=An exception has occurred," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
-            
+
             logger.Warn(operation, status, ex);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -255,11 +250,11 @@ namespace NuciLog.Core.UnitTests
             OperationStatus status = OperationStatus.Started;
 
             string expectedLogLine = $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}";
-            
+
             logger.Warn(operation, status, logInfos: null);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -267,16 +262,16 @@ namespace NuciLog.Core.UnitTests
         {
             Operation operation = Operation.StartUp;
             OperationStatus status = OperationStatus.Started;
-            LogInfo logInfos = new LogInfo(TestLogInfoKey.TestKey, "teeest");
+            LogInfo logInfos = new(TestLogInfoKey.TestKey, "teeest");
 
             string expectedLogLine =
                 $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
                 $"{logInfos.Key.Name}={logInfos.Value}";
-            
+
             logger.Warn(operation, status, logInfos);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -284,16 +279,16 @@ namespace NuciLog.Core.UnitTests
         {
             Operation operation = Operation.StartUp;
             OperationStatus status = OperationStatus.Started;
-            IEnumerable<LogInfo> logInfos = new List<LogInfo> { new LogInfo(TestLogInfoKey.TestKey, "teeest") };
+            IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expectedLogLine =
                 $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
                 $"{TestLogInfoKey.TestKey.Name}=teeest";
-            
+
             logger.Warn(operation, status, logInfos);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -301,16 +296,16 @@ namespace NuciLog.Core.UnitTests
         {
             Operation operation = Operation.StartUp;
             OperationStatus status = OperationStatus.Started;
-            IEnumerable<LogInfo> logInfos = new List<LogInfo> { new LogInfo(TestLogInfoKey.TestKey, "teeest") };
+            IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expectedLogLine =
                 $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
                 $"{TestLogInfoKey.TestKey.Name}=teeest";
-            
+
             logger.Warn(operation, status, logInfos, extraLogInfos: null);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -318,17 +313,17 @@ namespace NuciLog.Core.UnitTests
         {
             Operation operation = Operation.StartUp;
             OperationStatus status = OperationStatus.Started;
-            IEnumerable<LogInfo> logInfos = new List<LogInfo> { new LogInfo(TestLogInfoKey.TestKey, "teeest") };
-            LogInfo extraLogInfos = new LogInfo(TestLogInfoKey.TestKey2, "teeest2");
+            IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
+            LogInfo extraLogInfos = new(TestLogInfoKey.TestKey2, "teeest2");
 
             string expectedLogLine =
                 $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
                 $"{TestLogInfoKey.TestKey.Name}=teeest,{TestLogInfoKey.TestKey2.Name}=teeest2";
-            
+
             logger.Warn(operation, status, logInfos, extraLogInfos);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -336,17 +331,17 @@ namespace NuciLog.Core.UnitTests
         {
             Operation operation = Operation.StartUp;
             OperationStatus status = OperationStatus.Started;
-            Exception ex = new Exception();
+            Exception ex = new();
 
             string expectedLogLine =
                 $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
                 $"Message=An exception has occurred," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
-            
+
             logger.Warn(operation, status, ex, logInfos: null);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -354,19 +349,19 @@ namespace NuciLog.Core.UnitTests
         {
             Operation operation = Operation.StartUp;
             OperationStatus status = OperationStatus.Started;
-            Exception ex = new Exception();
-            LogInfo logInfos = new LogInfo(TestLogInfoKey.TestKey, "teeest");
+            Exception ex = new();
+            LogInfo logInfos = new(TestLogInfoKey.TestKey, "teeest");
 
             string expectedLogLine =
                 $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
                 $"Message=An exception has occurred," +
                 $"{logInfos.Key.Name}={logInfos.Value}," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
-            
+
             logger.Warn(operation, status, ex, logInfos);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -374,19 +369,19 @@ namespace NuciLog.Core.UnitTests
         {
             Operation operation = Operation.StartUp;
             OperationStatus status = OperationStatus.Started;
-            Exception ex = new Exception();
-            IEnumerable<LogInfo> logInfos = new List<LogInfo> { new LogInfo(TestLogInfoKey.TestKey, "teeest") };
+            Exception ex = new();
+            IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expectedLogLine =
                 $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
                 $"Message=An exception has occurred," +
                 $"{TestLogInfoKey.TestKey.Name}=teeest," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
-            
+
             logger.Warn(operation, status, ex, logInfos);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -394,19 +389,19 @@ namespace NuciLog.Core.UnitTests
         {
             Operation operation = Operation.StartUp;
             OperationStatus status = OperationStatus.Started;
-            Exception ex = new Exception();
-            IEnumerable<LogInfo> logInfos = new List<LogInfo> { new LogInfo(TestLogInfoKey.TestKey, "teeest") };
+            Exception ex = new();
+            IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expectedLogLine =
                 $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
                 $"Message=An exception has occurred," +
                 $"{TestLogInfoKey.TestKey.Name}=teeest," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
-            
+
             logger.Warn(operation, status, ex, logInfos, extraLogInfos: null);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -414,20 +409,20 @@ namespace NuciLog.Core.UnitTests
         {
             Operation operation = Operation.StartUp;
             OperationStatus status = OperationStatus.Started;
-            Exception ex = new Exception();
-            IEnumerable<LogInfo> logInfos = new List<LogInfo> { new LogInfo(TestLogInfoKey.TestKey, "teeest") };
-            LogInfo extraLogInfos = new LogInfo(TestLogInfoKey.TestKey2, "teeest2");
+            Exception ex = new();
+            IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
+            LogInfo extraLogInfos = new(TestLogInfoKey.TestKey2, "teeest2");
 
             string expectedLogLine =
                 $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
                 $"Message=An exception has occurred," +
                 $"{TestLogInfoKey.TestKey.Name}=teeest,{TestLogInfoKey.TestKey2.Name}=teeest2," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
-            
+
             logger.Warn(operation, status, ex, logInfos, extraLogInfos);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -436,25 +431,25 @@ namespace NuciLog.Core.UnitTests
             string message = "testudo";
 
             string expectedLogLine = $"Message={message}";
-            
+
             logger.Warn(operation: null, message: message);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
         public void Warn_MessageAndException_LogsCorrectly()
         {
             string message = "testudo";
-            Exception ex = new Exception();
+            Exception ex = new();
 
             string expectedLogLine = $"Message={message},Exception={ex.GetType()},ExceptionMessage={ex.Message}";
-            
+
             logger.Warn(operation: null, message: message, exception: ex);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -463,25 +458,25 @@ namespace NuciLog.Core.UnitTests
             string message = "testudo";
 
             string expectedLogLine = $"Message={message}";
-            
+
             logger.Warn(operation: null, message: message, logInfos: null);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
         public void Warn_MessageAndExtraLogInfos_LogsCorrectly()
         {
             string message = "testudo";
-            LogInfo logInfos = new LogInfo(TestLogInfoKey.TestKey, "teeest");
+            LogInfo logInfos = new(TestLogInfoKey.TestKey, "teeest");
 
             string expectedLogLine = $"Message={message},{logInfos.Key.Name}={logInfos.Value}";
-            
+
             logger.Warn(operation: null, message: message, logInfos: logInfos);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -490,25 +485,25 @@ namespace NuciLog.Core.UnitTests
             string message = "testudo";
 
             string expectedLogLine = $"Message={message}";
-            
+
             logger.Warn(operation: null, message: message, logInfos: null);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
         public void Warn_MessageAndLogInfos_LogsCorrectly()
         {
             string message = "testudo";
-            IEnumerable<LogInfo> logInfos = new List<LogInfo> { new LogInfo(TestLogInfoKey.TestKey, "teeest") };
+            IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expectedLogLine = $"Message={message},{TestLogInfoKey.TestKey.Name}=teeest";
-            
+
             logger.Warn(operation: null, message: message, logInfos: logInfos);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -517,191 +512,191 @@ namespace NuciLog.Core.UnitTests
             string message = "testudo";
 
             string expectedLogLine = $"Message={message}";
-            
+
             logger.Warn(operation: null, message: message, logInfos: null, extraLogInfos: null);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
         public void Warn_MessageAndNullLogInfosAndExtraLogInfos_LogsCorrectly()
         {
             string message = "testudo";
-            LogInfo extraLogInfos = new LogInfo(TestLogInfoKey.TestKey2, "teeest2");
+            LogInfo extraLogInfos = new(TestLogInfoKey.TestKey2, "teeest2");
 
             string expectedLogLine = $"Message={message},{TestLogInfoKey.TestKey2.Name}=teeest2";
-            
+
             logger.Warn(operation: null, message: message, logInfos: null, extraLogInfos: extraLogInfos);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
         public void Warn_MessageAndLogInfosAndNullExtraLogInfos_LogsCorrectly()
         {
             string message = "testudo";
-            IEnumerable<LogInfo> logInfos = new List<LogInfo> { new LogInfo(TestLogInfoKey.TestKey, "teeest") };
+            IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expectedLogLine = $"Message={message},{TestLogInfoKey.TestKey.Name}=teeest";
-            
+
             logger.Warn(operation: null, message: message, logInfos: logInfos, extraLogInfos: null);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
         public void Warn_MessageAndLogInfosAndExtraLogInfos_LogsCorrectly()
         {
             string message = "testudo";
-            IEnumerable<LogInfo> logInfos = new List<LogInfo> { new LogInfo(TestLogInfoKey.TestKey, "teeest") };
-            LogInfo extraLogInfos = new LogInfo(TestLogInfoKey.TestKey2, "teeest2");
+            IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
+            LogInfo extraLogInfos = new(TestLogInfoKey.TestKey2, "teeest2");
 
             string expectedLogLine = $"Message={message},{TestLogInfoKey.TestKey.Name}=teeest,{TestLogInfoKey.TestKey2.Name}=teeest2";
-            
+
             logger.Warn(operation: null, message: message, logInfos: logInfos, extraLogInfos: extraLogInfos);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
         public void Warn_MessageAndExceptionAndNullExtraLogInfos_LogsCorrectly()
         {
             string message = "testudo";
-            Exception ex = new Exception();
+            Exception ex = new();
 
             string expectedLogLine = $"Message={message},Exception={ex.GetType()},ExceptionMessage={ex.Message}";
-            
+
             logger.Warn(operation: null, message: message, exception: ex, logInfos: null);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
         public void Warn_MessageAndExceptionAndExtraLogInfos_LogsCorrectly()
         {
             string message = "testudo";
-            Exception ex = new Exception();
-            LogInfo logInfos = new LogInfo(TestLogInfoKey.TestKey, "teeest");
+            Exception ex = new();
+            LogInfo logInfos = new(TestLogInfoKey.TestKey, "teeest");
 
             string expectedLogLine =
                 $"Message={message}," +
                 $"{logInfos.Key.Name}={logInfos.Value}," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
-            
+
             logger.Warn(operation: null, message: message, exception: ex, logInfos: logInfos);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
         public void Warn_MessageAndExceptionAndNullLogInfos_LogsCorrectly()
         {
             string message = "testudo";
-            Exception ex = new Exception();
+            Exception ex = new();
 
             string expectedLogLine =
                 $"Message={message}," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
-            
+
             logger.Warn(operation: null, message: message, exception: ex, logInfos: null);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
         public void Warn_MessageAndExceptionAndLogInfos_LogsCorrectly()
         {
             string message = "testudo";
-            Exception ex = new Exception();
-            IEnumerable<LogInfo> logInfos = new List<LogInfo> { new LogInfo(TestLogInfoKey.TestKey, "teeest") };
+            Exception ex = new();
+            IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expectedLogLine =
                 $"Message={message}," +
                 $"{TestLogInfoKey.TestKey.Name}=teeest," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
-            
+
             logger.Warn(operation: null, message: message, exception: ex, logInfos: logInfos);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
         public void Warn_MessageAndExceptionAndNullLogInfosAndNullExtraLogInfos_LogsCorrectly()
         {
             string message = "testudo";
-            Exception ex = new Exception();
+            Exception ex = new();
 
             string expectedLogLine =
                 $"Message={message}," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
-            
+
             logger.Warn(operation: null, message: message, exception: ex, logInfos: null, extraLogInfos: null);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
         public void Warn_MessageAndExceptionAndNullLogInfosAndExtraLogInfos_LogsCorrectly()
         {
             string message = "testudo";
-            Exception ex = new Exception();
-            LogInfo extraLogInfos = new LogInfo(TestLogInfoKey.TestKey2, "teeest2");
+            Exception ex = new();
+            LogInfo extraLogInfos = new(TestLogInfoKey.TestKey2, "teeest2");
 
             string expectedLogLine =
                 $"Message={message}," +
                 $"{TestLogInfoKey.TestKey2.Name}=teeest2," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
-            
+
             logger.Warn(operation: null, message: message, exception: ex, logInfos: null, extraLogInfos: extraLogInfos);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
         public void Warn_MessageAndExceptionAndLogInfosAndNullExtraLogInfos_LogsCorrectly()
         {
             string message = "testudo";
-            Exception ex = new Exception();
-            IEnumerable<LogInfo> logInfos = new List<LogInfo> { new LogInfo(TestLogInfoKey.TestKey, "teeest") };
+            Exception ex = new();
+            IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expectedLogLine =
                 $"Message={message}," +
                 $"{TestLogInfoKey.TestKey.Name}=teeest," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
-            
+
             logger.Warn(operation: null, message: message, exception: ex, logInfos: logInfos, extraLogInfos: null);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
         public void Warn_MessageAndExceptionAndLogInfosAndExtraLogInfos_LogsCorrectly()
         {
             string message = "testudo";
-            Exception ex = new Exception();
-            IEnumerable<LogInfo> logInfos = new List<LogInfo> { new LogInfo(TestLogInfoKey.TestKey, "teeest") };
-            LogInfo extraLogInfos = new LogInfo(TestLogInfoKey.TestKey2, "teeest2");
+            Exception ex = new();
+            IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
+            LogInfo extraLogInfos = new(TestLogInfoKey.TestKey2, "teeest2");
 
             string expectedLogLine =
                 $"Message={message}," +
                 $"{TestLogInfoKey.TestKey.Name}=teeest,{TestLogInfoKey.TestKey2.Name}=teeest2," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
-            
+
             logger.Warn(operation: null, message: message, exception: ex, logInfos: logInfos, extraLogInfos: extraLogInfos);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -711,11 +706,11 @@ namespace NuciLog.Core.UnitTests
             string message = "testudo";
 
             string expectedLogLine = $"Operation={operation.Name},Message={message}";
-            
+
             logger.Warn(operation, null, message);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -723,16 +718,16 @@ namespace NuciLog.Core.UnitTests
         {
             Operation operation = Operation.StartUp;
             string message = "testudo";
-            Exception ex = new Exception();
+            Exception ex = new();
 
             string expectedLogLine =
                 $"Operation={operation.Name},Message={message}," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
-            
+
             logger.Warn(operation, null, message, ex);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -742,11 +737,11 @@ namespace NuciLog.Core.UnitTests
             string message = "testudo";
 
             string expectedLogLine = $"Operation={operation.Name},Message={message}";
-            
+
             logger.Warn(operation, null, message, logInfos: null);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -754,16 +749,16 @@ namespace NuciLog.Core.UnitTests
         {
             Operation operation = Operation.StartUp;
             string message = "testudo";
-            LogInfo logInfos = new LogInfo(TestLogInfoKey.TestKey, "teeest");
+            LogInfo logInfos = new(TestLogInfoKey.TestKey, "teeest");
 
             string expectedLogLine =
                 $"Operation={operation.Name},Message={message}," +
                 $"{logInfos.Key.Name}={logInfos.Value}";
-            
+
             logger.Warn(operation, null, message, logInfos);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -773,11 +768,11 @@ namespace NuciLog.Core.UnitTests
             string message = "testudo";
 
             string expectedLogLine = $"Operation={operation.Name},Message={message}";
-            
+
             logger.Warn(operation, null, message, logInfos: null);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -785,16 +780,16 @@ namespace NuciLog.Core.UnitTests
         {
             Operation operation = Operation.StartUp;
             string message = "testudo";
-            IEnumerable<LogInfo> logInfos = new List<LogInfo> { new LogInfo(TestLogInfoKey.TestKey, "teeest") };
+            IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expectedLogLine =
                 $"Operation={operation.Name},Message={message}," +
                 $"{TestLogInfoKey.TestKey.Name}=teeest";
-            
+
             logger.Warn(operation, null, message, logInfos);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -804,11 +799,11 @@ namespace NuciLog.Core.UnitTests
             string message = "testudo";
 
             string expectedLogLine = $"Operation={operation.Name},Message={message}";
-            
+
             logger.Warn(operation, null, message, logInfos: null, extraLogInfos: null);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -816,16 +811,16 @@ namespace NuciLog.Core.UnitTests
         {
             Operation operation = Operation.StartUp;
             string message = "testudo";
-            LogInfo extraLogInfos = new LogInfo(TestLogInfoKey.TestKey2, "teeest2");
+            LogInfo extraLogInfos = new(TestLogInfoKey.TestKey2, "teeest2");
 
             string expectedLogLine =
                 $"Operation={operation.Name},Message={message}," +
                 $"{TestLogInfoKey.TestKey2.Name}=teeest2";
-            
+
             logger.Warn(operation, null, message, logInfos: null, extraLogInfos: extraLogInfos);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -833,16 +828,16 @@ namespace NuciLog.Core.UnitTests
         {
             Operation operation = Operation.StartUp;
             string message = "testudo";
-            IEnumerable<LogInfo> logInfos = new List<LogInfo> { new LogInfo(TestLogInfoKey.TestKey, "teeest") };
+            IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expectedLogLine =
                 $"Operation={operation.Name},Message={message}," +
                 $"{TestLogInfoKey.TestKey.Name}=teeest";
-            
+
             logger.Warn(operation, null, message, logInfos, extraLogInfos: null);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -850,17 +845,17 @@ namespace NuciLog.Core.UnitTests
         {
             Operation operation = Operation.StartUp;
             string message = "testudo";
-            IEnumerable<LogInfo> logInfos = new List<LogInfo> { new LogInfo(TestLogInfoKey.TestKey, "teeest") };
-            LogInfo extraLogInfos = new LogInfo(TestLogInfoKey.TestKey2, "teeest2");
+            IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
+            LogInfo extraLogInfos = new(TestLogInfoKey.TestKey2, "teeest2");
 
             string expectedLogLine =
                 $"Operation={operation.Name},Message={message}," +
                 $"{TestLogInfoKey.TestKey.Name}=teeest,{TestLogInfoKey.TestKey2.Name}=teeest2";
-            
+
             logger.Warn(operation, null, message, logInfos, extraLogInfos);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -868,16 +863,16 @@ namespace NuciLog.Core.UnitTests
         {
             Operation operation = Operation.StartUp;
             string message = "testudo";
-            Exception ex = new Exception();
+            Exception ex = new();
 
             string expectedLogLine =
                 $"Operation={operation.Name},Message={message}," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
-            
+
             logger.Warn(operation, null, message, ex, logInfos: null);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -885,18 +880,18 @@ namespace NuciLog.Core.UnitTests
         {
             Operation operation = Operation.StartUp;
             string message = "testudo";
-            Exception ex = new Exception();
-            LogInfo logInfos = new LogInfo(TestLogInfoKey.TestKey, "teeest");
+            Exception ex = new();
+            LogInfo logInfos = new(TestLogInfoKey.TestKey, "teeest");
 
             string expectedLogLine =
                 $"Operation={operation.Name},Message={message}," +
                 $"{logInfos.Key.Name}={logInfos.Value}," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
-            
+
             logger.Warn(operation, null, message, ex, logInfos);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -904,16 +899,16 @@ namespace NuciLog.Core.UnitTests
         {
             Operation operation = Operation.StartUp;
             string message = "testudo";
-            Exception ex = new Exception();
+            Exception ex = new();
 
             string expectedLogLine =
                 $"Operation={operation.Name},Message={message}," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
-            
+
             logger.Warn(operation, null, message, ex, logInfos: null);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -921,18 +916,18 @@ namespace NuciLog.Core.UnitTests
         {
             Operation operation = Operation.StartUp;
             string message = "testudo";
-            Exception ex = new Exception();
-            IEnumerable<LogInfo> logInfos = new List<LogInfo> { new LogInfo(TestLogInfoKey.TestKey, "teeest") };
+            Exception ex = new();
+            IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expectedLogLine =
                 $"Operation={operation.Name},Message={message}," +
                 $"{TestLogInfoKey.TestKey.Name}=teeest," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
-            
+
             logger.Warn(operation, null, message, ex, logInfos);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -940,16 +935,16 @@ namespace NuciLog.Core.UnitTests
         {
             Operation operation = Operation.StartUp;
             string message = "testudo";
-            Exception ex = new Exception();
+            Exception ex = new();
 
             string expectedLogLine =
                 $"Operation={operation.Name},Message={message}," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
-            
+
             logger.Warn(operation, null, message, ex, logInfos: null, extraLogInfos: null);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -957,18 +952,18 @@ namespace NuciLog.Core.UnitTests
         {
             Operation operation = Operation.StartUp;
             string message = "testudo";
-            Exception ex = new Exception();
-            LogInfo extraLogInfos = new LogInfo(TestLogInfoKey.TestKey2, "teeest2");
+            Exception ex = new();
+            LogInfo extraLogInfos = new(TestLogInfoKey.TestKey2, "teeest2");
 
             string expectedLogLine =
                 $"Operation={operation.Name},Message={message}," +
                 $"{TestLogInfoKey.TestKey2.Name}=teeest2," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
-            
+
             logger.Warn(operation, null, message, ex, logInfos: null, extraLogInfos: extraLogInfos);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -976,18 +971,18 @@ namespace NuciLog.Core.UnitTests
         {
             Operation operation = Operation.StartUp;
             string message = "testudo";
-            Exception ex = new Exception();
-            IEnumerable<LogInfo> logInfos = new List<LogInfo> { new LogInfo(TestLogInfoKey.TestKey, "teeest") };
+            Exception ex = new();
+            IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expectedLogLine =
                 $"Operation={operation.Name},Message={message}," +
                 $"{TestLogInfoKey.TestKey.Name}=teeest," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
-            
+
             logger.Warn(operation, null, message, ex, logInfos, extraLogInfos: null);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -995,19 +990,19 @@ namespace NuciLog.Core.UnitTests
         {
             Operation operation = Operation.StartUp;
             string message = "testudo";
-            Exception ex = new Exception();
-            IEnumerable<LogInfo> logInfos = new List<LogInfo> { new LogInfo(TestLogInfoKey.TestKey, "teeest") };
-            LogInfo extraLogInfos = new LogInfo(TestLogInfoKey.TestKey2, "teeest2");
+            Exception ex = new();
+            IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
+            LogInfo extraLogInfos = new(TestLogInfoKey.TestKey2, "teeest2");
 
             string expectedLogLine =
                 $"Operation={operation.Name},Message={message}," +
                 $"{TestLogInfoKey.TestKey.Name}=teeest,{TestLogInfoKey.TestKey2.Name}=teeest2," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
-            
+
             logger.Warn(operation, null, message, ex, logInfos, extraLogInfos);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -1018,11 +1013,11 @@ namespace NuciLog.Core.UnitTests
             string message = "testudo";
 
             string expectedLogLine = $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}";
-            
+
             logger.Warn(operation, status, message);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -1031,16 +1026,16 @@ namespace NuciLog.Core.UnitTests
             Operation operation = Operation.StartUp;
             OperationStatus status = OperationStatus.Started;
             string message = "testudo";
-            Exception ex = new Exception();
+            Exception ex = new();
 
             string expectedLogLine =
                 $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
-            
+
             logger.Warn(operation, status, message, ex);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -1051,11 +1046,11 @@ namespace NuciLog.Core.UnitTests
             string message = "testudo";
 
             string expectedLogLine = $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}";
-            
+
             logger.Warn(operation, status, message, logInfos: null);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -1064,16 +1059,16 @@ namespace NuciLog.Core.UnitTests
             Operation operation = Operation.StartUp;
             OperationStatus status = OperationStatus.Started;
             string message = "testudo";
-            LogInfo logInfos = new LogInfo(TestLogInfoKey.TestKey, "teeest");
+            LogInfo logInfos = new(TestLogInfoKey.TestKey, "teeest");
 
             string expectedLogLine =
                 $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}," +
                 $"{logInfos.Key.Name}={logInfos.Value}";
-            
+
             logger.Warn(operation, status, message, logInfos);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -1084,11 +1079,11 @@ namespace NuciLog.Core.UnitTests
             string message = "testudo";
 
             string expectedLogLine = $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}";
-            
+
             logger.Warn(operation, status, message, logInfos: null);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -1097,16 +1092,16 @@ namespace NuciLog.Core.UnitTests
             Operation operation = Operation.StartUp;
             OperationStatus status = OperationStatus.Started;
             string message = "testudo";
-            IEnumerable<LogInfo> logInfos = new List<LogInfo> { new LogInfo(TestLogInfoKey.TestKey, "teeest") };
+            IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expectedLogLine =
                 $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}," +
                 $"{TestLogInfoKey.TestKey.Name}=teeest";
-            
+
             logger.Warn(operation, status, message, logInfos);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -1117,11 +1112,11 @@ namespace NuciLog.Core.UnitTests
             string message = "testudo";
 
             string expectedLogLine = $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}";
-            
+
             logger.Warn(operation, status, message, logInfos: null, extraLogInfos: null);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -1130,16 +1125,16 @@ namespace NuciLog.Core.UnitTests
             Operation operation = Operation.StartUp;
             OperationStatus status = OperationStatus.Started;
             string message = "testudo";
-            LogInfo extraLogInfos = new LogInfo(TestLogInfoKey.TestKey2, "teeest2");
+            LogInfo extraLogInfos = new(TestLogInfoKey.TestKey2, "teeest2");
 
             string expectedLogLine =
                 $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}," +
                 $"{TestLogInfoKey.TestKey2.Name}=teeest2";
-            
+
             logger.Warn(operation, status, message, logInfos: null, extraLogInfos: extraLogInfos);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -1148,16 +1143,16 @@ namespace NuciLog.Core.UnitTests
             Operation operation = Operation.StartUp;
             OperationStatus status = OperationStatus.Started;
             string message = "testudo";
-            IEnumerable<LogInfo> logInfos = new List<LogInfo> { new LogInfo(TestLogInfoKey.TestKey, "teeest") };
+            IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expectedLogLine =
                 $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}," +
                 $"{TestLogInfoKey.TestKey.Name}=teeest";
-            
+
             logger.Warn(operation, status, message, logInfos, extraLogInfos: null);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -1166,17 +1161,17 @@ namespace NuciLog.Core.UnitTests
             Operation operation = Operation.StartUp;
             OperationStatus status = OperationStatus.Started;
             string message = "testudo";
-            IEnumerable<LogInfo> logInfos = new List<LogInfo> { new LogInfo(TestLogInfoKey.TestKey, "teeest") };
-            LogInfo extraLogInfos = new LogInfo(TestLogInfoKey.TestKey2, "teeest2");
+            IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
+            LogInfo extraLogInfos = new(TestLogInfoKey.TestKey2, "teeest2");
 
             string expectedLogLine =
                 $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}," +
                 $"{TestLogInfoKey.TestKey.Name}=teeest,{TestLogInfoKey.TestKey2.Name}=teeest2";
-            
+
             logger.Warn(operation, status, message, logInfos, extraLogInfos);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -1185,16 +1180,16 @@ namespace NuciLog.Core.UnitTests
             Operation operation = Operation.StartUp;
             OperationStatus status = OperationStatus.Started;
             string message = "testudo";
-            Exception ex = new Exception();
+            Exception ex = new();
 
             string expectedLogLine =
                 $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
-            
+
             logger.Warn(operation, status, message, ex, logInfos: null);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -1203,18 +1198,18 @@ namespace NuciLog.Core.UnitTests
             Operation operation = Operation.StartUp;
             OperationStatus status = OperationStatus.Started;
             string message = "testudo";
-            Exception ex = new Exception();
-            LogInfo logInfos = new LogInfo(TestLogInfoKey.TestKey, "teeest");
+            Exception ex = new();
+            LogInfo logInfos = new(TestLogInfoKey.TestKey, "teeest");
 
             string expectedLogLine =
                 $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}," +
                 $"{logInfos.Key.Name}={logInfos.Value}," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
-            
+
             logger.Warn(operation, status, message, ex, logInfos);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -1223,16 +1218,16 @@ namespace NuciLog.Core.UnitTests
             Operation operation = Operation.StartUp;
             OperationStatus status = OperationStatus.Started;
             string message = "testudo";
-            Exception ex = new Exception();
+            Exception ex = new();
 
             string expectedLogLine =
                 $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
-            
+
             logger.Warn(operation, status, message, ex, logInfos: null);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -1241,18 +1236,18 @@ namespace NuciLog.Core.UnitTests
             Operation operation = Operation.StartUp;
             OperationStatus status = OperationStatus.Started;
             string message = "testudo";
-            Exception ex = new Exception();
-            IEnumerable<LogInfo> logInfos = new List<LogInfo> { new LogInfo(TestLogInfoKey.TestKey, "teeest") };
+            Exception ex = new();
+            IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expectedLogLine =
                 $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}," +
                 $"{TestLogInfoKey.TestKey.Name}=teeest," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
-            
+
             logger.Warn(operation, status, message, ex, logInfos);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -1261,16 +1256,16 @@ namespace NuciLog.Core.UnitTests
             Operation operation = Operation.StartUp;
             OperationStatus status = OperationStatus.Started;
             string message = "testudo";
-            Exception ex = new Exception();
+            Exception ex = new();
 
             string expectedLogLine =
                 $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
-            
+
             logger.Warn(operation, status, message, ex, logInfos: null, extraLogInfos: null);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -1279,18 +1274,18 @@ namespace NuciLog.Core.UnitTests
             Operation operation = Operation.StartUp;
             OperationStatus status = OperationStatus.Started;
             string message = "testudo";
-            Exception ex = new Exception();
-            LogInfo extraLogInfos = new LogInfo(TestLogInfoKey.TestKey2, "teeest2");
+            Exception ex = new();
+            LogInfo extraLogInfos = new(TestLogInfoKey.TestKey2, "teeest2");
 
             string expectedLogLine =
                 $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}," +
                 $"{TestLogInfoKey.TestKey2.Name}=teeest2," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
-            
+
             logger.Warn(operation, status, message, ex, logInfos: null, extraLogInfos: extraLogInfos);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -1299,18 +1294,18 @@ namespace NuciLog.Core.UnitTests
             Operation operation = Operation.StartUp;
             OperationStatus status = OperationStatus.Started;
             string message = "testudo";
-            Exception ex = new Exception();
-            IEnumerable<LogInfo> logInfos = new List<LogInfo> { new LogInfo(TestLogInfoKey.TestKey, "teeest") };
+            Exception ex = new();
+            IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expectedLogLine =
                 $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}," +
                 $"{TestLogInfoKey.TestKey.Name}=teeest," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
-            
+
             logger.Warn(operation, status, message, ex, logInfos, extraLogInfos: null);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
 
         [Test]
@@ -1319,19 +1314,19 @@ namespace NuciLog.Core.UnitTests
             Operation operation = Operation.StartUp;
             OperationStatus status = OperationStatus.Started;
             string message = "testudo";
-            Exception ex = new Exception();
-            IEnumerable<LogInfo> logInfos = new List<LogInfo> { new LogInfo(TestLogInfoKey.TestKey, "teeest") };
-            LogInfo extraLogInfos = new LogInfo(TestLogInfoKey.TestKey2, "teeest2");
+            Exception ex = new();
+            IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
+            LogInfo extraLogInfos = new(TestLogInfoKey.TestKey2, "teeest2");
 
             string expectedLogLine =
                 $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}," +
                 $"{TestLogInfoKey.TestKey.Name}=teeest,{TestLogInfoKey.TestKey2.Name}=teeest2," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
-            
+
             logger.Warn(operation, status, message, ex, logInfos, extraLogInfos);
 
-            Assert.AreEqual(LogLevel.Warn, logger.LastLogLevel);
-            Assert.AreEqual(expectedLogLine, logger.LastLogLine);
+            Assert.That(logger.LastLogLevel, Is.EqualTo(LogLevel.Warn));
+            Assert.That(logger.LastLogLine, Is.EqualTo(expectedLogLine));
         }
     }
 }
