@@ -51,6 +51,47 @@ namespace NuciLog.Core.UnitTests
         }
 
         [Test]
+        public void Build_LogInfosContainValuesWithCommas_CommaLogInfosAreSanitised()
+        {
+            Operation operation = Operation.StartUp;
+            OperationStatus status = OperationStatus.Started;
+            IEnumerable<LogInfo> logInfos =
+            [
+                new(TestLogInfoKey.TestKey, "teeest,comma"),
+                new(TestLogInfoKey.TestKey2, $"hello, world")
+            ];
+
+            string expected =
+                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
+                $"{TestLogInfoKey.TestKey.Name}=teeest͵comma," +
+                $"{TestLogInfoKey.TestKey2.Name}=hello͵ world";
+
+            string actual = LogMessageBuilder.Build(operation, status, null, null, logInfos);
+
+            Assert.That(actual, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void Build_LogInfosContainValuesWithNewLines_NewLineLogInfosAreSanitised()
+        {
+            Operation operation = Operation.StartUp;
+            OperationStatus status = OperationStatus.Started;
+            IEnumerable<LogInfo> logInfos =
+            [
+                new(TestLogInfoKey.TestKey, "teeest\nnewline"),
+                new(TestLogInfoKey.TestKey2, $"hello{Environment.NewLine}world")
+            ];
+
+            string expected =
+                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
+                $"{TestLogInfoKey.TestKey.Name}=teeest\\nnewline," +
+                $"{TestLogInfoKey.TestKey2.Name}=hello\\nworld";
+            string actual = LogMessageBuilder.Build(operation, status, null, null, logInfos);
+
+            Assert.That(actual, Is.EqualTo(expected));
+        }
+
+        [Test]
         public void Build_LogInfosContainWhitespaceValues_WhitespaceLogInfosAreSkipped()
         {
             Operation operation = Operation.StartUp;
