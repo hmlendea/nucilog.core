@@ -85,8 +85,6 @@ namespace NuciLog.Core
                     {
                         processedLogInfos.Add(logInfo);
                     }
-
-                    processedLogInfos.Add(logInfo);
                 }
             }
 
