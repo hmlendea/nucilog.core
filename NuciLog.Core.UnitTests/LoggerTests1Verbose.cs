@@ -37,7 +37,7 @@ namespace NuciLog.Core.UnitTests
 
             string expectedLogLine =
                 $"Operation={operation.Name}," +
-                $"Message=An exception has occurred," +
+                $"Message={TestLogValues.DefaultExceptionLogMessage}," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
 
             logger.Verbose(operation, ex);
@@ -128,7 +128,7 @@ namespace NuciLog.Core.UnitTests
 
             string expectedLogLine =
                 $"Operation={operation.Name}," +
-                $"Message=An exception has occurred," +
+                $"Message={TestLogValues.DefaultExceptionLogMessage}," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
 
             logger.Verbose(operation, ex, logInfos: null);
@@ -146,7 +146,7 @@ namespace NuciLog.Core.UnitTests
 
             string expectedLogLine =
                 $"Operation={operation.Name}," +
-                $"Message=An exception has occurred," +
+                $"Message={TestLogValues.DefaultExceptionLogMessage}," +
                 $"{logInfos.Key.Name}={logInfos.Value}," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
 
@@ -165,7 +165,7 @@ namespace NuciLog.Core.UnitTests
 
             string expectedLogLine =
                 $"Operation={operation.Name}," +
-                $"Message=An exception has occurred," +
+                $"Message={TestLogValues.DefaultExceptionLogMessage}," +
                 $"{TestLogInfoKey.TestKey.Name}=teeest," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
 
@@ -184,7 +184,7 @@ namespace NuciLog.Core.UnitTests
 
             string expectedLogLine =
                 $"Operation={operation.Name}," +
-                $"Message=An exception has occurred," +
+                $"Message={TestLogValues.DefaultExceptionLogMessage}," +
                 $"{TestLogInfoKey.TestKey.Name}=teeest," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
 
@@ -204,7 +204,7 @@ namespace NuciLog.Core.UnitTests
 
             string expectedLogLine =
                 $"Operation={operation.Name}," +
-                $"Message=An exception has occurred," +
+                $"Message={TestLogValues.DefaultExceptionLogMessage}," +
                 $"{TestLogInfoKey.TestKey.Name}=teeest,{TestLogInfoKey.TestKey2.Name}=teeest2," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
 
@@ -237,7 +237,7 @@ namespace NuciLog.Core.UnitTests
 
             string expectedLogLine =
                 $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
-                $"Message=An exception has occurred," +
+                $"Message={TestLogValues.DefaultExceptionLogMessage}," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
 
             logger.Verbose(operation, status, ex);
@@ -338,7 +338,7 @@ namespace NuciLog.Core.UnitTests
 
             string expectedLogLine =
                 $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
-                $"Message=An exception has occurred," +
+                $"Message={TestLogValues.DefaultExceptionLogMessage}," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
 
             logger.Verbose(operation, status, ex, logInfos: null);
@@ -357,7 +357,7 @@ namespace NuciLog.Core.UnitTests
 
             string expectedLogLine =
                 $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
-                $"Message=An exception has occurred," +
+                $"Message={TestLogValues.DefaultExceptionLogMessage}," +
                 $"{logInfos.Key.Name}={logInfos.Value}," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
 
@@ -377,7 +377,7 @@ namespace NuciLog.Core.UnitTests
 
             string expectedLogLine =
                 $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
-                $"Message=An exception has occurred," +
+                $"Message={TestLogValues.DefaultExceptionLogMessage}," +
                 $"{TestLogInfoKey.TestKey.Name}=teeest," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
 
@@ -397,7 +397,7 @@ namespace NuciLog.Core.UnitTests
 
             string expectedLogLine =
                 $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
-                $"Message=An exception has occurred," +
+                $"Message={TestLogValues.DefaultExceptionLogMessage}," +
                 $"{TestLogInfoKey.TestKey.Name}=teeest," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
 
@@ -418,7 +418,7 @@ namespace NuciLog.Core.UnitTests
 
             string expectedLogLine =
                 $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
-                $"Message=An exception has occurred," +
+                $"Message={TestLogValues.DefaultExceptionLogMessage}," +
                 $"{TestLogInfoKey.TestKey.Name}=teeest,{TestLogInfoKey.TestKey2.Name}=teeest2," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
 
