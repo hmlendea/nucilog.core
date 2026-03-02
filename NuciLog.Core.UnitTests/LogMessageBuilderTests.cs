@@ -201,7 +201,7 @@ namespace NuciLog.Core.UnitTests
 
             string expected =
                 $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
-                $"Message=An exception has occurred," +
+                $"Message={TestLogValues.DefaultExceptionLogMessage}," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
             string actual = LogMessageBuilder.Build(operation, status, message: null, exception: ex, logInfos: null);
 
@@ -263,7 +263,7 @@ namespace NuciLog.Core.UnitTests
 
             string expected =
                 $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
-                $"Message=An exception has occurred," +
+                $"Message={TestLogValues.DefaultExceptionLogMessage}," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
             string actual = LogMessageBuilder.Build(operation, status, message: null, exception: ex, logInfos: null);
 
@@ -280,7 +280,7 @@ namespace NuciLog.Core.UnitTests
 
             string expected =
                 $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
-                $"Message=An exception has occurred," +
+                $"Message={TestLogValues.DefaultExceptionLogMessage}," +
                 $"{TestLogInfoKey.TestKey.Name}=teeest," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
             string actual = LogMessageBuilder.Build(operation, status, message: null, exception: ex, logInfos: logInfos);
@@ -302,7 +302,7 @@ namespace NuciLog.Core.UnitTests
 
             string expected =
                 $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
-                $"Message=An exception has occurred," +
+                $"Message={TestLogValues.DefaultExceptionLogMessage}," +
                 $"{TestLogInfoKey.TestKey.Name}=teeest2," +
                 $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
             string actual = LogMessageBuilder.Build(operation, status, message: null, exception: ex, logInfos: logInfos);

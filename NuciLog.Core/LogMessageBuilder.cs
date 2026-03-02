@@ -68,7 +68,7 @@ namespace NuciLog.Core
             {
                 processedLogInfos.Add(new(
                     LogInfoKey.Message,
-                    "An exception has occurred"));
+                    "An exception has occurred."));
             }
 
             if (logInfos is not null)
