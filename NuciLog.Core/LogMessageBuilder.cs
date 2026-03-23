@@ -54,7 +54,10 @@ namespace NuciLog.Core
             return logMessage;
         }
 
-        static IEnumerable<LogInfo> GetProcessedLogInfoList(string message, IEnumerable<LogInfo> logInfos, Exception ex)
+        static IEnumerable<LogInfo> GetProcessedLogInfoList(
+            string message,
+            IEnumerable<LogInfo> logInfos,
+            Exception exception)
         {
             List<LogInfo> processedLogInfos = [];
 
@@ -64,7 +67,7 @@ namespace NuciLog.Core
                     LogInfoKey.Message,
                     SanitiseLogInfoValue(message)));
             }
-            else if (ex is not null)
+            else if (exception is not null)
             {
                 processedLogInfos.Add(new(
                     LogInfoKey.Message,
@@ -88,17 +91,17 @@ namespace NuciLog.Core
                 }
             }
 
-            if (ex is not null)
+            if (exception is not null)
             {
                 processedLogInfos.Add(new(
                     LogInfoKey.Exception,
-                    ex.GetType()));
+                    exception.GetType()));
                 processedLogInfos.Add(new(
                     LogInfoKey.ExceptionMessage,
-                    SanitiseLogInfoValue(ex.Message)));
+                    SanitiseLogInfoValue(exception.Message)));
                 processedLogInfos.Add(new(
                     LogInfoKey.StackTrace,
-                    SanitiseLogInfoValue(ex.StackTrace)));
+                    SanitiseLogInfoValue(exception.StackTrace)));
             }
 
             return processedLogInfos
