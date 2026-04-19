@@ -101,7 +101,7 @@ namespace NuciLog.Core
                     SanitiseLogInfoValue(exception.Message)));
                 processedLogInfos.Add(new(
                     LogInfoKey.StackTrace,
-                    SanitiseLogInfoValue(exception.StackTrace)));
+                    SanitiseStackTrace(exception.StackTrace)));
             }
 
             return processedLogInfos
@@ -123,6 +123,18 @@ namespace NuciLog.Core
             sanitisedValue = sanitisedValue.Replace(",", "͵");
 
             return sanitisedValue;
+        }
+
+        private static string SanitiseStackTrace(string stackTrace)
+        {
+            if (string.IsNullOrWhiteSpace(stackTrace))
+            {
+                return stackTrace;
+            }
+
+            return SanitiseLogInfoValue(stackTrace)
+                .Replace("\\n", string.Empty)
+                .Trim();
         }
     }
 }
