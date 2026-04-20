@@ -121,6 +121,8 @@ namespace NuciLog.Core
 
             sanitisedValue = NewLineMatchingRegex.Replace(sanitisedValue, "\\n");
             sanitisedValue = sanitisedValue.Replace(",", "͵");
+            sanitisedValue = sanitisedValue.Replace("=", "＝");
+            sanitisedValue = sanitisedValue.Replace("|", "｜");
 
             return sanitisedValue;
         }
@@ -134,6 +136,7 @@ namespace NuciLog.Core
 
             return SanitiseLogInfoValue(stackTrace)
                 .Replace("\\n", string.Empty)
+                .Replace("\\t", " ")
                 .Trim();
         }
     }
