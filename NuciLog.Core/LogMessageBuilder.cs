@@ -134,6 +134,7 @@ namespace NuciLog.Core
 
             return SanitiseLogInfoValue(stackTrace)
                 .Replace("\\n", string.Empty)
+                .Replace("\\t", " ")
                 .Trim();
         }
     }
