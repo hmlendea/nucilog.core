@@ -40,7 +40,7 @@ namespace NuciLog.Core.UnitTests
         public void Given_DateTimeObject_When_CreatingLogInfo_Then_ValueUsesRoundTripFormat()
         {
             DateTime value = new(2026, 4, 21, 10, 30, 45, DateTimeKind.Utc);
-            LogInfo sut = new(TestLogInfoKey.TestKey, (object)value);
+            LogInfo sut = new(TestLogInfoKey.TestKey, value);
 
             Assert.That(sut.Value, Is.EqualTo(value.ToString("o")));
         }
@@ -49,7 +49,7 @@ namespace NuciLog.Core.UnitTests
         public void Given_DateTimeOffsetObject_When_CreatingLogInfo_Then_ValueUsesRoundTripFormat()
         {
             DateTimeOffset value = new(2026, 4, 21, 10, 30, 45, TimeSpan.FromHours(2));
-            LogInfo sut = new(TestLogInfoKey.TestKey, (object)value);
+            LogInfo sut = new(TestLogInfoKey.TestKey, value);
 
             Assert.That(sut.Value, Is.EqualTo(value.ToString("o")));
         }
@@ -58,7 +58,7 @@ namespace NuciLog.Core.UnitTests
         public void Given_TimeSpanObject_When_CreatingLogInfo_Then_ValueUsesConstantFormat()
         {
             TimeSpan value = TimeSpan.FromMinutes(95);
-            LogInfo sut = new(TestLogInfoKey.TestKey, (object)value);
+            LogInfo sut = new(TestLogInfoKey.TestKey, value);
 
             Assert.That(sut.Value, Is.EqualTo(value.ToString("c")));
         }
@@ -66,7 +66,7 @@ namespace NuciLog.Core.UnitTests
         [Test]
         public void Given_EnumObject_When_CreatingLogInfo_Then_ValueUsesGeneralFormat()
         {
-            LogInfo sut = new(TestLogInfoKey.TestKey, (object)TestEnum.Second);
+            LogInfo sut = new(TestLogInfoKey.TestKey, TestEnum.Second);
 
             Assert.That(sut.Value, Is.EqualTo("Second"));
         }
@@ -75,7 +75,7 @@ namespace NuciLog.Core.UnitTests
         public void Given_StringArray_When_CreatingLogInfo_Then_ValuesAreJoinedBySemicolon()
         {
             string[] values = ["a", "b", "c"];
-            LogInfo sut = new(TestLogInfoKey.TestKey, (object)values);
+            LogInfo sut = new(TestLogInfoKey.TestKey, values);
 
             Assert.That(sut.Value, Is.EqualTo("a;b;c"));
         }
@@ -89,7 +89,7 @@ namespace NuciLog.Core.UnitTests
                 { "key2", null }
             };
 
-            LogInfo sut = new(TestLogInfoKey.TestKey, (object)dictionary);
+            LogInfo sut = new(TestLogInfoKey.TestKey, dictionary);
 
             Assert.That(sut.Value, Is.EqualTo("key1=11;key2=;"));
         }
@@ -103,7 +103,7 @@ namespace NuciLog.Core.UnitTests
                 { "key2", 2 }
             };
 
-            LogInfo sut = new(TestLogInfoKey.TestKey, (object)dictionary);
+            LogInfo sut = new(TestLogInfoKey.TestKey, dictionary);
 
             Assert.That(sut.Value, Is.EqualTo("key1=1;key2=2;"));
         }
@@ -112,7 +112,7 @@ namespace NuciLog.Core.UnitTests
         public void Given_NonDictionaryEnumerable_When_CreatingLogInfo_Then_ItemsAreJoinedBySemicolon()
         {
             int[] values = [1, 2, 3];
-            LogInfo sut = new(TestLogInfoKey.TestKey, (object)values);
+            LogInfo sut = new(TestLogInfoKey.TestKey, values);
 
             Assert.That(sut.Value, Is.EqualTo("1;2;3"));
         }
