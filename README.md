@@ -1,4 +1,7 @@
-[![Donate](https://img.shields.io/badge/-%E2%99%A5%20Donate-%23ff69b4)](https://hmlendea.go.ro/fund.html) [![Build Status](https://github.com/hmlendea/nucilog.core/actions/workflows/dotnet.yml/badge.svg)](https://github.com/hmlendea/nucilog.core/actions/workflows/dotnet.yml) [![Latest GitHub release](https://img.shields.io/github/v/release/hmlendea/nucilog.core)](https://github.com/hmlendea/nucilog.core/releases/latest)
+[![Donate](https://img.shields.io/badge/-%E2%99%A5%20Donate-%23ff69b4)](https://hmlendea.go.ro/fund.html)
+[![Latest Release](https://img.shields.io/github/v/release/hmlendea/nucilog.core)](https://github.com/hmlendea/nucilog.core/releases/latest)
+[![Build Status](https://github.com/hmlendea/nucilog.core/actions/workflows/dotnet.yml/badge.svg)](https://github.com/hmlendea/nucilog.core/actions/workflows/dotnet.yml)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://gnu.org/licenses/gpl-3.0)
 
 # NuciLog.Core
 
@@ -12,7 +15,7 @@ The library focuses on three things:
 
 It is designed to be extended by implementing a custom logger sink, while the base `Logger` class handles overload normalization and message construction.
 
-# Features
+## Features
 
 - `Verbose`, `Debug`, `Info`, `Warn`, `Error`, and `Fatal` log levels
 - operation and operation status tracking
@@ -21,25 +24,27 @@ It is designed to be extended by implementing a custom logger sink, while the ba
 - predictable output formatting for downstream processing
 - no-op `NullLogger` implementation for disabled logging scenarios
 
-# Target Framework
+## Requirements
 
-The package currently targets `.NET 10.0`.
+- .NET target framework: `net10.0`
 
-# Installation
+## Installation
 
 [![Get it from NuGet](https://raw.githubusercontent.com/hmlendea/readme-assets/master/badges/stores/nuget.png)](https://nuget.org/packages/NuciLog.Core)
 
-**.NET CLI**:
+### .NET CLI
+
 ```bash
 dotnet add package NuciLog.Core
 ```
 
-**Package Manager**:
+### Package Manager
+
 ```powershell
 Install-Package NuciLog.Core
 ```
 
-# Quick Start
+## Quick Start
 
 `Logger` is an abstract base class. To use the library, create a concrete implementation and write the final log line to your preferred destination.
 
@@ -104,9 +109,9 @@ Possible output:
 2026-03-23T11:22:33.1090223+02:00||INFO|Operation=StartUp,OperationStatus=FAILURE,Message=Service failed to start,CorrelationId=req-42,Exception=System.InvalidOperationException,ExceptionMessage=Configuration file is invalid
 ```
 
-# Concepts
+## Concepts
 
-## Logger
+### Logger
 
 `Logger` provides the implementation for the large set of convenience overloads exposed by `ILogger`. All overloads eventually resolve to:
 
@@ -116,7 +121,7 @@ protected abstract void WriteLog(LogLevel level, Func<string> logMessage)
 
 This keeps application code simple while leaving the final output destination under your control.
 
-## Log Levels
+### Log Levels
 
 The available log levels are:
 
@@ -127,7 +132,7 @@ The available log levels are:
 - `Error`
 - `Fatal`
 
-## Operations and Statuses
+### Operations and Statuses
 
 Operations provide semantic context for application lifecycle or business actions.
 
@@ -147,7 +152,7 @@ Built-in operation statuses:
 
 You can introduce your own domain-specific operations or statuses by deriving from `Operation` or `OperationStatus`.
 
-## Structured Details
+### Structured Details
 
 Structured fields are added through `LogInfo` instances:
 
@@ -168,10 +173,20 @@ Values can be created from:
 - `string`
 - `object`
 - `DateTime` with a custom format
+- `DateTimeOffset` with a custom format
+
+When using the `object` overload, common values are normalised as follows:
+
+- `null` becomes an empty string
+- `DateTime` and `DateTimeOffset` use round-trip (`o`) format
+- `TimeSpan` uses constant (`c`) format
+- enums use general (`G`) format
+- arrays/enumerables are joined with `;`
+- dictionaries are rendered as `key=value;key2=value2;`
 
 To define custom keys, derive from `LogInfoKey` and expose strongly named static members, as shown in the quick start example.
 
-# Output Format
+## Output Format
 
 Generated log lines use comma-separated `key=value` pairs.
 
@@ -197,7 +212,7 @@ Important formatting rules:
 - commas inside values are replaced with `͵` (unicode look-alike character) to preserve parsing
 - when logging an exception without a message, `Message=An exception has occurred.` is added automatically
 
-# API Overview
+## API Overview
 
 The most commonly used members are:
 
@@ -229,7 +244,7 @@ logger.Error("Request failed", ex);
 logger.Fatal(Operation.ShutDown, OperationStatus.Failure, "Host terminated", ex);
 ```
 
-# Source Context
+## Source Context
 
 The logger exposes source context through:
 
@@ -240,7 +255,7 @@ logger.SetSourceContext(typeof(Program));
 
 This sets the `SourceContext` property on the logger instance. At the moment, source context is stored on the logger but is not automatically emitted as part of the generated log message.
 
-# Null Logger
+## Null Logger
 
 Use `NullLogger` when you need an `ILogger` implementation that safely ignores all log calls:
 
@@ -250,28 +265,33 @@ ILogger logger = new NullLogger();
 
 This is useful for tests, optional integrations, or disabled logging pipelines.
 
-# Development
+## Development
 
-Build the solution:
-
-```bash
-dotnet build NuciLog.sln
-```
-
-Run the tests:
+### Build
 
 ```bash
-dotnet test NuciLog.sln
+dotnet build NuciGenerators.Text.MarkovChain.sln
 ```
 
-The test suite covers:
+### Pack
 
-- log level dispatch for all severity levels
-- structured message building
-- exception formatting
-- duplicate key handling
-- sanitisation of commas and new lines
+```bash
+dotnet pack -c Release
+```
 
-# License
+## Contributing
 
-Licensed under GNU GPL v3. See `LICENSE` for details.
+Contributions are welcome.
+
+Please:
+
+- keep changes cross-platform
+- preserve public APIs unless the change is intentionally breaking
+- keep pull requests focused and consistent with existing style
+- update documentation when behaviour changes
+- add or update tests for new behaviour
+
+## License
+
+Licensed under the GNU General Public License v3.0 or later.
+See [LICENSE](./LICENSE) for details.
