@@ -62,11 +62,6 @@ namespace NuciLog.Core
                 return enumValue.ToString("G");
             }
 
-            if (rawValue is IFormattable formattableValue)
-            {
-                return formattableValue.ToString(null, System.Globalization.CultureInfo.InvariantCulture);
-            }
-
             if (rawValue is string[] stringArrayValue)
             {
                 return string.Join(";", stringArrayValue);
@@ -88,41 +83,38 @@ namespace NuciLog.Core
                 return builder.ToString();
             }
 
-            Type dictionaryInterface = rawValue
-                .GetType()
-                .GetInterfaces()
-                .FirstOrDefault(x =>
-                    x.IsGenericType &&
-                    (x.GetGenericTypeDefinition() == typeof(IDictionary<,>) ||
-                     x.GetGenericTypeDefinition() == typeof(IReadOnlyDictionary<,>)));
-
-            if (dictionaryInterface is not null && rawValue is IEnumerable genericDictionaryValue)
-            {
-                StringBuilder builder = new();
-
-                foreach (var item in genericDictionaryValue)
-                {
-                    if (item is null)
-                    {
-                        continue;
-                    }
-
-                    Type itemType = item.GetType();
-                    object key = itemType.GetProperty("Key")?.GetValue(item);
-                    object value = itemType.GetProperty("Value")?.GetValue(item);
-
-                    builder
-                        .Append(Convert.ToString(key) ?? string.Empty)
-                        .Append('=')
-                        .Append(Convert.ToString(value) ?? string.Empty)
-                        .Append(';');
-                }
-
-                return builder.ToString();
-            }
-
             if (rawValue is IEnumerable enumerableValue)
             {
+                if (rawValue
+                    .GetType()
+                    .GetInterfaces()
+                    .FirstOrDefault(x =>
+                        x.IsGenericType &&
+                        x.GetGenericTypeDefinition() == typeof(IDictionary<,>)) is not null)
+                {
+                    StringBuilder builder = new();
+
+                    foreach (var item in enumerableValue)
+                    {
+                        if (item is null)
+                        {
+                            continue;
+                        }
+
+                        Type itemType = item.GetType();
+                        object key = itemType.GetProperty("Key")?.GetValue(item);
+                        object value = itemType.GetProperty("Value")?.GetValue(item);
+
+                        builder
+                            .Append(Convert.ToString(key) ?? string.Empty)
+                            .Append('=')
+                            .Append(Convert.ToString(value) ?? string.Empty)
+                            .Append(';');
+                    }
+
+                    return builder.ToString();
+                }
+
                 return string.Join(";", enumerableValue.Cast<object>());
             }
 
