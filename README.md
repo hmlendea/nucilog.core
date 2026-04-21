@@ -270,7 +270,7 @@ This is useful for tests, optional integrations, or disabled logging pipelines.
 ### Build
 
 ```bash
-dotnet build NuciGenerators.Text.MarkovChain.sln
+dotnet build NuciLog.Core.sln
 ```
 
 ### Pack
