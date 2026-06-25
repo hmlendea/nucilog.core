@@ -24,8 +24,8 @@ namespace NuciLog.Core.UnitTests
             ];
 
             string expected =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
-                $"{TestLogInfoKey.TestKey.Name}=teeest";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵" +
+                $"{TestLogInfoKey.TestKey.Name}＝teeest";
             string actual = LogMessageBuilder.Build(operation, status, null, null, logInfos);
 
             Assert.That(actual, Is.EqualTo(expected));
@@ -43,8 +43,8 @@ namespace NuciLog.Core.UnitTests
             ];
 
             string expected =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
-                $"{TestLogInfoKey.TestKey.Name}=teeest";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵" +
+                $"{TestLogInfoKey.TestKey.Name}＝teeest";
             string actual = LogMessageBuilder.Build(operation, status, null, null, logInfos);
 
             Assert.That(actual, Is.EqualTo(expected));
@@ -62,9 +62,9 @@ namespace NuciLog.Core.UnitTests
             ];
 
             string expected =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
-                $"{TestLogInfoKey.TestKey.Name}=teeest͵comma," +
-                $"{TestLogInfoKey.TestKey2.Name}=hello͵ world";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵" +
+                $"{TestLogInfoKey.TestKey.Name}＝teeest,comma͵" +
+                $"{TestLogInfoKey.TestKey2.Name}＝hello, world";
 
             string actual = LogMessageBuilder.Build(operation, status, null, null, logInfos);
 
@@ -83,9 +83,9 @@ namespace NuciLog.Core.UnitTests
             ];
 
             string expected =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
-                $"{TestLogInfoKey.TestKey.Name}=teeest\\nnewline," +
-                $"{TestLogInfoKey.TestKey2.Name}=hello\\nworld";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵" +
+                $"{TestLogInfoKey.TestKey.Name}＝teeest\\nnewline͵" +
+                $"{TestLogInfoKey.TestKey2.Name}＝hello\\nworld";
             string actual = LogMessageBuilder.Build(operation, status, null, null, logInfos);
 
             Assert.That(actual, Is.EqualTo(expected));
@@ -103,8 +103,8 @@ namespace NuciLog.Core.UnitTests
             ];
 
             string expected =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
-                $"{TestLogInfoKey.TestKey.Name}=teeest";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵" +
+                $"{TestLogInfoKey.TestKey.Name}＝teeest";
             string actual = LogMessageBuilder.Build(operation, status, null, null, logInfos);
 
             Assert.That(actual, Is.EqualTo(expected));
@@ -121,7 +121,7 @@ namespace NuciLog.Core.UnitTests
                 new(TestLogInfoKey.TestKey, null)
             ];
 
-            string expected = $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}";
+            string expected = $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}";
             string actual = LogMessageBuilder.Build(operation, status, null, null, logInfos);
 
             Assert.That(actual, Is.EqualTo(expected));
@@ -138,7 +138,7 @@ namespace NuciLog.Core.UnitTests
                 new(TestLogInfoKey.TestKey, string.Empty)
             ];
 
-            string expected = $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}";
+            string expected = $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}";
             string actual = LogMessageBuilder.Build(operation, status, null, null, logInfos);
 
             Assert.That(actual, Is.EqualTo(expected));
@@ -155,7 +155,7 @@ namespace NuciLog.Core.UnitTests
                 new(TestLogInfoKey.TestKey, "            ")
             ];
 
-            string expected = $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}";
+            string expected = $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}";
             string actual = LogMessageBuilder.Build(operation, status, null, null, logInfos);
 
             Assert.That(actual, Is.EqualTo(expected));
@@ -173,8 +173,8 @@ namespace NuciLog.Core.UnitTests
             ];
 
             string expected =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
-                $"{TestLogInfoKey.TestKey.Name}=testus";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵" +
+                $"{TestLogInfoKey.TestKey.Name}＝testus";
             string actual = LogMessageBuilder.Build(operation, status, null, null, logInfos);
 
             Assert.That(actual, Is.EqualTo(expected));
@@ -186,7 +186,7 @@ namespace NuciLog.Core.UnitTests
             Operation operation = Operation.StartUp;
             OperationStatus status = OperationStatus.Started;
 
-            string expected = $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}";
+            string expected = $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}";
             string actual = LogMessageBuilder.Build(operation, status, null, null, null);
 
             Assert.That(actual, Is.EqualTo(expected));
@@ -200,9 +200,9 @@ namespace NuciLog.Core.UnitTests
             Exception ex = new();
 
             string expected =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
-                $"Message={TestLogValues.DefaultExceptionLogMessage}," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵" +
+                $"Message＝{TestLogValues.DefaultExceptionLogMessage}͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
             string actual = LogMessageBuilder.Build(operation, status, message: null, exception: ex, logInfos: null);
 
             Assert.That(actual, Is.EqualTo(expected));
@@ -214,7 +214,7 @@ namespace NuciLog.Core.UnitTests
             Operation operation = Operation.StartUp;
             OperationStatus status = OperationStatus.Started;
 
-            string expected = $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}";
+            string expected = $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}";
             string actual = LogMessageBuilder.Build(operation, status, message: null, exception: null, logInfos: null);
 
             Assert.That(actual, Is.EqualTo(expected));
@@ -228,8 +228,8 @@ namespace NuciLog.Core.UnitTests
             IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expected =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
-                $"{TestLogInfoKey.TestKey.Name}=teeest";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵" +
+                $"{TestLogInfoKey.TestKey.Name}＝teeest";
             string actual = LogMessageBuilder.Build(operation, status, null, null, logInfos);
 
             Assert.That(actual, Is.EqualTo(expected));
@@ -247,8 +247,8 @@ namespace NuciLog.Core.UnitTests
             ];
 
             string expected =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
-                $"{TestLogInfoKey.TestKey.Name}=teeest2";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵" +
+                $"{TestLogInfoKey.TestKey.Name}＝teeest2";
             string actual = LogMessageBuilder.Build(operation, status, null, null, logInfos);
 
             Assert.That(actual, Is.EqualTo(expected));
@@ -262,9 +262,9 @@ namespace NuciLog.Core.UnitTests
             Exception ex = new();
 
             string expected =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
-                $"Message={TestLogValues.DefaultExceptionLogMessage}," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵" +
+                $"Message＝{TestLogValues.DefaultExceptionLogMessage}͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
             string actual = LogMessageBuilder.Build(operation, status, message: null, exception: ex, logInfos: null);
 
             Assert.That(actual, Is.EqualTo(expected));
@@ -279,10 +279,10 @@ namespace NuciLog.Core.UnitTests
             IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expected =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
-                $"Message={TestLogValues.DefaultExceptionLogMessage}," +
-                $"{TestLogInfoKey.TestKey.Name}=teeest," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵" +
+                $"Message＝{TestLogValues.DefaultExceptionLogMessage}͵" +
+                $"{TestLogInfoKey.TestKey.Name}＝teeest͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
             string actual = LogMessageBuilder.Build(operation, status, message: null, exception: ex, logInfos: logInfos);
 
             Assert.That(actual, Is.EqualTo(expected));
@@ -301,10 +301,10 @@ namespace NuciLog.Core.UnitTests
             ];
 
             string expected =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
-                $"Message={TestLogValues.DefaultExceptionLogMessage}," +
-                $"{TestLogInfoKey.TestKey.Name}=teeest2," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵" +
+                $"Message＝{TestLogValues.DefaultExceptionLogMessage}͵" +
+                $"{TestLogInfoKey.TestKey.Name}＝teeest2͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
             string actual = LogMessageBuilder.Build(operation, status, message: null, exception: ex, logInfos: logInfos);
 
             Assert.That(actual, Is.EqualTo(expected));
@@ -314,7 +314,7 @@ namespace NuciLog.Core.UnitTests
         public void Build_MessageIsPopulated_ReturnsTheCorrectValue()
         {
             string message = "țestoasă";
-            string expected = $"Message={message}";
+            string expected = $"Message＝{message}";
             string actual = LogMessageBuilder.Build(null, null, message, null, null);
 
             Assert.That(actual, Is.EqualTo(expected));
@@ -327,7 +327,7 @@ namespace NuciLog.Core.UnitTests
             OperationStatus status = OperationStatus.Started;
             string message = "testudo";
 
-            string expected = $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}";
+            string expected = $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵Message＝{message}";
             string actual = LogMessageBuilder.Build(operation, status, message, null, null);
 
             Assert.That(actual, Is.EqualTo(expected));
@@ -342,8 +342,8 @@ namespace NuciLog.Core.UnitTests
             Exception ex = new();
 
             string expected =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵Message＝{message}͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
             string actual = LogMessageBuilder.Build(operation, status, message, ex, null);
 
             Assert.That(actual, Is.EqualTo(expected));
@@ -356,7 +356,7 @@ namespace NuciLog.Core.UnitTests
             OperationStatus status = OperationStatus.Started;
             string message = "testudo";
 
-            string expected = $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}";
+            string expected = $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵Message＝{message}";
             string actual = LogMessageBuilder.Build(operation, status, message, exception: null, logInfos: null);
 
             Assert.That(actual, Is.EqualTo(expected));
@@ -371,8 +371,8 @@ namespace NuciLog.Core.UnitTests
             IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expected =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}," +
-                $"{TestLogInfoKey.TestKey.Name}=teeest";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵Message＝{message}͵" +
+                $"{TestLogInfoKey.TestKey.Name}＝teeest";
             string actual = LogMessageBuilder.Build(operation, status, message, exception: null, logInfos: logInfos);
 
             Assert.That(actual, Is.EqualTo(expected));
@@ -391,8 +391,8 @@ namespace NuciLog.Core.UnitTests
             ];
 
             string expected =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}," +
-                $"{TestLogInfoKey.TestKey.Name}=teeest2";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵Message＝{message}͵" +
+                $"{TestLogInfoKey.TestKey.Name}＝teeest2";
             string actual = LogMessageBuilder.Build(operation, status, message, exception: null, logInfos: logInfos);
 
             Assert.That(actual, Is.EqualTo(expected));
@@ -407,8 +407,8 @@ namespace NuciLog.Core.UnitTests
             Exception ex = new();
 
             string expected =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵Message＝{message}͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
             string actual = LogMessageBuilder.Build(operation, status, message, ex, logInfos: null);
 
             Assert.That(actual, Is.EqualTo(expected));
@@ -424,9 +424,9 @@ namespace NuciLog.Core.UnitTests
             IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expected =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}," +
-                $"{TestLogInfoKey.TestKey.Name}=teeest," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵Message＝{message}͵" +
+                $"{TestLogInfoKey.TestKey.Name}＝teeest͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
             string actual = LogMessageBuilder.Build(operation, status, message, ex, logInfos);
 
             Assert.That(actual, Is.EqualTo(expected));
@@ -446,9 +446,9 @@ namespace NuciLog.Core.UnitTests
             ];
 
             string expected =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}," +
-                $"{TestLogInfoKey.TestKey.Name}=teeest2," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵Message＝{message}͵" +
+                $"{TestLogInfoKey.TestKey.Name}＝teeest2͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
             string actual = LogMessageBuilder.Build(operation, status, message, ex, logInfos);
 
             Assert.That(actual, Is.EqualTo(expected));

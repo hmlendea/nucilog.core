@@ -18,7 +18,7 @@ namespace NuciLog.Core.UnitTests
         {
             Operation operation = Operation.StartUp;
 
-            string expectedLogLine = $"Operation={operation.Name}";
+            string expectedLogLine = $"Operation＝{operation.Name}";
 
             logger.Warn(operation);
 
@@ -33,9 +33,9 @@ namespace NuciLog.Core.UnitTests
             Exception ex = new();
 
             string expectedLogLine =
-                $"Operation={operation.Name}," +
-                $"Message={TestLogValues.DefaultExceptionLogMessage}," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Operation＝{operation.Name}͵" +
+                $"Message＝{TestLogValues.DefaultExceptionLogMessage}͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
 
             logger.Warn(operation, ex);
 
@@ -48,7 +48,7 @@ namespace NuciLog.Core.UnitTests
         {
             Operation operation = Operation.StartUp;
 
-            string expectedLogLine = $"Operation={operation.Name}";
+            string expectedLogLine = $"Operation＝{operation.Name}";
 
             logger.Warn(operation, logInfos: null);
 
@@ -66,7 +66,7 @@ namespace NuciLog.Core.UnitTests
                 new(TestLogInfoKey.TestKey2, "teeestValue2")
             ];
 
-            string expectedLogLine = $"Operation={operation.Name},{logInfos[0].Key.Name}={logInfos[0].Value},{logInfos[1].Key.Name}={logInfos[1].Value}";
+            string expectedLogLine = $"Operation＝{operation.Name}͵{logInfos[0].Key.Name}＝{logInfos[0].Value}͵{logInfos[1].Key.Name}＝{logInfos[1].Value}";
 
             logger.Warn(operation, logInfos);
 
@@ -80,7 +80,7 @@ namespace NuciLog.Core.UnitTests
             Operation operation = Operation.StartUp;
             IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
-            string expectedLogLine = $"Operation={operation.Name},{TestLogInfoKey.TestKey.Name}=teeest";
+            string expectedLogLine = $"Operation＝{operation.Name}͵{TestLogInfoKey.TestKey.Name}＝teeest";
 
             logger.Warn(operation, logInfos);
 
@@ -94,7 +94,7 @@ namespace NuciLog.Core.UnitTests
             Operation operation = Operation.StartUp;
             IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
-            string expectedLogLine = $"Operation={operation.Name},{TestLogInfoKey.TestKey.Name}=teeest";
+            string expectedLogLine = $"Operation＝{operation.Name}͵{TestLogInfoKey.TestKey.Name}＝teeest";
 
             logger.Warn(operation, logInfos, extraLogInfos: null);
 
@@ -109,7 +109,7 @@ namespace NuciLog.Core.UnitTests
             IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
             LogInfo extraLogInfos = new(TestLogInfoKey.TestKey2, "teeest2");
 
-            string expectedLogLine = $"Operation={operation.Name},{TestLogInfoKey.TestKey.Name}=teeest,{TestLogInfoKey.TestKey2.Name}=teeest2";
+            string expectedLogLine = $"Operation＝{operation.Name}͵{TestLogInfoKey.TestKey.Name}＝teeest͵{TestLogInfoKey.TestKey2.Name}＝teeest2";
 
             logger.Warn(operation, logInfos, extraLogInfos);
 
@@ -124,9 +124,9 @@ namespace NuciLog.Core.UnitTests
             Exception ex = new();
 
             string expectedLogLine =
-                $"Operation={operation.Name}," +
-                $"Message={TestLogValues.DefaultExceptionLogMessage}," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Operation＝{operation.Name}͵" +
+                $"Message＝{TestLogValues.DefaultExceptionLogMessage}͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
 
             logger.Warn(operation, ex, logInfos: null);
 
@@ -142,10 +142,10 @@ namespace NuciLog.Core.UnitTests
             LogInfo logInfos = new(TestLogInfoKey.TestKey, "teeest");
 
             string expectedLogLine =
-                $"Operation={operation.Name}," +
-                $"Message={TestLogValues.DefaultExceptionLogMessage}," +
-                $"{logInfos.Key.Name}={logInfos.Value}," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Operation＝{operation.Name}͵" +
+                $"Message＝{TestLogValues.DefaultExceptionLogMessage}͵" +
+                $"{logInfos.Key.Name}＝{logInfos.Value}͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
 
             logger.Warn(operation, ex, logInfos);
 
@@ -161,10 +161,10 @@ namespace NuciLog.Core.UnitTests
             IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expectedLogLine =
-                $"Operation={operation.Name}," +
-                $"Message={TestLogValues.DefaultExceptionLogMessage}," +
-                $"{TestLogInfoKey.TestKey.Name}=teeest," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Operation＝{operation.Name}͵" +
+                $"Message＝{TestLogValues.DefaultExceptionLogMessage}͵" +
+                $"{TestLogInfoKey.TestKey.Name}＝teeest͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
 
             logger.Warn(operation, ex, logInfos);
 
@@ -180,10 +180,10 @@ namespace NuciLog.Core.UnitTests
             IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expectedLogLine =
-                $"Operation={operation.Name}," +
-                $"Message={TestLogValues.DefaultExceptionLogMessage}," +
-                $"{TestLogInfoKey.TestKey.Name}=teeest," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Operation＝{operation.Name}͵" +
+                $"Message＝{TestLogValues.DefaultExceptionLogMessage}͵" +
+                $"{TestLogInfoKey.TestKey.Name}＝teeest͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
 
             logger.Warn(operation, ex, logInfos, extraLogInfos: null);
 
@@ -200,10 +200,10 @@ namespace NuciLog.Core.UnitTests
             LogInfo extraLogInfos = new(TestLogInfoKey.TestKey2, "teeest2");
 
             string expectedLogLine =
-                $"Operation={operation.Name}," +
-                $"Message={TestLogValues.DefaultExceptionLogMessage}," +
-                $"{TestLogInfoKey.TestKey.Name}=teeest,{TestLogInfoKey.TestKey2.Name}=teeest2," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Operation＝{operation.Name}͵" +
+                $"Message＝{TestLogValues.DefaultExceptionLogMessage}͵" +
+                $"{TestLogInfoKey.TestKey.Name}＝teeest͵{TestLogInfoKey.TestKey2.Name}＝teeest2͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
 
             logger.Warn(operation, ex, logInfos, extraLogInfos);
 
@@ -217,7 +217,7 @@ namespace NuciLog.Core.UnitTests
             Operation operation = Operation.StartUp;
             OperationStatus status = OperationStatus.Started;
 
-            string expectedLogLine = $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}";
+            string expectedLogLine = $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}";
 
             logger.Warn(operation, status);
 
@@ -233,9 +233,9 @@ namespace NuciLog.Core.UnitTests
             Exception ex = new();
 
             string expectedLogLine =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
-                $"Message={TestLogValues.DefaultExceptionLogMessage}," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵" +
+                $"Message＝{TestLogValues.DefaultExceptionLogMessage}͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
 
             logger.Warn(operation, status, ex);
 
@@ -249,7 +249,7 @@ namespace NuciLog.Core.UnitTests
             Operation operation = Operation.StartUp;
             OperationStatus status = OperationStatus.Started;
 
-            string expectedLogLine = $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}";
+            string expectedLogLine = $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}";
 
             logger.Warn(operation, status, logInfos: null);
 
@@ -265,8 +265,8 @@ namespace NuciLog.Core.UnitTests
             LogInfo logInfos = new(TestLogInfoKey.TestKey, "teeest");
 
             string expectedLogLine =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
-                $"{logInfos.Key.Name}={logInfos.Value}";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵" +
+                $"{logInfos.Key.Name}＝{logInfos.Value}";
 
             logger.Warn(operation, status, logInfos);
 
@@ -282,8 +282,8 @@ namespace NuciLog.Core.UnitTests
             IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expectedLogLine =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
-                $"{TestLogInfoKey.TestKey.Name}=teeest";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵" +
+                $"{TestLogInfoKey.TestKey.Name}＝teeest";
 
             logger.Warn(operation, status, logInfos);
 
@@ -299,8 +299,8 @@ namespace NuciLog.Core.UnitTests
             IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expectedLogLine =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
-                $"{TestLogInfoKey.TestKey.Name}=teeest";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵" +
+                $"{TestLogInfoKey.TestKey.Name}＝teeest";
 
             logger.Warn(operation, status, logInfos, extraLogInfos: null);
 
@@ -317,8 +317,8 @@ namespace NuciLog.Core.UnitTests
             LogInfo extraLogInfos = new(TestLogInfoKey.TestKey2, "teeest2");
 
             string expectedLogLine =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
-                $"{TestLogInfoKey.TestKey.Name}=teeest,{TestLogInfoKey.TestKey2.Name}=teeest2";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵" +
+                $"{TestLogInfoKey.TestKey.Name}＝teeest͵{TestLogInfoKey.TestKey2.Name}＝teeest2";
 
             logger.Warn(operation, status, logInfos, extraLogInfos);
 
@@ -334,9 +334,9 @@ namespace NuciLog.Core.UnitTests
             Exception ex = new();
 
             string expectedLogLine =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
-                $"Message={TestLogValues.DefaultExceptionLogMessage}," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵" +
+                $"Message＝{TestLogValues.DefaultExceptionLogMessage}͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
 
             logger.Warn(operation, status, ex, logInfos: null);
 
@@ -353,10 +353,10 @@ namespace NuciLog.Core.UnitTests
             LogInfo logInfos = new(TestLogInfoKey.TestKey, "teeest");
 
             string expectedLogLine =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
-                $"Message={TestLogValues.DefaultExceptionLogMessage}," +
-                $"{logInfos.Key.Name}={logInfos.Value}," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵" +
+                $"Message＝{TestLogValues.DefaultExceptionLogMessage}͵" +
+                $"{logInfos.Key.Name}＝{logInfos.Value}͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
 
             logger.Warn(operation, status, ex, logInfos);
 
@@ -373,10 +373,10 @@ namespace NuciLog.Core.UnitTests
             IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expectedLogLine =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
-                $"Message={TestLogValues.DefaultExceptionLogMessage}," +
-                $"{TestLogInfoKey.TestKey.Name}=teeest," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵" +
+                $"Message＝{TestLogValues.DefaultExceptionLogMessage}͵" +
+                $"{TestLogInfoKey.TestKey.Name}＝teeest͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
 
             logger.Warn(operation, status, ex, logInfos);
 
@@ -393,10 +393,10 @@ namespace NuciLog.Core.UnitTests
             IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expectedLogLine =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
-                $"Message={TestLogValues.DefaultExceptionLogMessage}," +
-                $"{TestLogInfoKey.TestKey.Name}=teeest," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵" +
+                $"Message＝{TestLogValues.DefaultExceptionLogMessage}͵" +
+                $"{TestLogInfoKey.TestKey.Name}＝teeest͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
 
             logger.Warn(operation, status, ex, logInfos, extraLogInfos: null);
 
@@ -414,10 +414,10 @@ namespace NuciLog.Core.UnitTests
             LogInfo extraLogInfos = new(TestLogInfoKey.TestKey2, "teeest2");
 
             string expectedLogLine =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()}," +
-                $"Message={TestLogValues.DefaultExceptionLogMessage}," +
-                $"{TestLogInfoKey.TestKey.Name}=teeest,{TestLogInfoKey.TestKey2.Name}=teeest2," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵" +
+                $"Message＝{TestLogValues.DefaultExceptionLogMessage}͵" +
+                $"{TestLogInfoKey.TestKey.Name}＝teeest͵{TestLogInfoKey.TestKey2.Name}＝teeest2͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
 
             logger.Warn(operation, status, ex, logInfos, extraLogInfos);
 
@@ -430,7 +430,7 @@ namespace NuciLog.Core.UnitTests
         {
             string message = "testudo";
 
-            string expectedLogLine = $"Message={message}";
+            string expectedLogLine = $"Message＝{message}";
 
             logger.Warn(operation: null, message: message);
 
@@ -444,7 +444,7 @@ namespace NuciLog.Core.UnitTests
             string message = "testudo";
             Exception ex = new();
 
-            string expectedLogLine = $"Message={message},Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+            string expectedLogLine = $"Message＝{message}͵Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
 
             logger.Warn(operation: null, message: message, exception: ex);
 
@@ -457,7 +457,7 @@ namespace NuciLog.Core.UnitTests
         {
             string message = "testudo";
 
-            string expectedLogLine = $"Message={message}";
+            string expectedLogLine = $"Message＝{message}";
 
             logger.Warn(operation: null, message: message, logInfos: null);
 
@@ -471,7 +471,7 @@ namespace NuciLog.Core.UnitTests
             string message = "testudo";
             LogInfo logInfos = new(TestLogInfoKey.TestKey, "teeest");
 
-            string expectedLogLine = $"Message={message},{logInfos.Key.Name}={logInfos.Value}";
+            string expectedLogLine = $"Message＝{message}͵{logInfos.Key.Name}＝{logInfos.Value}";
 
             logger.Warn(operation: null, message: message, logInfos: logInfos);
 
@@ -484,7 +484,7 @@ namespace NuciLog.Core.UnitTests
         {
             string message = "testudo";
 
-            string expectedLogLine = $"Message={message}";
+            string expectedLogLine = $"Message＝{message}";
 
             logger.Warn(operation: null, message: message, logInfos: null);
 
@@ -498,7 +498,7 @@ namespace NuciLog.Core.UnitTests
             string message = "testudo";
             IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
-            string expectedLogLine = $"Message={message},{TestLogInfoKey.TestKey.Name}=teeest";
+            string expectedLogLine = $"Message＝{message}͵{TestLogInfoKey.TestKey.Name}＝teeest";
 
             logger.Warn(operation: null, message: message, logInfos: logInfos);
 
@@ -511,7 +511,7 @@ namespace NuciLog.Core.UnitTests
         {
             string message = "testudo";
 
-            string expectedLogLine = $"Message={message}";
+            string expectedLogLine = $"Message＝{message}";
 
             logger.Warn(operation: null, message: message, logInfos: null, extraLogInfos: null);
 
@@ -525,7 +525,7 @@ namespace NuciLog.Core.UnitTests
             string message = "testudo";
             LogInfo extraLogInfos = new(TestLogInfoKey.TestKey2, "teeest2");
 
-            string expectedLogLine = $"Message={message},{TestLogInfoKey.TestKey2.Name}=teeest2";
+            string expectedLogLine = $"Message＝{message}͵{TestLogInfoKey.TestKey2.Name}＝teeest2";
 
             logger.Warn(operation: null, message: message, logInfos: null, extraLogInfos: extraLogInfos);
 
@@ -539,7 +539,7 @@ namespace NuciLog.Core.UnitTests
             string message = "testudo";
             IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
-            string expectedLogLine = $"Message={message},{TestLogInfoKey.TestKey.Name}=teeest";
+            string expectedLogLine = $"Message＝{message}͵{TestLogInfoKey.TestKey.Name}＝teeest";
 
             logger.Warn(operation: null, message: message, logInfos: logInfos, extraLogInfos: null);
 
@@ -554,7 +554,7 @@ namespace NuciLog.Core.UnitTests
             IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
             LogInfo extraLogInfos = new(TestLogInfoKey.TestKey2, "teeest2");
 
-            string expectedLogLine = $"Message={message},{TestLogInfoKey.TestKey.Name}=teeest,{TestLogInfoKey.TestKey2.Name}=teeest2";
+            string expectedLogLine = $"Message＝{message}͵{TestLogInfoKey.TestKey.Name}＝teeest͵{TestLogInfoKey.TestKey2.Name}＝teeest2";
 
             logger.Warn(operation: null, message: message, logInfos: logInfos, extraLogInfos: extraLogInfos);
 
@@ -568,7 +568,7 @@ namespace NuciLog.Core.UnitTests
             string message = "testudo";
             Exception ex = new();
 
-            string expectedLogLine = $"Message={message},Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+            string expectedLogLine = $"Message＝{message}͵Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
 
             logger.Warn(operation: null, message: message, exception: ex, logInfos: null);
 
@@ -584,9 +584,9 @@ namespace NuciLog.Core.UnitTests
             LogInfo logInfos = new(TestLogInfoKey.TestKey, "teeest");
 
             string expectedLogLine =
-                $"Message={message}," +
-                $"{logInfos.Key.Name}={logInfos.Value}," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Message＝{message}͵" +
+                $"{logInfos.Key.Name}＝{logInfos.Value}͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
 
             logger.Warn(operation: null, message: message, exception: ex, logInfos: logInfos);
 
@@ -601,8 +601,8 @@ namespace NuciLog.Core.UnitTests
             Exception ex = new();
 
             string expectedLogLine =
-                $"Message={message}," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Message＝{message}͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
 
             logger.Warn(operation: null, message: message, exception: ex, logInfos: null);
 
@@ -618,9 +618,9 @@ namespace NuciLog.Core.UnitTests
             IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expectedLogLine =
-                $"Message={message}," +
-                $"{TestLogInfoKey.TestKey.Name}=teeest," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Message＝{message}͵" +
+                $"{TestLogInfoKey.TestKey.Name}＝teeest͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
 
             logger.Warn(operation: null, message: message, exception: ex, logInfos: logInfos);
 
@@ -635,8 +635,8 @@ namespace NuciLog.Core.UnitTests
             Exception ex = new();
 
             string expectedLogLine =
-                $"Message={message}," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Message＝{message}͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
 
             logger.Warn(operation: null, message: message, exception: ex, logInfos: null, extraLogInfos: null);
 
@@ -652,9 +652,9 @@ namespace NuciLog.Core.UnitTests
             LogInfo extraLogInfos = new(TestLogInfoKey.TestKey2, "teeest2");
 
             string expectedLogLine =
-                $"Message={message}," +
-                $"{TestLogInfoKey.TestKey2.Name}=teeest2," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Message＝{message}͵" +
+                $"{TestLogInfoKey.TestKey2.Name}＝teeest2͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
 
             logger.Warn(operation: null, message: message, exception: ex, logInfos: null, extraLogInfos: extraLogInfos);
 
@@ -670,9 +670,9 @@ namespace NuciLog.Core.UnitTests
             IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expectedLogLine =
-                $"Message={message}," +
-                $"{TestLogInfoKey.TestKey.Name}=teeest," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Message＝{message}͵" +
+                $"{TestLogInfoKey.TestKey.Name}＝teeest͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
 
             logger.Warn(operation: null, message: message, exception: ex, logInfos: logInfos, extraLogInfos: null);
 
@@ -689,9 +689,9 @@ namespace NuciLog.Core.UnitTests
             LogInfo extraLogInfos = new(TestLogInfoKey.TestKey2, "teeest2");
 
             string expectedLogLine =
-                $"Message={message}," +
-                $"{TestLogInfoKey.TestKey.Name}=teeest,{TestLogInfoKey.TestKey2.Name}=teeest2," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Message＝{message}͵" +
+                $"{TestLogInfoKey.TestKey.Name}＝teeest͵{TestLogInfoKey.TestKey2.Name}＝teeest2͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
 
             logger.Warn(operation: null, message: message, exception: ex, logInfos: logInfos, extraLogInfos: extraLogInfos);
 
@@ -705,7 +705,7 @@ namespace NuciLog.Core.UnitTests
             Operation operation = Operation.StartUp;
             string message = "testudo";
 
-            string expectedLogLine = $"Operation={operation.Name},Message={message}";
+            string expectedLogLine = $"Operation＝{operation.Name}͵Message＝{message}";
 
             logger.Warn(operation, null, message);
 
@@ -721,8 +721,8 @@ namespace NuciLog.Core.UnitTests
             Exception ex = new();
 
             string expectedLogLine =
-                $"Operation={operation.Name},Message={message}," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Operation＝{operation.Name}͵Message＝{message}͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
 
             logger.Warn(operation, null, message, ex);
 
@@ -736,7 +736,7 @@ namespace NuciLog.Core.UnitTests
             Operation operation = Operation.StartUp;
             string message = "testudo";
 
-            string expectedLogLine = $"Operation={operation.Name},Message={message}";
+            string expectedLogLine = $"Operation＝{operation.Name}͵Message＝{message}";
 
             logger.Warn(operation, null, message, logInfos: null);
 
@@ -752,8 +752,8 @@ namespace NuciLog.Core.UnitTests
             LogInfo logInfos = new(TestLogInfoKey.TestKey, "teeest");
 
             string expectedLogLine =
-                $"Operation={operation.Name},Message={message}," +
-                $"{logInfos.Key.Name}={logInfos.Value}";
+                $"Operation＝{operation.Name}͵Message＝{message}͵" +
+                $"{logInfos.Key.Name}＝{logInfos.Value}";
 
             logger.Warn(operation, null, message, logInfos);
 
@@ -767,7 +767,7 @@ namespace NuciLog.Core.UnitTests
             Operation operation = Operation.StartUp;
             string message = "testudo";
 
-            string expectedLogLine = $"Operation={operation.Name},Message={message}";
+            string expectedLogLine = $"Operation＝{operation.Name}͵Message＝{message}";
 
             logger.Warn(operation, null, message, logInfos: null);
 
@@ -783,8 +783,8 @@ namespace NuciLog.Core.UnitTests
             IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expectedLogLine =
-                $"Operation={operation.Name},Message={message}," +
-                $"{TestLogInfoKey.TestKey.Name}=teeest";
+                $"Operation＝{operation.Name}͵Message＝{message}͵" +
+                $"{TestLogInfoKey.TestKey.Name}＝teeest";
 
             logger.Warn(operation, null, message, logInfos);
 
@@ -798,7 +798,7 @@ namespace NuciLog.Core.UnitTests
             Operation operation = Operation.StartUp;
             string message = "testudo";
 
-            string expectedLogLine = $"Operation={operation.Name},Message={message}";
+            string expectedLogLine = $"Operation＝{operation.Name}͵Message＝{message}";
 
             logger.Warn(operation, null, message, logInfos: null, extraLogInfos: null);
 
@@ -814,8 +814,8 @@ namespace NuciLog.Core.UnitTests
             LogInfo extraLogInfos = new(TestLogInfoKey.TestKey2, "teeest2");
 
             string expectedLogLine =
-                $"Operation={operation.Name},Message={message}," +
-                $"{TestLogInfoKey.TestKey2.Name}=teeest2";
+                $"Operation＝{operation.Name}͵Message＝{message}͵" +
+                $"{TestLogInfoKey.TestKey2.Name}＝teeest2";
 
             logger.Warn(operation, null, message, logInfos: null, extraLogInfos: extraLogInfos);
 
@@ -831,8 +831,8 @@ namespace NuciLog.Core.UnitTests
             IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expectedLogLine =
-                $"Operation={operation.Name},Message={message}," +
-                $"{TestLogInfoKey.TestKey.Name}=teeest";
+                $"Operation＝{operation.Name}͵Message＝{message}͵" +
+                $"{TestLogInfoKey.TestKey.Name}＝teeest";
 
             logger.Warn(operation, null, message, logInfos, extraLogInfos: null);
 
@@ -849,8 +849,8 @@ namespace NuciLog.Core.UnitTests
             LogInfo extraLogInfos = new(TestLogInfoKey.TestKey2, "teeest2");
 
             string expectedLogLine =
-                $"Operation={operation.Name},Message={message}," +
-                $"{TestLogInfoKey.TestKey.Name}=teeest,{TestLogInfoKey.TestKey2.Name}=teeest2";
+                $"Operation＝{operation.Name}͵Message＝{message}͵" +
+                $"{TestLogInfoKey.TestKey.Name}＝teeest͵{TestLogInfoKey.TestKey2.Name}＝teeest2";
 
             logger.Warn(operation, null, message, logInfos, extraLogInfos);
 
@@ -866,8 +866,8 @@ namespace NuciLog.Core.UnitTests
             Exception ex = new();
 
             string expectedLogLine =
-                $"Operation={operation.Name},Message={message}," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Operation＝{operation.Name}͵Message＝{message}͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
 
             logger.Warn(operation, null, message, ex, logInfos: null);
 
@@ -884,9 +884,9 @@ namespace NuciLog.Core.UnitTests
             LogInfo logInfos = new(TestLogInfoKey.TestKey, "teeest");
 
             string expectedLogLine =
-                $"Operation={operation.Name},Message={message}," +
-                $"{logInfos.Key.Name}={logInfos.Value}," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Operation＝{operation.Name}͵Message＝{message}͵" +
+                $"{logInfos.Key.Name}＝{logInfos.Value}͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
 
             logger.Warn(operation, null, message, ex, logInfos);
 
@@ -902,8 +902,8 @@ namespace NuciLog.Core.UnitTests
             Exception ex = new();
 
             string expectedLogLine =
-                $"Operation={operation.Name},Message={message}," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Operation＝{operation.Name}͵Message＝{message}͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
 
             logger.Warn(operation, null, message, ex, logInfos: null);
 
@@ -920,9 +920,9 @@ namespace NuciLog.Core.UnitTests
             IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expectedLogLine =
-                $"Operation={operation.Name},Message={message}," +
-                $"{TestLogInfoKey.TestKey.Name}=teeest," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Operation＝{operation.Name}͵Message＝{message}͵" +
+                $"{TestLogInfoKey.TestKey.Name}＝teeest͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
 
             logger.Warn(operation, null, message, ex, logInfos);
 
@@ -938,8 +938,8 @@ namespace NuciLog.Core.UnitTests
             Exception ex = new();
 
             string expectedLogLine =
-                $"Operation={operation.Name},Message={message}," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Operation＝{operation.Name}͵Message＝{message}͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
 
             logger.Warn(operation, null, message, ex, logInfos: null, extraLogInfos: null);
 
@@ -956,9 +956,9 @@ namespace NuciLog.Core.UnitTests
             LogInfo extraLogInfos = new(TestLogInfoKey.TestKey2, "teeest2");
 
             string expectedLogLine =
-                $"Operation={operation.Name},Message={message}," +
-                $"{TestLogInfoKey.TestKey2.Name}=teeest2," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Operation＝{operation.Name}͵Message＝{message}͵" +
+                $"{TestLogInfoKey.TestKey2.Name}＝teeest2͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
 
             logger.Warn(operation, null, message, ex, logInfos: null, extraLogInfos: extraLogInfos);
 
@@ -975,9 +975,9 @@ namespace NuciLog.Core.UnitTests
             IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expectedLogLine =
-                $"Operation={operation.Name},Message={message}," +
-                $"{TestLogInfoKey.TestKey.Name}=teeest," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Operation＝{operation.Name}͵Message＝{message}͵" +
+                $"{TestLogInfoKey.TestKey.Name}＝teeest͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
 
             logger.Warn(operation, null, message, ex, logInfos, extraLogInfos: null);
 
@@ -995,9 +995,9 @@ namespace NuciLog.Core.UnitTests
             LogInfo extraLogInfos = new(TestLogInfoKey.TestKey2, "teeest2");
 
             string expectedLogLine =
-                $"Operation={operation.Name},Message={message}," +
-                $"{TestLogInfoKey.TestKey.Name}=teeest,{TestLogInfoKey.TestKey2.Name}=teeest2," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Operation＝{operation.Name}͵Message＝{message}͵" +
+                $"{TestLogInfoKey.TestKey.Name}＝teeest͵{TestLogInfoKey.TestKey2.Name}＝teeest2͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
 
             logger.Warn(operation, null, message, ex, logInfos, extraLogInfos);
 
@@ -1012,7 +1012,7 @@ namespace NuciLog.Core.UnitTests
             OperationStatus status = OperationStatus.Started;
             string message = "testudo";
 
-            string expectedLogLine = $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}";
+            string expectedLogLine = $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵Message＝{message}";
 
             logger.Warn(operation, status, message);
 
@@ -1029,8 +1029,8 @@ namespace NuciLog.Core.UnitTests
             Exception ex = new();
 
             string expectedLogLine =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵Message＝{message}͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
 
             logger.Warn(operation, status, message, ex);
 
@@ -1045,7 +1045,7 @@ namespace NuciLog.Core.UnitTests
             OperationStatus status = OperationStatus.Started;
             string message = "testudo";
 
-            string expectedLogLine = $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}";
+            string expectedLogLine = $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵Message＝{message}";
 
             logger.Warn(operation, status, message, logInfos: null);
 
@@ -1062,8 +1062,8 @@ namespace NuciLog.Core.UnitTests
             LogInfo logInfos = new(TestLogInfoKey.TestKey, "teeest");
 
             string expectedLogLine =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}," +
-                $"{logInfos.Key.Name}={logInfos.Value}";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵Message＝{message}͵" +
+                $"{logInfos.Key.Name}＝{logInfos.Value}";
 
             logger.Warn(operation, status, message, logInfos);
 
@@ -1078,7 +1078,7 @@ namespace NuciLog.Core.UnitTests
             OperationStatus status = OperationStatus.Started;
             string message = "testudo";
 
-            string expectedLogLine = $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}";
+            string expectedLogLine = $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵Message＝{message}";
 
             logger.Warn(operation, status, message, logInfos: null);
 
@@ -1095,8 +1095,8 @@ namespace NuciLog.Core.UnitTests
             IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expectedLogLine =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}," +
-                $"{TestLogInfoKey.TestKey.Name}=teeest";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵Message＝{message}͵" +
+                $"{TestLogInfoKey.TestKey.Name}＝teeest";
 
             logger.Warn(operation, status, message, logInfos);
 
@@ -1111,7 +1111,7 @@ namespace NuciLog.Core.UnitTests
             OperationStatus status = OperationStatus.Started;
             string message = "testudo";
 
-            string expectedLogLine = $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}";
+            string expectedLogLine = $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵Message＝{message}";
 
             logger.Warn(operation, status, message, logInfos: null, extraLogInfos: null);
 
@@ -1128,8 +1128,8 @@ namespace NuciLog.Core.UnitTests
             LogInfo extraLogInfos = new(TestLogInfoKey.TestKey2, "teeest2");
 
             string expectedLogLine =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}," +
-                $"{TestLogInfoKey.TestKey2.Name}=teeest2";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵Message＝{message}͵" +
+                $"{TestLogInfoKey.TestKey2.Name}＝teeest2";
 
             logger.Warn(operation, status, message, logInfos: null, extraLogInfos: extraLogInfos);
 
@@ -1146,8 +1146,8 @@ namespace NuciLog.Core.UnitTests
             IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expectedLogLine =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}," +
-                $"{TestLogInfoKey.TestKey.Name}=teeest";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵Message＝{message}͵" +
+                $"{TestLogInfoKey.TestKey.Name}＝teeest";
 
             logger.Warn(operation, status, message, logInfos, extraLogInfos: null);
 
@@ -1165,8 +1165,8 @@ namespace NuciLog.Core.UnitTests
             LogInfo extraLogInfos = new(TestLogInfoKey.TestKey2, "teeest2");
 
             string expectedLogLine =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}," +
-                $"{TestLogInfoKey.TestKey.Name}=teeest,{TestLogInfoKey.TestKey2.Name}=teeest2";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵Message＝{message}͵" +
+                $"{TestLogInfoKey.TestKey.Name}＝teeest͵{TestLogInfoKey.TestKey2.Name}＝teeest2";
 
             logger.Warn(operation, status, message, logInfos, extraLogInfos);
 
@@ -1183,8 +1183,8 @@ namespace NuciLog.Core.UnitTests
             Exception ex = new();
 
             string expectedLogLine =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵Message＝{message}͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
 
             logger.Warn(operation, status, message, ex, logInfos: null);
 
@@ -1202,9 +1202,9 @@ namespace NuciLog.Core.UnitTests
             LogInfo logInfos = new(TestLogInfoKey.TestKey, "teeest");
 
             string expectedLogLine =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}," +
-                $"{logInfos.Key.Name}={logInfos.Value}," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵Message＝{message}͵" +
+                $"{logInfos.Key.Name}＝{logInfos.Value}͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
 
             logger.Warn(operation, status, message, ex, logInfos);
 
@@ -1221,8 +1221,8 @@ namespace NuciLog.Core.UnitTests
             Exception ex = new();
 
             string expectedLogLine =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵Message＝{message}͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
 
             logger.Warn(operation, status, message, ex, logInfos: null);
 
@@ -1240,9 +1240,9 @@ namespace NuciLog.Core.UnitTests
             IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expectedLogLine =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}," +
-                $"{TestLogInfoKey.TestKey.Name}=teeest," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵Message＝{message}͵" +
+                $"{TestLogInfoKey.TestKey.Name}＝teeest͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
 
             logger.Warn(operation, status, message, ex, logInfos);
 
@@ -1259,8 +1259,8 @@ namespace NuciLog.Core.UnitTests
             Exception ex = new();
 
             string expectedLogLine =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵Message＝{message}͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
 
             logger.Warn(operation, status, message, ex, logInfos: null, extraLogInfos: null);
 
@@ -1278,9 +1278,9 @@ namespace NuciLog.Core.UnitTests
             LogInfo extraLogInfos = new(TestLogInfoKey.TestKey2, "teeest2");
 
             string expectedLogLine =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}," +
-                $"{TestLogInfoKey.TestKey2.Name}=teeest2," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵Message＝{message}͵" +
+                $"{TestLogInfoKey.TestKey2.Name}＝teeest2͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
 
             logger.Warn(operation, status, message, ex, logInfos: null, extraLogInfos: extraLogInfos);
 
@@ -1298,9 +1298,9 @@ namespace NuciLog.Core.UnitTests
             IEnumerable<LogInfo> logInfos = [new(TestLogInfoKey.TestKey, "teeest")];
 
             string expectedLogLine =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}," +
-                $"{TestLogInfoKey.TestKey.Name}=teeest," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵Message＝{message}͵" +
+                $"{TestLogInfoKey.TestKey.Name}＝teeest͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
 
             logger.Warn(operation, status, message, ex, logInfos, extraLogInfos: null);
 
@@ -1319,9 +1319,9 @@ namespace NuciLog.Core.UnitTests
             LogInfo extraLogInfos = new(TestLogInfoKey.TestKey2, "teeest2");
 
             string expectedLogLine =
-                $"Operation={operation.Name},OperationStatus={status.Name.ToUpper()},Message={message}," +
-                $"{TestLogInfoKey.TestKey.Name}=teeest,{TestLogInfoKey.TestKey2.Name}=teeest2," +
-                $"Exception={ex.GetType()},ExceptionMessage={ex.Message}";
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵Message＝{message}͵" +
+                $"{TestLogInfoKey.TestKey.Name}＝teeest͵{TestLogInfoKey.TestKey2.Name}＝teeest2͵" +
+                $"Exception＝{ex.GetType()}͵ExceptionMessage＝{ex.Message}";
 
             logger.Warn(operation, status, message, ex, logInfos, extraLogInfos);
 
