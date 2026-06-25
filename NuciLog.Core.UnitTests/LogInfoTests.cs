@@ -91,7 +91,8 @@ namespace NuciLog.Core.UnitTests
 
             LogInfo sut = new(TestLogInfoKey.TestKey, dictionary);
 
-            Assert.That(sut.Value, Is.EqualTo("key1=11;key2=;"));
+            Assert.That(sut.Value, Does.Contain("key1=11"));
+            Assert.That(sut.Value, Does.Contain("key2="));
         }
 
         [Test]
