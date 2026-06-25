@@ -1,4 +1,4 @@
-[![Donate](https://img.shields.io/badge/-%E2%99%A5%20Donate-%23ff69b4)](https://hmlendea.go.ro/fund.html)
+[![Donate](https://img.shields.io/badge/-%E2%99%A5%20Donate-%23ff69b4)](https://hmlendea.go.ro/funding)
 [![Latest Release](https://img.shields.io/github/v/release/hmlendea/nucilog.core)](https://github.com/hmlendea/nucilog.core/releases/latest)
 [![Build Status](https://github.com/hmlendea/nucilog.core/actions/workflows/dotnet.yml/badge.svg)](https://github.com/hmlendea/nucilog.core/actions/workflows/dotnet.yml)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://gnu.org/licenses/gpl-3.0)
@@ -11,7 +11,7 @@ The library focuses on three things:
 
 - a consistent set of log levels
 - operation-aware logging
-- structured `key=value` log output
+- structured `key＝value` log output
 
 It is designed to be extended by implementing a custom logger sink, while the base `Logger` class handles overload normalization and message construction.
 
@@ -104,9 +104,9 @@ catch (Exception ex)
 Possible output:
 
 ```text
-2026-03-23T11:22:33.1090023+02:00||INFO|Operation=StartUp,OperationStatus=STARTED,Message=Initialising service,CorrelationId=req-42
-2026-03-23T11:22:33.1090123+02:00||INFO|Operation=StartUp,OperationStatus=SUCCESS,UserId=1234
-2026-03-23T11:22:33.1090223+02:00||INFO|Operation=StartUp,OperationStatus=FAILURE,Message=Service failed to start,CorrelationId=req-42,Exception=System.InvalidOperationException,ExceptionMessage=Configuration file is invalid
+2026-03-23T11:22:33.1090023+02:00||INFO|Operation＝StartUp͵OperationStatus＝STARTED͵Message＝Initialising service͵CorrelationId＝req-42
+2026-03-23T11:22:33.1090123+02:00||INFO|Operation＝StartUp͵OperationStatus＝SUCCESS͵UserId＝1234
+2026-03-23T11:22:33.1090223+02:00||INFO|Operation＝StartUp͵OperationStatus＝FAILURE͵Message＝Service failed to start͵CorrelationId＝req-42͵Exception＝System.InvalidOperationException͵ExceptionMessage＝Configuration file is invalid
 ```
 
 ## Concepts
@@ -188,7 +188,7 @@ To define custom keys, derive from `LogInfoKey` and expose strongly named static
 
 ## Output Format
 
-Generated log lines use comma-separated `key=value` pairs.
+Generated log lines use `key＝value` pairs separated by `͵`.
 
 The output order is:
 
@@ -200,7 +200,7 @@ The output order is:
 Example:
 
 ```text
-Operation=StartUp,OperationStatus=SUCCESS,Message=Ready,UserId=1234
+Operation＝StartUp͵OperationStatus＝SUCCESS͵Message＝Ready͵UserId＝1234
 ```
 
 Important formatting rules:
@@ -209,8 +209,8 @@ Important formatting rules:
 - duplicate keys are collapsed so the last value wins
 - if the final value of a duplicate key is empty, that key is removed
 - line breaks inside values are converted to `\n`
-- commas inside values are replaced with `͵` (unicode look-alike character) to preserve parsing
-- when logging an exception without a message, `Message=An exception has occurred.` is added automatically
+- field separators use look-alike unicode characters (`＝` U+FF1D for `=`, `͵` U+0375 for `,`) so values are never modified
+- when logging an exception without a message, `Message＝An exception has occurred.` is added automatically
 
 ## API Overview
 
