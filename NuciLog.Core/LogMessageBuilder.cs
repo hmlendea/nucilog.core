@@ -28,12 +28,12 @@ namespace NuciLog.Core
 
             if (operation is not null)
             {
-                logMessage += $"{LogInfoKey.Operation.Name}={operation.Name},";
+                logMessage += $"{LogInfoKey.Operation.Name}＝{operation.Name}͵";
             }
 
             if (operationStatus is not null)
             {
-                logMessage += $"{LogInfoKey.OperationStatus.Name}={operationStatus.Name.ToUpper()},";
+                logMessage += $"{LogInfoKey.OperationStatus.Name}＝{operationStatus.Name.ToUpper()}͵";
             }
 
             IEnumerable<LogInfo> processedDetails = GetProcessedLogInfoList(message, logInfos, exception);
@@ -42,11 +42,11 @@ namespace NuciLog.Core
             {
                 foreach (LogInfo detail in processedDetails)
                 {
-                    logMessage += $"{detail.Key.Name}={detail.Value},";
+                    logMessage += $"{detail.Key.Name}＝{detail.Value}͵";
                 }
             }
 
-            if (logMessage.EndsWith(','))
+            if (logMessage.EndsWith('͵'))
             {
                 return logMessage[..^1];
             }
@@ -120,9 +120,6 @@ namespace NuciLog.Core
             string sanitisedValue = value;
 
             sanitisedValue = NewLineMatchingRegex.Replace(sanitisedValue, "\\n");
-            sanitisedValue = sanitisedValue.Replace(",", "͵");
-            sanitisedValue = sanitisedValue.Replace("=", "＝");
-            sanitisedValue = sanitisedValue.Replace("|", "｜");
 
             return sanitisedValue;
         }
