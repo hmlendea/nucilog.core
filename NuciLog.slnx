@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="NuciLog.Core/NuciLog.Core.csproj" />
+  <Project Path="NuciLog.Core.UnitTests/NuciLog.Core.UnitTests.csproj" />
+</Solution>

@@ -296,7 +296,7 @@ Current verification gaps are:
 Execute the principal automated verification with:
 
 ```bash
-dotnet test NuciLog.sln --verbosity normal
+dotnet test --verbosity normal
 ```
 
 This command currently compiles both projects and passes 513 tests. Restore also emits the build-supply-chain `NU1902` warning identified in External Dependencies.
@@ -354,7 +354,7 @@ Names must remain non-null and stable for any downstream parser. Status extensio
 
 | Area | Path |
 |------|------|
-| Solution composition | [NuciLog.sln](NuciLog.sln) |
+| Solution composition | [NuciLog.slnx](NuciLog.slnx) |
 | Public logging contract | [NuciLog.Core/ILogger.cs](NuciLog.Core/ILogger.cs) |
 | Overload normalisation and sink hook | [NuciLog.Core/Logger.cs](NuciLog.Core/Logger.cs) |
 | Record construction | [NuciLog.Core/LogMessageBuilder.cs](NuciLog.Core/LogMessageBuilder.cs) |
