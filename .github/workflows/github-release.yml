@@ -9,6 +9,12 @@ jobs:
     name: Release
     runs-on: ubuntu-latest
 
+    env:
+      NUGET_PACKAGE_NAME: NuciLog.Core
+
+    permissions:
+      contents: write
+
     steps:
     - uses: actions/checkout@v4
       with:
@@ -35,7 +41,7 @@ jobs:
     - name: Calculate the SHA256 checksum
       id: checksum
       run: |
-        NUPKG_FILE="./nupkg/NuciLog.Core.${{ steps.version.outputs.version }}.nupkg"
+        NUPKG_FILE="./nupkg/${NUGET_PACKAGE_NAME}.${{ steps.version.outputs.version }}.nupkg"
         SHA256=$(sha256sum "$NUPKG_FILE" | awk '{print $1}')
         echo "sha256=$SHA256" >> $GITHUB_OUTPUT
 
@@ -45,8 +51,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ github.event.release.upload_url }}
-        asset_path: ./nupkg/NuciLog.Core.${{ steps.version.outputs.version }}.nupkg
-        asset_name: NuciLog.Core.${{ steps.version.outputs.version }}.nupkg
+        asset_path: ./nupkg/${{ env.NUGET_PACKAGE_NAME }}.${{ steps.version.outputs.version }}.nupkg
+        asset_name: ${{ env.NUGET_PACKAGE_NAME }}.${{ steps.version.outputs.version }}.nupkg
         asset_content_type: application/zip
 
     - name: Append the SHA256 checksum to the GitHub Release notes
