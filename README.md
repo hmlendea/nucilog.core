@@ -7,47 +7,35 @@
 
 NuciLog.Core is a lightweight logging abstraction for .NET applications that want predictable, structured log messages without coupling application code directly to a specific logging backend.
 
-The library focuses on three things:
+## 📑 Table of Contents
 
-- a consistent set of log levels
-- operation-aware logging
-- structured `key＝value` log output
+- [Capabilities](#-capabilities)
+- [Usage](#-usage)
+- [Installation](#-installation)
+- [Concepts](#concepts)
+- [Development](#-development)
+- [Project Structure](#-project-structure)
+- [Architecture](#-architecture)
+- [Contributing](#-contributing)
+- [Security](#-security)
+- [Project Engagement](#-project-engagement)
 
-It is designed to be extended by implementing a custom logger sink, while the base `Logger` class handles overload normalization and message construction.
-
-## Features
+## ✨ Capabilities
 
 - `Verbose`, `Debug`, `Info`, `Warn`, `Error`, and `Fatal` log levels
-- operation and operation status tracking
-- structured log details through `LogInfo`
-- sensitive structured detail masking through `LogInfoKey`
-- exception enrichment with exception type, message, and stack trace
-- predictable output formatting for downstream processing
-- no-op `NullLogger` implementation for disabled logging scenarios
+- Operation and operation status tracking for semantic context
+- Structured `key=value` log output with lazy message formatting
+- Sensitive structured detail masking through `LogInfoKey`
+- Exception enrichment with exception type, message, and stack trace
+- Predictable output formatting for downstream processing
+- No-op `NullLogger` implementation for disabled logging scenarios
+- Fully extensible via custom `Logger` implementations
 
-## Requirements
-
-- .NET target framework: `net10.0`
-
-## Installation
-
-[![Get it from NuGet](https://raw.githubusercontent.com/hmlendea/readme-assets/master/badges/stores/nuget.png)](https://nuget.org/packages/NuciLog.Core)
-
-### .NET CLI
-
-```bash
-dotnet add package NuciLog.Core
-```
-
-### Package Manager
-
-```powershell
-Install-Package NuciLog.Core
-```
-
-## Quick Start
+## 🚀 Usage
 
 `Logger` is an abstract base class. To use the library, create a concrete implementation and write the final log line to your preferred destination.
+
+### Custom Logger Implementation
 
 ```csharp
 using System;
@@ -75,7 +63,7 @@ public sealed class AppLogKey : LogInfoKey
 }
 ```
 
-Example usage:
+### Example Usage
 
 ```csharp
 using NuciLog.Core;
@@ -109,19 +97,35 @@ catch (Exception ex)
 }
 ```
 
-Possible output:
+### Example Output
 
 ```text
 2026-03-23T11:22:33.1090023+02:00||INFO|Operation＝StartUp͵OperationStatus＝STARTED͵Message＝Initialising service͵CorrelationId＝req-42
 2026-03-23T11:22:33.1090123+02:00||INFO|Operation＝StartUp͵OperationStatus＝SUCCESS͵UserId＝1234
-2026-03-23T11:22:33.1090223+02:00||INFO|Operation＝StartUp͵OperationStatus＝FAILURE͵Message＝Service failed to start͵CorrelationId＝req-42͵Exception＝System.InvalidOperationException͵ExceptionMessage＝Configuration file is invalid
+2026-03-23T11:22:33.1090223+02:00||ERROR|Operation＝StartUp͵OperationStatus＝FAILURE͵Message＝Service failed to start͵CorrelationId＝req-42͵Exception＝System.InvalidOperationException͵ExceptionMessage＝Configuration file is invalid
+```
+
+## 📦 Installation
+
+[![Get it from NuGet](https://raw.githubusercontent.com/hmlendea/readme-assets/master/badges/stores/nuget.png)](https://nuget.org/packages/NuciLog.Core)
+
+### Package Manager Installation
+
+```bash
+dotnet add package NuciLog.Core
+```
+
+Or, via the Package Manager Console:
+
+```powershell
+Install-Package NuciLog.Core
 ```
 
 ## Concepts
 
 ### Logger
 
-`Logger` provides the implementation for the large set of convenience overloads exposed by `ILogger`. All overloads eventually resolve to:
+`Logger` provides the implementation for a large set of convenience overloads exposed by `ILogger`. All overloads eventually resolve to:
 
 ```csharp
 protected abstract void WriteLog(LogLevel level, Func<string> logMessage)
@@ -131,7 +135,7 @@ This keeps application code simple while leaving the final output destination un
 
 ### Log Levels
 
-The available log levels are:
+The available log levels are, from least to most severe:
 
 - `Verbose`
 - `Debug`
@@ -188,13 +192,13 @@ When using the `object` overload, common values are normalised as follows:
 - `null` becomes an empty string
 - `DateTime` and `DateTimeOffset` use round-trip (`o`) format
 - `TimeSpan` uses constant (`c`) format
-- enums use general (`G`) format
-- arrays/enumerables are joined with `;`
-- dictionaries are rendered as `key=value;key2=value2;`
+- Enums use general (`G`) format
+- Arrays and enumerables are joined with `;`
+- Dictionaries are rendered as `key=value;key2=value2;`
 
-To define custom keys, derive from `LogInfoKey` and expose strongly named static members, as shown in the quick start example. Use the protected `LogInfoKey(string name, bool isSensitive)` constructor for keys whose values are sensitive. Sensitive values are masked when they are non-empty by displaying the first four characters, five stars, and the last two characters; empty and whitespace values are still omitted.
+To define custom keys, derive from `LogInfoKey` and expose strongly named static members, as shown in the usage example. Use the protected `LogInfoKey(string name, bool isSensitive)` constructor for keys whose values are sensitive. Sensitive values are masked when non-empty by displaying the first four characters, five stars, and the last two characters; empty and whitespace values are omitted.
 
-## Output Format
+### Output Format
 
 Generated log lines use `key＝value` pairs separated by `͵`.
 
@@ -232,7 +236,7 @@ The most commonly used members are:
 - `LogInfoKey` for defining structured field names
 - `Operation` and `OperationStatus` for contextual logging
 
-Common overload patterns are available for each log level:
+Common overload patterns exist for each log level:
 
 - message only
 - operation only
@@ -262,7 +266,7 @@ logger.SetSourceContext<Program>();
 logger.SetSourceContext(typeof(Program));
 ```
 
-This sets the `SourceContext` property on the logger instance. At the moment, source context is stored on the logger but is not automatically emitted as part of the generated log message.
+Source context is stored on the logger instance; at present, it is not automatically emitted as part of the generated log message.
 
 ## Null Logger
 
@@ -274,33 +278,75 @@ ILogger logger = new NullLogger();
 
 This is useful for tests, optional integrations, or disabled logging pipelines.
 
-## Development
+## 🛠️ Development
+
+### Requirements
+
+- [.NET 10.0 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
+
+### Setup
+
+Clone the repository and restore dependencies:
+
+```bash
+git clone https://github.com/hmlendea/nucilog.core.git
+cd nucilog.core
+dotnet restore
+```
 
 ### Build
 
 ```bash
-dotnet build NuciLog.Core.sln
+dotnet build
 ```
 
-### Pack
+### Test
 
 ```bash
-dotnet pack -c Release
+dotnet test
 ```
 
-## Contributing
+## 🗂️ Project Structure
 
-Contributions are welcome.
+### Projects and Packages
 
-Please:
+| Project | Type | Purpose |
+|---------|------|---------|
+| `NuciLog.Core` | Library | Core logging abstraction, types, and public API |
+| `NuciLog.Core.UnitTests` | Tests | Comprehensive unit tests for all log levels and functionality |
 
-- keep changes cross-platform
-- preserve public APIs unless the change is intentionally breaking
-- keep pull requests focused and consistent with existing style
-- update documentation when behaviour changes
-- add or update tests for new behaviour
+### Directories
 
-## License
+| Directory | Purpose |
+|-----------|---------|
+| `NuciLog.Core/` | Library source code |
+| `NuciLog.Core.UnitTests/` | Unit test suite with organised test classes per log level |
+| `.github/workflows/` | GitHub Actions workflows for build and release automation |
 
-Licensed under the GNU General Public License v3.0 or later.
-See [LICENSE](./LICENSE) for details.
+## 🏗️ Architecture
+
+See the [architecture documentation](./ARCHITECTURE.md) for the system context, principal components, runtime flows, ownership boundaries, dependencies, constraints, and extension points.
+
+## 🤝 Contributing
+
+You are welcome to submit any suggestion, feedback, or modification to this project.
+
+When doing so, please:
+- Maintain cross-platform compatibility
+- Preserve the existing public contract unless a breaking change is intentional
+- Submit focused pull requests that conform to the existing code style
+- Maintain your branch synchronised with `master`
+- Revise the documentation when functionality changes
+- Properly test all modifications, including edge cases and error conditions
+- Add tests for additional or modified functionality
+- Raise a new [issue](https://github.com/hmlendea/nucilog.core/issues) for problems or suggestions
+
+## 🔒 Security
+
+For information on reporting security vulnerabilities, see [SECURITY.md](./SECURITY.md).
+
+## 💝 Project Engagement
+
+Discovered a problem or have a suggestion? [Open an issue](https://github.com/hmlendea/nucilog.core/issues)!
+
+If you find this project useful, consider [funding it](https://hmlendea.go.ro/funding) or starring ⭐️ it on GitHub!
