@@ -9,6 +9,14 @@ namespace NuciLog.Core
     {
         private static readonly Regex NewLineMatchingRegex = new(@"\r\n|\r|\n", RegexOptions.Compiled);
 
+        private static char ObfuscatedLogInfoValueMaskCharacter => '*';
+
+        private static int ObfuscatedLogInfoValueMaskLength => 5;
+
+        private static int ObfuscatedLogInfoValuePrefixLength => 4;
+
+        private static int ObfuscatedLogInfoValueSuffixLength => 2;
+
         public static string Build(
             Operation operation,
             OperationStatus operationStatus,
@@ -78,16 +86,9 @@ namespace NuciLog.Core
             {
                 foreach (LogInfo logInfo in logInfos)
                 {
-                    if (logInfo.Value is string stringValue)
-                    {
-                        processedLogInfos.Add(new(
-                            logInfo.Key,
-                            SanitiseLogInfoValue(stringValue)));
-                    }
-                    else
-                    {
-                        processedLogInfos.Add(logInfo);
-                    }
+                    processedLogInfos.Add(new(
+                        logInfo.Key,
+                        ProcessLogInfoValue(logInfo)));
                 }
             }
 
@@ -108,6 +109,42 @@ namespace NuciLog.Core
                 .GroupBy(x => x.Key)
                 .Select(g => new LogInfo(g.First().Key, g.Last().Value))
                 .Where(x => !string.IsNullOrWhiteSpace(x.Value));
+        }
+
+        private static string ProcessLogInfoValue(LogInfo logInfo)
+        {
+            string processedValue = SanitiseLogInfoValue(logInfo.Value);
+
+            if (logInfo.Key.IsSensitive && !string.IsNullOrWhiteSpace(processedValue))
+            {
+                return ObfuscateLogInfoValue(processedValue);
+            }
+
+            return processedValue;
+        }
+
+        private static string ObfuscateLogInfoValue(string value)
+        {
+            int prefixLength = Math.Min(value.Length, ObfuscatedLogInfoValuePrefixLength);
+            string prefix = value[..prefixLength];
+            int remainingValueLength = value.Length - prefixLength;
+            int suffixLength = 0;
+
+            if (remainingValueLength > 0)
+            {
+                suffixLength = Math.Min(remainingValueLength, ObfuscatedLogInfoValueSuffixLength);
+            }
+
+            string suffix = string.Empty;
+
+            if (suffixLength > 0)
+            {
+                suffix = value[^suffixLength..];
+            }
+
+            string mask = new(ObfuscatedLogInfoValueMaskCharacter, ObfuscatedLogInfoValueMaskLength);
+
+            return $"{prefix}{mask}{suffix}";
         }
 
         private static string SanitiseLogInfoValue(string value)

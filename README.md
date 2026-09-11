@@ -20,6 +20,7 @@ It is designed to be extended by implementing a custom logger sink, while the ba
 - `Verbose`, `Debug`, `Info`, `Warn`, `Error`, and `Fatal` log levels
 - operation and operation status tracking
 - structured log details through `LogInfo`
+- sensitive structured detail masking through `LogInfoKey`
 - exception enrichment with exception type, message, and stack trace
 - predictable output formatting for downstream processing
 - no-op `NullLogger` implementation for disabled logging scenarios
@@ -60,10 +61,17 @@ public sealed class ConsoleLogger : Logger
 	}
 }
 
-public sealed class AppLogKey(string name) : LogInfoKey(name)
+public sealed class AppLogKey : LogInfoKey
 {
 	public static LogInfoKey UserId => new AppLogKey(nameof(UserId));
 	public static LogInfoKey CorrelationId => new AppLogKey(nameof(CorrelationId));
+	public static LogInfoKey AccessToken => new AppLogKey(nameof(AccessToken), true);
+
+	public AppLogKey(string name)
+		: base(name) { }
+
+	private AppLogKey(string name, bool isSensitive)
+		: base(name, isSensitive) { }
 }
 ```
 
@@ -184,7 +192,7 @@ When using the `object` overload, common values are normalised as follows:
 - arrays/enumerables are joined with `;`
 - dictionaries are rendered as `key=value;key2=value2;`
 
-To define custom keys, derive from `LogInfoKey` and expose strongly named static members, as shown in the quick start example.
+To define custom keys, derive from `LogInfoKey` and expose strongly named static members, as shown in the quick start example. Use the protected `LogInfoKey(string name, bool isSensitive)` constructor for keys whose values are sensitive. Sensitive values are masked when they are non-empty by displaying the first four characters, five stars, and the last two characters; empty and whitespace values are still omitted.
 
 ## Output Format
 
@@ -208,6 +216,7 @@ Important formatting rules:
 - empty or whitespace values are omitted
 - duplicate keys are collapsed so the last value wins
 - if the final value of a duplicate key is empty, that key is removed
+- values for sensitive keys are masked by displaying the first four characters, five stars, and the last two characters
 - line breaks inside values are converted to `\n`
 - field separators use look-alike unicode characters (`＝` U+FF1D for `=`, `͵` U+0375 for `,`) so values are never modified
 - when logging an exception without a message, `Message＝An exception has occurred.` is added automatically

@@ -67,7 +67,7 @@ The principal external boundaries are:
 - **Concrete sink and destination:** A consumer-derived `Logger` receives a `LogLevel` and lazy formatter, then decides whether, when, and where to emit the record.
 - **.NET runtime:** Loads the `net10.0` assembly and supplies the base class library facilities used for collections, LINQ, text conversion, and regular expressions.
 - **Persistent stores:** NuciLog.Core owns none; any retained record crosses into sink-owned storage and policy.
-- **Trust boundary:** Application-supplied values and exception data enter the library without confidentiality classification or schema validation, then may cross into an external destination selected by the sink.
+- **Trust boundary:** Application-supplied values and exception data enter the library with only key-level sensitivity classification and no schema validation, then may cross into an external destination selected by the sink.
 
 ## 🏗️ Architectural Style
 
@@ -131,9 +131,9 @@ The principal runtime sequence is:
 |-----------|----------------|------------------------|-----------------------|
 | `ILogger` | Defines source context access and the six public logging overload families. | `Type`, `Operation`, `OperationStatus`, `Exception`, `LogInfo` | Public consumer contract; implementation lifetime is external. |
 | `Logger` | Implements overload normalisation, combines detail sequences, selects the level, retains source context, and dispatches the lazy formatter. | `ILogger`, `LogMessageBuilder`, LINQ, public data types | Caller-owned instance; no disposal contract; `SourceContext` is mutable instance state. |
-| `LogMessageBuilder` | Converts canonical inputs into the delimited structured record. | `LogInfo`, `LogInfoKey`, `Operation`, `OperationStatus`, LINQ, `Regex` | Process-static utility with a static compiled regular expression and method-local transformation state. |
+| `LogMessageBuilder` | Converts canonical inputs into the delimited structured record and masks sensitive custom values. | `LogInfo`, `LogInfoKey`, `Operation`, `OperationStatus`, LINQ, `Regex` | Process-static utility with a static compiled regular expression and method-local transformation state. |
 | `LogInfo` | Captures one named structured value and converts supported object forms into strings. | `LogInfoKey`, collection interfaces, reflection, `StringBuilder` | Consumer- or builder-created value carrier; key reference and string value are read-only after construction. |
-| `LogInfoKey` | Supplies name-based structured-field identity and reserved internal field names. | `IEquatable<LogInfoKey>` | Consumer-extendable named object; static properties create fresh built-in instances. |
+| `LogInfoKey` | Supplies name-based structured-field identity, reserved internal field names, and key-level sensitivity classification. | `IEquatable<LogInfoKey>` | Consumer-extendable named object; static properties create fresh built-in instances. |
 | `Operation` and `OperationStatus` | Represent extensible operation context and provide built-in names. | None beyond the .NET base class library | Consumer-extendable named objects; built-in static properties create fresh instances. |
 | `LogLevel` | Identifies severity independently from the formatted payload. | None | Value copied into each `WriteLog` call. |
 | `NullLogger` | Implements the no-op sink by declining to invoke the formatter. | `Logger` | Caller-owned instance; retains inherited source context but emits and persists nothing. |
@@ -185,7 +185,8 @@ flowchart LR
 | Principal order | Operation, operation status, processed message/custom fields, then exception fields. |
 | Severity | Passed separately as `LogLevel`; absent from the builder-produced string. |
 | Missing data | Null operation/status and vacant processed values are omitted. |
-| Duplicate processed keys | Keys compare by case-sensitive `LogInfoKey.Name`; the last value wins while the key retains its first field position. |
+| Duplicate processed keys | Keys compare by case-sensitive `LogInfoKey.Name`; the last processed value wins while the key retains its first field position. |
+| Sensitive custom values | Non-vacant values whose `LogInfoKey.IsSensitive` property is true are masked by displaying the first four characters, five stars, and the last two characters. |
 
 `LogInfo` converts null objects to an empty string; `DateTime` and `DateTimeOffset` to round-trip (`o`) form; `TimeSpan` to constant (`c`) form; enumerations to general (`G`) form; string arrays and non-dictionary enumerables by joining elements with `;`; dictionaries by appending each `key=value;` element; and other objects via `ToString`. Dedicated date/time constructors honour a consumer-supplied format.
 
@@ -195,7 +196,7 @@ Processed field construction follows this policy:
 1. Append `Operation` with its original name when supplied.
 2. Append `OperationStatus` with `Name.ToUpper()` when supplied.
 3. Add a non-whitespace message, or add `An exception has occurred.` when an exception exists without such a message.
-4. Enumerate custom `LogInfo` values and replace embedded CRLF, CR, or LF sequences with the literal characters `\n`.
+4. Enumerate custom `LogInfo` values, replace embedded CRLF, CR, or LF sequences with the literal characters `\n`, and mask non-vacant sensitive-key values by displaying the first four characters, five stars, and the last two characters.
 5. For an exception, append its runtime type, sanitised message, and sanitised stack trace. Stack-trace processing converts newlines to literal `\n`, eliminates those literal sequences, replaces literal `\t` sequences with spaces, and trims the result. Vacant fields disappear during final filtering.
 6. Group message, custom, and exception fields by name-based key equality, retain each group's last value, and omit null, empty, or whitespace final values.
 7. Serialise fields with the fixed assignment and separator characters, then omit the final separator.
@@ -206,7 +207,7 @@ Operation and status prefixes are constructed external to the de-duplication pip
 
 ### Security and Privacy
 
-NuciLog.Core performs no authentication, authorisation, secret acquisition, or destination access. The builder replaces newlines only in processed message, detail-value, exception-message, and stack-trace fields; operation names, status names, and key names are not sanitised. This processing limits some multi-line record injection but is not a confidentiality control and does not escape the record delimiters. Logged inputs can contain personal data, secrets, filesystem locations, or other sensitive material. Consumers must minimise and redact data prior to logging, while sink implementations must apply destination access, transport protection, retention, and disclosure policy. `NullLogger` avoids materialising captured content because it never invokes the formatter.
+NuciLog.Core performs no authentication, authorisation, secret acquisition, or destination access. The builder replaces newlines only in processed message, detail-value, exception-message, and stack-trace fields; operation names, status names, and key names are not sanitised. It also masks non-vacant custom values whose key is marked sensitive, but this is a key-level obfuscation control rather than a general confidentiality boundary and it does not escape the record delimiters. Logged inputs can contain personal data, secrets, filesystem locations, or other sensitive material. Consumers must minimise data, classify sensitive keys, and avoid placing secrets in messages, exception text, operation names, status names, or key names. Sink implementations must apply destination access, transport protection, retention, and disclosure policy. `NullLogger` avoids materialising captured content because it never invokes the formatter.
 
 ### Error Handling
 
@@ -276,13 +277,14 @@ NuciLog.Core is deployed as an in-process class library rather than an independe
 | `LogLevel` values | `LogLevel` | `Fatal=0`, `Error=1`, `Warn=2`, `Info=3`, `Debug=4`, `Verbose=5`. | Source declaration; no dedicated numeric-value test currently exists. | Preserve observable numeric assignments unless a deliberate breaking change is planned. |
 | Record grammar | `LogMessageBuilder` | Fixed field order, `＝` assignment, `͵` separation, no terminator, and severity external to the payload. | `LogMessageBuilderTests` and every logger-level suite assert complete strings. | Grammar changes require coordinated parser migration and revised assertions. |
 | Key identity and de-duplication | `LogInfoKey` and `LogMessageBuilder` | Case-sensitive name equality; first-position ordering with the last processed value selected; vacant final value removes the field. | Duplicate-key and vacant-value unit tests. | Key-name or equality changes require compatibility analysis for custom key subclasses. |
+| Sensitive value masking | `LogInfoKey` and `LogMessageBuilder` | Custom values whose key has `IsSensitive=true` are masked after sanitisation and before de-duplication; the visible prefix is four characters, the mask is five stars, the visible suffix is two characters, and vacant sensitive values are omitted. | Sensitive-key unit tests. | Mask text or timing changes alter emitted records and require explicit parser and documentation migration. |
 | Value conversion | `LogInfo` | Round-trip date/time, constant duration, general enumeration, semicolon collection, dictionary, and fallback `ToString` rules. | `LogInfoTests`. | Conversion changes alter emitted records and require explicit test and documentation revision. |
 | Exception enrichment | `LogMessageBuilder` | Default message when absent, followed by exception type, message, and non-vacant stack trace fields. | Builder and logger-level exception tests. | Preserve names and order or provide a deliberate downstream migration. |
 | Lazy sink hook | `Logger` subclasses | The sink receives level and formatter separately and decides whether to invoke the formatter. | `TestLogger` invokes the delegate; `NullLogger` implementation demonstrates omission. | Preserve laziness and delegate semantics for existing sink subclasses. |
 
 ## ✅ Testing and Verification
 
-[NuciLog.Core.UnitTests](NuciLog.Core.UnitTests/) is an NUnit project that references the production project directly. Six logger suites mirror the six severity families and verify overload routing, level selection, null handling, detail combination, and complete record strings via `TestLogger`. `LogMessageBuilderTests` verifies ordering, omission, newline sanitisation, exception enrichment, and duplicate-key semantics. `LogInfoTests` verifies supported object-to-string conversions.
+[NuciLog.Core.UnitTests](NuciLog.Core.UnitTests/) is an NUnit project that references the production project directly. Six logger suites mirror the six severity families and verify overload routing, level selection, null handling, detail combination, and complete record strings via `TestLogger`. `LogMessageBuilderTests` verifies ordering, omission, newline sanitisation, sensitive-key masking, exception enrichment, and duplicate-key semantics. `LogInfoTests` verifies supported object-to-string conversions.
 
 Current verification gaps are:
 - No explicit tests cover `SourceContext`, `NullLogger`, `LogInfoKey` equality in isolation, or the numeric `LogLevel` assignments.
@@ -297,7 +299,7 @@ Execute the principal automated verification with:
 dotnet test NuciLog.sln --verbosity normal
 ```
 
-This command currently compiles both projects and passes 509 tests. Restore also emits the build-supply-chain `NU1902` warning identified in External Dependencies.
+This command currently compiles both projects and passes 513 tests. Restore also emits the build-supply-chain `NU1902` warning identified in External Dependencies.
 
 ## ⚠️ Design Constraints
 
@@ -325,9 +327,10 @@ The override must preserve the separation between severity and lazy payload cons
 
 1. Derive a type from `LogInfoKey` and pass each non-null name to the protected constructor.
 2. Expose stable named members from the consumer assembly and use them when constructing `LogInfo` values.
-3. Add record-construction tests for name collisions, ordering, vacant values, and downstream parser expectations.
+3. Use the sensitive constructor overload for keys whose values must be masked.
+4. Add record-construction tests for name collisions, ordering, vacant values, sensitive masking, and downstream parser expectations.
 
-Names form both equality identity and serialised field identity. Extensions must therefore preserve case, avoid accidental collisions with reserved names, and account for the unescaped delimiters.
+Names form both equality identity and serialised field identity. Extensions must therefore preserve case, avoid accidental collisions with reserved names, and account for the unescaped delimiters. Sensitive classification is evaluated per supplied detail value before duplicate-key selection.
 
 ### Domain Operations and Statuses
 

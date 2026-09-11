@@ -6,6 +6,7 @@ using NuciLog.Core.UnitTests.Helpers;
 
 namespace NuciLog.Core.UnitTests
 {
+    [TestFixture]
     public sealed class LogMessageBuilderTests
     {
         [Test]
@@ -105,6 +106,78 @@ namespace NuciLog.Core.UnitTests
             string expected =
                 $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵" +
                 $"{TestLogInfoKey.TestKey.Name}＝teeest";
+            string actual = LogMessageBuilder.Build(operation, status, null, null, logInfos);
+
+            Assert.That(actual, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void GivenALogInfoWithASensitiveKey_WhenBuildingTheLogMessage_ThenTheLogInfoValueIsObfuscated()
+        {
+            Operation operation = Operation.StartUp;
+            OperationStatus status = OperationStatus.Started;
+            IEnumerable<LogInfo> logInfos =
+            [
+                new(TestLogInfoKey.SensitiveTestKey, "solar-token-613")
+            ];
+
+            string expected =
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵" +
+                $"{TestLogInfoKey.SensitiveTestKey.Name}＝sola*****13";
+            string actual = LogMessageBuilder.Build(operation, status, null, null, logInfos);
+
+            Assert.That(actual, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void GivenAShortLogInfoWithASensitiveKey_WhenBuildingTheLogMessage_ThenTheLogInfoValueIsObfuscatedWithoutOverlappingVisibleCharacters()
+        {
+            Operation operation = Operation.StartUp;
+            OperationStatus status = OperationStatus.Started;
+            IEnumerable<LogInfo> logInfos =
+            [
+                new(TestLogInfoKey.SensitiveTestKey, "613")
+            ];
+
+            string expected =
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵" +
+                $"{TestLogInfoKey.SensitiveTestKey.Name}＝613*****";
+            string actual = LogMessageBuilder.Build(operation, status, null, null, logInfos);
+
+            Assert.That(actual, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void GivenASensitiveLogInfoWithAWhitespaceValue_WhenBuildingTheLogMessage_ThenTheLogInfoIsSkipped()
+        {
+            Operation operation = Operation.StartUp;
+            OperationStatus status = OperationStatus.Started;
+            IEnumerable<LogInfo> logInfos =
+            [
+                new(TestLogInfoKey.SensitiveTestKey, "   ")
+            ];
+
+            string expected = $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}";
+            string actual = LogMessageBuilder.Build(operation, status, null, null, logInfos);
+
+            Assert.That(actual, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void GivenDuplicatedLogInfosWithASensitiveFinalValue_WhenBuildingTheLogMessage_ThenTheFinalValueIsObfuscated()
+        {
+            Operation operation = Operation.StartUp;
+            OperationStatus status = OperationStatus.Started;
+            LogInfoKey plainKey = new TestLogInfoKey(TestLogInfoKey.SensitiveTestKey.Name);
+            IEnumerable<LogInfo> logInfos =
+            [
+                new(plainKey, "visible-value"),
+                new(TestLogInfoKey.SensitiveTestKey, "solar-token-613")
+            ];
+
+            string expected =
+                $"Operation＝{operation.Name}͵OperationStatus＝{status.Name.ToUpper()}͵" +
+                $"{TestLogInfoKey.SensitiveTestKey.Name}＝sola*****13";
             string actual = LogMessageBuilder.Build(operation, status, null, null, logInfos);
 
             Assert.That(actual, Is.EqualTo(expected));

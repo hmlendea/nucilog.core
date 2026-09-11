@@ -4,9 +4,30 @@ namespace NuciLog.Core
 {
     public class LogInfoKey : IEquatable<LogInfoKey>
     {
+        /// <summary>
+        /// Gets whether the values logged for this key contain sensitive information.
+        /// </summary>
+        public bool IsSensitive { get; protected set; }
+
+        /// <summary>
+        /// Gets the structured log field name.
+        /// </summary>
         public string Name { get; protected set; }
 
-        protected LogInfoKey(string name) => Name = name;
+        /// <summary>
+        /// Initialises a new instance of the <see cref="LogInfoKey"/> class.
+        /// </summary>
+        protected LogInfoKey(string name)
+            : this(name, false) { }
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="LogInfoKey"/> class.
+        /// </summary>
+        protected LogInfoKey(string name, bool isSensitive)
+        {
+            Name = name;
+            IsSensitive = isSensitive;
+        }
 
         public bool Equals(LogInfoKey other) => Name == other.Name;
 
