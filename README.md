@@ -18,6 +18,7 @@ NuciLog.Core is a lightweight logging abstraction for .NET applications that wan
 - [Architecture](#-architecture)
 - [Contributing](#-contributing)
 - [Security](#-security)
+- [Privacy](#-privacy)
 - [Project Engagement](#-project-engagement)
 
 ## ✨ Capabilities
@@ -344,6 +345,10 @@ When doing so, please:
 ## 🔒 Security
 
 For information on reporting security vulnerabilities, see [SECURITY.md](./SECURITY.md).
+
+## 🛡️ Privacy
+
+For information on how this library handles personal data, see [PRIVACY.md](./PRIVACY.md).
 
 ## 💝 Project Engagement
 
