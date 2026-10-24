@@ -354,7 +354,7 @@ Names must remain non-null and stable for any downstream parser. Status extensio
 
 | Area | Path |
 |------|------|
-| Solution composition | [NuciLog.slnx](NuciLog.slnx) |
+| Solution composition | [NuciLog.Core.slnx](NuciLog.Core.slnx) |
 | Public logging contract | [NuciLog.Core/ILogger.cs](NuciLog.Core/ILogger.cs) |
 | Overload normalisation and sink hook | [NuciLog.Core/Logger.cs](NuciLog.Core/Logger.cs) |
 | Record construction | [NuciLog.Core/LogMessageBuilder.cs](NuciLog.Core/LogMessageBuilder.cs) |

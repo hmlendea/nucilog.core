@@ -56,7 +56,7 @@ nucilog.core/
 │   ├── compatibility-and-versioning.md # TFM, versioning, compat
 │   └── source-map.md                # This file
 │
-├── NuciLog.slnx                     # Solution file
+├── NuciLog.Core.slnx                # Solution file
 ├── README.md                        # Repository overview
 ├── PRIVACY.md                       # Privacy policy
 ├── SECURITY.md                      # Security policy
