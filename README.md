@@ -1,7 +1,7 @@
 [![Donate](https://img.shields.io/badge/-%E2%99%A5%20Donate-%23ff69b4)](https://hmlendea.go.ro/funding)
 [![Latest Release](https://img.shields.io/github/v/release/hmlendea/nucilog.core)](https://github.com/hmlendea/nucilog.core/releases/latest)
 [![Build Status](https://github.com/hmlendea/nucilog.core/actions/workflows/dotnet.yml/badge.svg)](https://github.com/hmlendea/nucilog.core/actions/workflows/dotnet.yml)
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://gnu.org/licenses/gpl-3.0)
+[![License](https://img.shields.io/github/license/hmlendea/nucilog.core)](https://github.com/hmlendea/nucilog.core/blob/master/LICENSE)
 
 # NuciLog.Core
 
@@ -11,15 +11,34 @@ NuciLog.Core is a lightweight logging abstraction for .NET applications that wan
 
 - [Capabilities](#-capabilities)
 - [Usage](#-usage)
+  - [Custom Logger Implementation](#custom-logger-implementation)
+  - [Example Usage](#example-usage)
+  - [Example Output](#example-output)
 - [Installation](#-installation)
+  - [Package Manager Installation](#package-manager-installation)
 - [Concepts](#concepts)
+  - [Logger](#logger)
+  - [Log Levels](#log-levels)
+  - [Operations and Statuses](#operations-and-statuses)
+  - [Structured Details](#structured-details)
+  - [Output Format](#output-format)
+- [API Overview](#api-overview)
+- [Source Context](#source-context)
+- [Null Logger](#null-logger)
 - [Development](#-development)
+  - [Requirements](#requirements)
+  - [Setup](#setup)
+  - [Build](#build)
+  - [Test](#test)
 - [Project Structure](#-project-structure)
+  - [Projects and Packages](#projects-and-packages)
+  - [Directories](#directories)
 - [Architecture](#-architecture)
 - [Contributing](#-contributing)
 - [Security](#-security)
 - [Privacy](#-privacy)
 - [Project Engagement](#-project-engagement)
+- [License](#-license)
 
 ## ✨ Capabilities
 
@@ -357,3 +376,8 @@ For information on how this library handles personal data, see [PRIVACY.md](./PR
 Discovered a problem or have a suggestion? [Open an issue](https://github.com/hmlendea/nucilog.core/issues)!
 
 If you find this project useful, consider [funding it](https://hmlendea.go.ro/funding) or starring ⭐️ it on GitHub!
+
+## 📄 License
+
+This project is being distributed under the `GNU General Public License v3.0` or later.
+See [LICENSE](./LICENSE) for additional information.
