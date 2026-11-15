@@ -43,9 +43,9 @@ NuciLog.Core.UnitTests/
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="NUnit" Version="4.2.2" />
-    <PackageReference Include="NUnit3TestAdapter" Version="4.6.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="NUnit" Version="5.0.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="6.3.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.12.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NuciLog.Core\NuciLog.Core.csproj" />
@@ -481,7 +481,7 @@ Before merging changes, verify:
 | Test methods | ~280 |
 | Lines of test code | ~3,500 |
 | Target framework | net10.0 |
-| Test framework | NUnit 4.2.2 |
+| Test framework | NUnit 5.0.0 |
 | Coverage target | 100% of public API surface |
 
 ---
