@@ -8,6 +8,7 @@ NuciLog.Core is a lightweight logging abstraction for .NET applications. This se
 - [Supported Versions](#-supported-versions)
 - [Reporting a Vulnerability](#-reporting-a-vulnerability)
 - [Scope](#-scope)
+- [Automated Security Scanning](#-automated-security-scanning)
 - [Disclosure Policy](#-disclosure-policy)
 - [Safe Harbour](#-safe-harbour)
 - [Recognition](#-recognition)
@@ -46,7 +47,13 @@ The subsequent categories are out of scope unless explicitly stated to the contr
 - Vulnerabilities in application code consuming the library
 - Third-party dependencies with independent security advisories
 
-## 📢 Disclosure Policy
+## � Automated Security Scanning
+
+Automated security scanning runs in the [Security workflow](.github/workflows/security.yml) on `master` pushes, pull requests, and a weekly schedule. It performs the following checks:
+- Restores the solution and inspects all direct and transitive NuGet packages for known vulnerabilities with `dotnet list package --vulnerable --include-transitive`.
+- Runs CodeQL analysis for C# and uploads the SARIF results to GitHub Code Scanning, where findings are visible under the repository's security alerts.
+
+## �📢 Disclosure Policy
 
 This project follows coordinated disclosure:
 1. Vulnerabilities are investigated privately.

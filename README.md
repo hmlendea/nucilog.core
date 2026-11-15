@@ -1,6 +1,7 @@
 [![Donate](https://img.shields.io/badge/-%E2%99%A5%20Donate-%23ff69b4)](https://hmlendea.go.ro/funding)
 [![Latest Release](https://img.shields.io/github/v/release/hmlendea/nucilog.core)](https://github.com/hmlendea/nucilog.core/releases/latest)
 [![Build Status](https://github.com/hmlendea/nucilog.core/actions/workflows/dotnet.yml/badge.svg)](https://github.com/hmlendea/nucilog.core/actions/workflows/dotnet.yml)
+[![Security](https://github.com/hmlendea/nucilog.core/actions/workflows/security.yml/badge.svg)](https://github.com/hmlendea/nucilog.core/actions/workflows/security.yml)
 [![License](https://img.shields.io/github/license/hmlendea/nucilog.core)](https://github.com/hmlendea/nucilog.core/blob/master/LICENSE)
 
 # NuciLog.Core
@@ -33,6 +34,7 @@ NuciLog.Core is a lightweight logging abstraction for .NET applications that wan
 - [Project Structure](#-project-structure)
   - [Projects and Packages](#projects-and-packages)
   - [Directories](#directories)
+- [GitHub Actions](#️-github-actions)
 - [Architecture](#-architecture)
 - [Contributing](#-contributing)
 - [Code of Conduct](#-code-of-conduct)
@@ -342,7 +344,18 @@ dotnet test
 |-----------|---------|
 | `NuciLog.Core/` | Library source code |
 | `NuciLog.Core.UnitTests/` | Unit test suite with organised test classes per log level |
-| `.github/workflows/` | GitHub Actions workflows for build and release automation |
+| `.github/workflows/` | GitHub Actions workflows for build, security scanning, and release automation |
+
+## ⚙️ GitHub Actions
+
+The repository automates build verification, security scanning, and release publication through the following workflows:
+
+| Workflow | File | Purpose |
+|----------|------|---------|
+| Build | [.github/workflows/dotnet.yml](.github/workflows/dotnet.yml) | Restores, builds, and tests the solution with the .NET 10 SDK on `master` pushes and pull requests. |
+| Security | [.github/workflows/security.yml](.github/workflows/security.yml) | Checks for vulnerable packages, runs CodeQL analysis for C#, and uploads the results to GitHub Code Scanning on `master` pushes, pull requests, and a weekly schedule. |
+| GitHub Release | [.github/workflows/github-release.yml](.github/workflows/github-release.yml) | Produces the release assets when a GitHub release is published. |
+| NuGet.org Release | [.github/workflows/nuget-release.yml](.github/workflows/nuget-release.yml) | Packs and publishes the `NuciLog.Core` package to NuGet.org when a GitHub release is published. |
 
 ## 🏗️ Architecture
 
