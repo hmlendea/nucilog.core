@@ -251,10 +251,10 @@ The principal dependency rules are:
 | Dependency | Responsibility | Integration Boundary | Architectural Consequence |
 |------------|----------------|----------------------|---------------------------|
 | `.NET 10` | Runtime, compiler target, and base class library. | `net10.0` target framework in the production and test projects. | Consumers require a compatible .NET 10 environment; the package is not multi-targeted. |
-| `Microsoft.SourceLink.GitHub` 10.0.300 | Produces source-linked symbols for package diagnostics. | Production project compilation and packing only. | `PrivateAssets="all"` prevents transitive exposure to consumers; it has no runtime role. |
-| NUnit test toolchain | Discovers and executes unit tests via `Microsoft.NET.Test.Sdk`, NUnit, and `NUnit3TestAdapter`. | Test project only. | Verification depends upon these package versions but production consumers do not. |
+| `Microsoft.SourceLink.GitHub` 11.0.100 | Produces source-linked symbols for package diagnostics. | Production project compilation and packing only. | `PrivateAssets="all"` prevents transitive exposure to consumers; it has no runtime role. |
+| NUnit test toolchain | Discovers and executes unit tests via `Microsoft.NET.Test.Sdk` 18.12.0, NUnit 5.0.0, Moq 4.21.0, and `NUnit3TestAdapter` 6.3.1. | Test project only. | Verification depends upon these package versions but production consumers do not. |
 
-The test project also references Moq, although the tracked test sources use a concrete `TestLogger` rather than Moq. Current restore reports `NU1902` for the transitive build dependency `Microsoft.Build.Tasks.Git` 10.0.300; this is a build-supply-chain maintenance concern rather than a runtime dependency of NuciLog.Core consumers.
+The test project also references Moq, although the tracked test sources use a concrete `TestLogger` rather than Moq. The previously reported `NU1902` advisory for the transitive build dependency `Microsoft.Build.Tasks.Git` is resolved by the `Microsoft.SourceLink.GitHub` 11.0.100 upgrade, and a current restore reports no vulnerable packages.
 
 ## 🚀 Deployment and Operations
 
@@ -300,7 +300,7 @@ Execute the principal automated verification with:
 dotnet test --verbosity normal
 ```
 
-This command currently compiles both projects and passes 513 tests. Restore also emits the build-supply-chain `NU1902` warning identified in External Dependencies.
+This command currently compiles both projects and passes 513 tests. Restore completes without vulnerability warnings.
 
 ## ⚠️ Design Constraints
 

@@ -242,7 +242,7 @@ NuciLog.Core.1.0.0.snupkg
 
 Enabled via:
 ```xml
-<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
+<PackageReference Include="Microsoft.SourceLink.GitHub" Version="11.0.100" PrivateAssets="All" />
 ```
 
 **Effect:** Debugger steps into library source from GitHub.
@@ -261,10 +261,10 @@ Enabled via:
 
 | Package | Version | Purpose |
 |---------|---------|---------|
-| `NUnit` | 4.2.2 | Test framework |
-| `NUnit3TestAdapter` | 4.6.0 | VS Test integration |
-| `Microsoft.NET.Test.Sdk` | 17.11.1 | Test runner |
-| `Microsoft.SourceLink.GitHub` | 8.0.0 | Source Link |
+| `NUnit` | 5.0.0 | Test framework |
+| `NUnit3TestAdapter` | 6.3.1 | VS Test integration |
+| `Microsoft.NET.Test.Sdk` | 18.12.0 | Test runner |
+| `Microsoft.SourceLink.GitHub` | 11.0.100 | Source Link |
 
 ### Dependency Policy
 
