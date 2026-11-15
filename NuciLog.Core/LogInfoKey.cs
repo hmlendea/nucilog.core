@@ -14,6 +14,20 @@ namespace NuciLog.Core
         /// </summary>
         public string Name { get; protected set; }
 
+        internal static LogInfoKey SourceContext => new(nameof(SourceContext));
+
+        internal static LogInfoKey Operation => new(nameof(Operation));
+
+        internal static LogInfoKey OperationStatus => new(nameof(OperationStatus));
+
+        internal static LogInfoKey Message => new(nameof(Message));
+
+        internal static LogInfoKey Exception => new(nameof(Exception));
+
+        internal static LogInfoKey ExceptionMessage => new(nameof(ExceptionMessage));
+
+        internal static LogInfoKey StackTrace => new(nameof(StackTrace));
+
         /// <summary>
         /// Initialises a new instance of the <see cref="LogInfoKey"/> class.
         /// </summary>
@@ -42,19 +56,5 @@ namespace NuciLog.Core
         }
 
         public override int GetHashCode() => Name.GetHashCode();
-
-        internal static LogInfoKey SourceContext => new(nameof(SourceContext));
-
-        internal static LogInfoKey Operation => new(nameof(Operation));
-
-        internal static LogInfoKey OperationStatus => new(nameof(OperationStatus));
-
-        internal static LogInfoKey Message => new(nameof(Message));
-
-        internal static LogInfoKey Exception => new(nameof(Exception));
-
-        internal static LogInfoKey ExceptionMessage => new(nameof(ExceptionMessage));
-
-        internal static LogInfoKey StackTrace => new(nameof(StackTrace));
     }
 }

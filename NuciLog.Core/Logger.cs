@@ -89,9 +89,7 @@ namespace NuciLog.Core
         public void Verbose(Operation operation, OperationStatus operationStatus, string message, Exception exception, params LogInfo[] logInfos)
             => Verbose(operation, operationStatus, message, exception, logInfos as IEnumerable<LogInfo>);
         public void Verbose(Operation operation, OperationStatus operationStatus, string message, Exception exception, IEnumerable<LogInfo> logInfos)
-        {
-            WriteLog(LogLevel.Verbose, () => LogMessageBuilder.Build(operation, operationStatus, message, exception, logInfos));
-        }
+            => WriteLog(LogLevel.Verbose, () => LogMessageBuilder.Build(operation, operationStatus, message, exception, logInfos));
         public void Verbose(Operation operation, OperationStatus operationStatus, string message, Exception exception, IEnumerable<LogInfo> logInfos, params LogInfo[] extraLogInfos)
         {
             if (logInfos is null)
@@ -185,9 +183,7 @@ namespace NuciLog.Core
         public void Debug(Operation operation, OperationStatus operationStatus, string message, Exception exception, params LogInfo[] logInfos)
             => Debug(operation, operationStatus, message, exception, logInfos as IEnumerable<LogInfo>);
         public void Debug(Operation operation, OperationStatus operationStatus, string message, Exception exception, IEnumerable<LogInfo> logInfos)
-        {
-            WriteLog(LogLevel.Debug, () => LogMessageBuilder.Build(operation, operationStatus, message, exception, logInfos));
-        }
+            => WriteLog(LogLevel.Debug, () => LogMessageBuilder.Build(operation, operationStatus, message, exception, logInfos));
         public void Debug(Operation operation, OperationStatus operationStatus, string message, Exception exception, IEnumerable<LogInfo> logInfos, params LogInfo[] extraLogInfos)
         {
             if (logInfos is null)
@@ -281,9 +277,7 @@ namespace NuciLog.Core
         public void Info(Operation operation, OperationStatus operationStatus, string message, Exception exception, params LogInfo[] logInfos)
             => Info(operation, operationStatus, message, exception, logInfos as IEnumerable<LogInfo>);
         public void Info(Operation operation, OperationStatus operationStatus, string message, Exception exception, IEnumerable<LogInfo> logInfos)
-        {
-            WriteLog(LogLevel.Info, () => LogMessageBuilder.Build(operation, operationStatus, message, exception, logInfos));
-        }
+            => WriteLog(LogLevel.Info, () => LogMessageBuilder.Build(operation, operationStatus, message, exception, logInfos));
         public void Info(Operation operation, OperationStatus operationStatus, string message, Exception exception, IEnumerable<LogInfo> logInfos, params LogInfo[] extraLogInfos)
         {
             if (logInfos is null)
@@ -377,9 +371,7 @@ namespace NuciLog.Core
         public void Warn(Operation operation, OperationStatus operationStatus, string message, Exception exception, params LogInfo[] logInfos)
             => Warn(operation, operationStatus, message, exception, logInfos as IEnumerable<LogInfo>);
         public void Warn(Operation operation, OperationStatus operationStatus, string message, Exception exception, IEnumerable<LogInfo> logInfos)
-        {
-            WriteLog(LogLevel.Warn, ()=> LogMessageBuilder.Build(operation, operationStatus, message, exception, logInfos));
-        }
+            => WriteLog(LogLevel.Warn, () => LogMessageBuilder.Build(operation, operationStatus, message, exception, logInfos));
         public void Warn(Operation operation, OperationStatus operationStatus, string message, Exception exception, IEnumerable<LogInfo> logInfos, params LogInfo[] extraLogInfos)
         {
             if (logInfos is null)
@@ -473,9 +465,7 @@ namespace NuciLog.Core
         public void Error(Operation operation, OperationStatus operationStatus, string message, Exception exception, params LogInfo[] logInfos)
             => Error(operation, operationStatus, message, exception, logInfos as IEnumerable<LogInfo>);
         public void Error(Operation operation, OperationStatus operationStatus, string message, Exception exception, IEnumerable<LogInfo> logInfos)
-        {
-            WriteLog(LogLevel.Error, () => LogMessageBuilder.Build(operation, operationStatus, message, exception, logInfos));
-        }
+            => WriteLog(LogLevel.Error, () => LogMessageBuilder.Build(operation, operationStatus, message, exception, logInfos));
         public void Error(Operation operation, OperationStatus operationStatus, string message, Exception exception, IEnumerable<LogInfo> logInfos, params LogInfo[] extraLogInfos)
         {
             if (logInfos is null)
@@ -569,9 +559,7 @@ namespace NuciLog.Core
         public void Fatal(Operation operation, OperationStatus operationStatus, string message, Exception exception, params LogInfo[] logInfos)
             => Fatal(operation, operationStatus, message, exception, logInfos as IEnumerable<LogInfo>);
         public void Fatal(Operation operation, OperationStatus operationStatus, string message, Exception exception, IEnumerable<LogInfo> logInfos)
-        {
-            WriteLog(LogLevel.Fatal, () => LogMessageBuilder.Build(operation, operationStatus, message, exception, logInfos));
-        }
+            => WriteLog(LogLevel.Fatal, () => LogMessageBuilder.Build(operation, operationStatus, message, exception, logInfos));
         public void Fatal(Operation operation, OperationStatus operationStatus, string message, Exception exception, IEnumerable<LogInfo> logInfos, params LogInfo[] extraLogInfos)
         {
             if (logInfos is null)

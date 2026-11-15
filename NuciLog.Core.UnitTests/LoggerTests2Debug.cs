@@ -6,6 +6,7 @@ using NuciLog.Core.UnitTests.Helpers;
 
 namespace NuciLog.Core.UnitTests
 {
+    [TestFixture]
     public sealed class LoggerTests2Debug
     {
         TestLogger logger;

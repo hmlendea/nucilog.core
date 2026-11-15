@@ -23,7 +23,7 @@ namespace NuciLog.Core
             string message,
             Exception exception,
             params LogInfo[] logInfos)
-            => Build (operation, operationStatus, message, exception, logInfos?.ToList());
+            => Build(operation, operationStatus, message, exception, logInfos?.ToList());
 
         public static string Build(
             Operation operation,
@@ -62,7 +62,7 @@ namespace NuciLog.Core
             return logMessage;
         }
 
-        static IEnumerable<LogInfo> GetProcessedLogInfoList(
+        private static IEnumerable<LogInfo> GetProcessedLogInfoList(
             string message,
             IEnumerable<LogInfo> logInfos,
             Exception exception)
@@ -115,7 +115,8 @@ namespace NuciLog.Core
         {
             string processedValue = SanitiseLogInfoValue(logInfo.Value);
 
-            if (logInfo.Key.IsSensitive && !string.IsNullOrWhiteSpace(processedValue))
+            if (logInfo.Key.IsSensitive &&
+                !string.IsNullOrWhiteSpace(processedValue))
             {
                 return ObfuscateLogInfoValue(processedValue);
             }

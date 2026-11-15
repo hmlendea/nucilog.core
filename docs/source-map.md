@@ -7,6 +7,7 @@ File-to-responsibility mapping for rapid navigation of the NuciLog.Core codebase
 - [Project Structure](#project-structure)
 - [Core Library (NuciLog.Core)](#core-library-nucilogcore)
 - [Unit Tests (NuciLog.Core.UnitTests)](#unit-tests-nucilogcoreunittests)
+- [Architecture Tests (NuciLog.Core.ArchitectureTests)](#architecture-tests-nucilogcorearchitecturetests)
 - [Documentation (docs/)](#documentation-docs)
 - [Cross-Reference Index](#cross-reference-index)
 
@@ -31,6 +32,8 @@ nucilog.core/
 ├── NuciLog.Core.UnitTests/          # Test project
 │   ├── NuciLog.Core.UnitTests.csproj
 │   ├── Helpers/
+│   │   ├── CustomValue.cs           # Unsupported-object conversion helper
+│   │   ├── TestEnum.cs              # Enumeration conversion helper
 │   │   ├── TestLogger.cs            # Captures LastLogLine, LastLogLevel
 │   │   ├── TestLogInfoKey.cs        # Test keys (sensitive + non-sensitive)
 │   │   └── TestLogValues.cs         # Shared expected values
@@ -42,6 +45,38 @@ nucilog.core/
 │   ├── LoggerTests6Fatal.cs         # Fatal level (40+ overloads)
 │   ├── LogInfoTests.cs              # LogInfo construction, conversion
 │   └── LogMessageBuilderTests.cs    # Builder pipeline, masking, de-dup
+│
+├── NuciLog.Core.ArchitectureTests/  # Fitness test project
+│   ├── NuciLog.Core.ArchitectureTests.csproj
+│   ├── ArchitectureResources.cs     # Embedded source/project resource access
+│   ├── ProductionArchitecture.cs    # Loaded ArchUnitNET production model
+│   ├── ApiConventionTests.cs        # Collection, serialisation, exception rules
+│   ├── DependencyBoundaryTests.cs   # Assembly references and boundaries
+│   ├── LayerDependencyTests.cs      # Namespace and acyclicity rules
+│   ├── CompiledConventionTests.cs   # Compiled type and member conventions
+│   ├── SourceFileConventionTests.cs # One type per file, block namespaces
+│   ├── ArchitectureTestSourceConventionTests.cs # Architecture test source rules
+│   ├── CodingConventionTests.cs     # Coding convention source rules
+│   ├── FormattingConventionTests.cs # Formatting and whitespace rules
+│   ├── IndentationConventionTests.cs # Line splitting and indentation rules
+│   ├── InterfaceAndEnumerationConventionTests.cs # Interface and enum rules
+│   ├── NamespaceAndUsingConventionTests.cs # Namespace and using rules
+│   ├── NamingConventionTests.cs     # Naming convention rules
+│   ├── TypeDeclarationConventionTests.cs # Type declaration rules
+│   ├── MemberOrganisationTests.cs   # Member accessibility and kind ordering
+│   ├── MemberOrderingDetailedTests.cs # Per-group accessibility ordering
+│   ├── ConstantConventionTests.cs   # Constant and literal rules
+│   ├── ExpressionBodyConventionTests.cs # Expression body rules
+│   ├── LowLevelConventionTests.cs   # Unsafe, goto, operator rules
+│   ├── NullHandlingConventionTests.cs # Null handling and cast rules
+│   ├── StatementConventionTests.cs  # Statement and control-flow rules
+│   ├── StructuralConventionTests.cs # Overload grouping and control-flow rules
+│   ├── DocumentationConventionTests.cs # XML documentation rules
+│   ├── ProjectConventionTests.cs    # csproj property and reference rules
+│   ├── SolutionConventionTests.cs   # slnx structure and ordering rules
+│   ├── RepositoryConventionTests.cs # Workflow, licence, solution references
+│   ├── TestSourceConventionTests.cs # Unit test source rules
+│   └── UnitTestConventionTests.cs   # Unit test assertion and naming rules
 │
 ├── docs/                            # Documentation
 │   ├── README.md                    # Documentation index
@@ -285,6 +320,119 @@ enum LogLevel { Fatal = 0, Error = 1, Warn = 2, Info = 3, Debug = 4, Verbose = 5
 
 ---
 
+## Architecture Tests (NuciLog.Core.ArchitectureTests)
+
+### ArchitectureResources.cs
+
+**Purpose:** Access the production, unit-test, and architecture-test sources plus the solution and project files embedded as resources.
+
+**Key Members:**
+- `ProductionSourcePrefix`, `UnitTestSourcePrefix`, `ArchitectureTestSourcePrefix`, `ProjectFilePrefix`
+- `GetResourcePaths(string prefix)` — deterministic, ordinal-ordered resource paths
+- `ReadResource(string prefix, string relativePath)` — throws when a required resource is unavailable
+
+**Navigation:**
+- Backs every source-convention and project or solution rule
+- Fails clearly rather than relying on local discovery
+
+### ProductionArchitecture.cs
+
+**Purpose:** Load the production assembly once and expose the reusable ArchUnitNET model.
+
+**Key Members:**
+- `Assembly` (`typeof(ILogger).Assembly`)
+- `Model` (single `ArchLoader` build reused across the run)
+- `ProductionTypes` (production type selection)
+
+**Navigation:**
+- Shared by every compiled dependency and boundary rule
+
+### DependencyBoundaryTests.cs
+
+**Purpose:** Verify the compiled assembly references, the public type surface, the namespace boundary, immutability, and friend-assembly absence.
+
+### LayerDependencyTests.cs
+
+**Purpose:** Verify the single production namespace, the absence of ASP.NET Core and infrastructure dependencies, and acyclicity of the namespace slices.
+
+### CompiledConventionTests.cs
+
+**Purpose:** Verify compiled type rules: no public fields, sealed eligible classes, the `Logger`/`ILogger`/`NullLogger`/`LogMessageBuilder` contracts, the `LogLevel` severity contract, `LogInfo` immutability, `LogInfoKey` equality, extensible domain values, and custom-exception absence.
+
+### SourceFileConventionTests.cs
+
+**Purpose:** Verify one matching declared type per file, block namespaces, folder-matching namespaces, no nested types or top-level statements, braced control-flow bodies, the seven-parameter limit, no `ref`/`out`, no optional parameters, and no nullable directives.
+
+### ArchitectureTestSourceConventionTests.cs
+
+**Purpose:** Verify the architecture-test sources: one matching type per file, block namespaces, sealed NUnit fixtures ending in `Tests`, no alternative framework, non-vacuous selectors, an assertion in every test, and no nested helper types.
+
+### CodingConventionTests.cs
+
+**Purpose:** Verify explicit types, no ternaries, no `??`, no tuples, no regions, no `const`, no records, no `init` accessors, no `using static`/`global using`, documented partial-class allowances, and no inline fully qualified types.
+
+### FormattingConventionTests.cs
+
+**Purpose:** Verify whitespace, line endings, blank lines, indentation multiples, using-group alphabetisation, attribute placement, and byte-order-mark absence.
+
+### NamespaceAndUsingConventionTests.cs
+
+**Purpose:** Verify usings outside the namespace, using-group ordering, no `.Interfaces` namespace, no catch-all namespaces or types, and the documented root namespace.
+
+### NamingConventionTests.cs
+
+**Purpose:** Verify built-in aliases, PascalCase types and methods, uppercase public members, camelCase private fields without underscores, the `I` interface prefix, and permitted boolean names.
+
+### TypeDeclarationConventionTests.cs
+
+**Purpose:** Verify explicit accessibility, no preview language features, sealed eligible classes, and no empty marker interfaces.
+
+### MemberOrganisationTests.cs
+
+**Purpose:** Verify explicit member accessibility, member-kind ordering, and field ordering.
+
+### ConstantConventionTests.cs
+
+**Purpose:** Verify expression-bodied static constants, unique enum values, and non-duplicated format strings and literals.
+
+### ExpressionBodyConventionTests.cs
+
+**Purpose:** Verify expression bodies for single simple statements and computed getters.
+
+### LowLevelConventionTests.cs
+
+**Purpose:** Verify compound increment/decrement, no unsafe or fixed code, no pointer types, no `goto` or labels, and restricted operator overloads.
+
+### NullHandlingConventionTests.cs
+
+**Purpose:** Verify `is null`/`is not null` patterns, no `??`, no null-forgiving operator, and preferred cast and equality forms.
+
+### StatementConventionTests.cs
+
+**Purpose:** Verify no unreachable statements after terminal statements, non-empty catch blocks, bare rethrows, and non-empty control-flow bodies.
+
+### DocumentationConventionTests.cs
+
+**Purpose:** Verify that documentation summaries are never empty and that every documentation block carries a summary or `inheritdoc`.
+
+### ProjectConventionTests.cs
+
+**Purpose:** Verify project properties, alphabetical package references, test flags, project references, single target framework, no friend assemblies, package versions, and production package metadata.
+
+### SolutionConventionTests.cs
+
+**Purpose:** Verify SDK-style solution structure, no XML declaration or version, `Path`-only project elements, documented ordering, and sibling project folders.
+
+### RepositoryConventionTests.cs
+
+**Purpose:** Verify the .NET workflow presence, steps, triggers, the GPL-3.0 licence, and the solution test-project references.
+
+### TestSourceConventionTests.cs
+
+**Purpose:** Verify unit-test conventions: subject `Tests` naming, fixture presence, sealed fixtures, public tests, parameter limits, parameterised cases, no banner comments, NUnit-only framework use, no absolute paths, and no non-public reflection.
+
+---
+
 ## Documentation (docs/)
 
 | File | Purpose | Source Files Referenced |
@@ -300,6 +448,20 @@ enum LogLevel { Fatal = 0, Error = 1, Warn = 2, Info = 3, Debug = 4, Verbose = 5
 | `security-and-privacy.md` | Masking, data flow, compliance | `LogMessageBuilder.cs`, `LogInfoKey.cs`, `LogInfo.cs` |
 | `compatibility-and-versioning.md` | TFM, versioning, compat | `.csproj`, all public APIs |
 | `source-map.md` | This file | All |
+
+---
+
+## Cross-Reference Index
+
+Cross-references mentioned in the architecture test suites:
+
+| Feature | Test Reference Path |
+|---------|---------------------|
+| Every architecture test fixture | `NuciLog.Core.ArchitectureTests/` |
+| Production boundary rules | `NuciLog.Core.ArchitectureTests/DependencyBoundaryTests.cs` |
+| Namespace and acyclicity rules | `NuciLog.Core.ArchitectureTests/LayerDependencyTests.cs` |
+| Source-convention rules | `NuciLog.Core.ArchitectureTests/SourceFileConventionTests.cs` |
+| Unit-test source rules | `NuciLog.Core.ArchitectureTests/TestSourceConventionTests.cs` |
 
 ---
 

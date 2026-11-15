@@ -261,10 +261,13 @@ Enabled via:
 
 | Package | Version | Purpose |
 |---------|---------|---------|
-| `NUnit` | 5.0.0 | Test framework |
-| `NUnit3TestAdapter` | 6.3.1 | VS Test integration |
+| `Microsoft.CodeAnalysis.CSharp` | 5.9.0 | Roslyn source analysis for architecture tests |
 | `Microsoft.NET.Test.Sdk` | 18.12.0 | Test runner |
 | `Microsoft.SourceLink.GitHub` | 11.0.100 | Source Link |
+| `Moq` | 4.21.0 | Unit-test mocking support |
+| `NUnit` | 5.0.0 | Test framework |
+| `NUnit3TestAdapter` | 6.3.1 | VS Test integration |
+| `TngTech.ArchUnitNET.NUnit` | 0.13.5 | Compiled dependency and fitness rules |
 
 ### Dependency Policy
 
