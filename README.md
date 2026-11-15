@@ -336,6 +336,7 @@ dotnet test
 | Project | Type | Purpose |
 |---------|------|---------|
 | `NuciLog.Core` | Library | Core logging abstraction, types, and public API |
+| `NuciLog.Core.ArchitectureTests` | Tests | Architecture, dependency, source-convention, project, and solution fitness tests |
 | `NuciLog.Core.UnitTests` | Tests | Comprehensive unit tests for all log levels and functionality |
 
 ### Directories
@@ -343,6 +344,7 @@ dotnet test
 | Directory | Purpose |
 |-----------|---------|
 | `NuciLog.Core/` | Library source code |
+| `NuciLog.Core.ArchitectureTests/` | Architecture and convention fitness test suite enforcing dependency boundaries, source conventions, and project or solution rules |
 | `NuciLog.Core.UnitTests/` | Unit test suite with organised test classes per log level |
 | `.github/workflows/` | GitHub Actions workflows for build, security scanning, and release automation |
 

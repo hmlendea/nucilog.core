@@ -234,6 +234,8 @@ flowchart LR
     Logger -->|"uses"| Models["Log data models"]
     Builder -->|"uses"| Models
     Tests["NuciLog.Core.UnitTests"] -->|"references"| Core["NuciLog.Core project"]
+    Fitness["NuciLog.Core.ArchitectureTests"] -->|"references"| Core
+    Fitness -->|"references"| Tests
     Core --> Logger
     Core --> Builder
     Core --> Models
@@ -243,7 +245,7 @@ The principal dependency rules are:
 - Consumer code may depend upon `ILogger` alone or upon `Logger` when implementing a sink.
 - Destination-specific I/O, filtering, buffering, and configuration remain in the concrete sink rather than `Logger` or `LogMessageBuilder`.
 - `LogMessageBuilder` receives canonical data and does not call a sink or mutate logger state.
-- The production project does not reference its test project, NUnit, destination frameworks, or consumer assemblies.
+- The production project does not reference its test projects, NUnit, destination frameworks, or consumer assemblies.
 - Extension types depend upon `LogInfoKey`, `Operation`, or `OperationStatus`; the core library does not discover or register them.
 
 ## 📦 External Dependencies
@@ -275,7 +277,7 @@ NuciLog.Core is deployed as an in-process class library rather than an independe
 | Contract | Owner | Invariant | Verification | Change Policy |
 |----------|-------|-----------|--------------|---------------|
 | Public logging API | `ILogger` and `Logger` | Six level families, source-context members, overload signatures, and protected `WriteLog(LogLevel, Func<string>)` remain callable by existing consumers and subclasses. | Compilation plus mirrored logger unit suites. | Treat incompatible signature, visibility, or abstract-member changes as deliberate breaking package changes and revise consumers, tests, and documentation together. |
-| `LogLevel` values | `LogLevel` | `Fatal=0`, `Error=1`, `Warn=2`, `Info=3`, `Debug=4`, `Verbose=5`. | Source declaration; no dedicated numeric-value test currently exists. | Preserve observable numeric assignments unless a deliberate breaking change is planned. |
+| `LogLevel` values | `LogLevel` | `Fatal=0`, `Error=1`, `Warn=2`, `Info=3`, `Debug=4`, `Verbose=5`. | Source declaration and the `CompiledConventionTests` severity-contract test. | Preserve observable numeric assignments unless a deliberate breaking change is planned. |
 | Record grammar | `LogMessageBuilder` | Fixed field order, `＝` assignment, `͵` separation, no terminator, and severity external to the payload. | `LogMessageBuilderTests` and every logger-level suite assert complete strings. | Grammar changes require coordinated parser migration and revised assertions. |
 | Key identity and de-duplication | `LogInfoKey` and `LogMessageBuilder` | Case-sensitive name equality; first-position ordering with the last processed value selected; vacant final value removes the field. | Duplicate-key and vacant-value unit tests. | Key-name or equality changes require compatibility analysis for custom key subclasses. |
 | Sensitive value masking | `LogInfoKey` and `LogMessageBuilder` | Custom values whose key has `IsSensitive=true` are masked after sanitisation and before de-duplication; the visible prefix is four characters, the mask is five stars, the visible suffix is two characters, and vacant sensitive values are omitted. | Sensitive-key unit tests. | Mask text or timing changes alter emitted records and require explicit parser and documentation migration. |
@@ -286,6 +288,8 @@ NuciLog.Core is deployed as an in-process class library rather than an independe
 ## ✅ Testing and Verification
 
 [NuciLog.Core.UnitTests](NuciLog.Core.UnitTests/) is an NUnit project that references the production project directly. Six logger suites mirror the six severity families and verify overload routing, level selection, null handling, detail combination, and complete record strings via `TestLogger`. `LogMessageBuilderTests` verifies ordering, omission, newline sanitisation, sensitive-key masking, exception enrichment, and duplicate-key semantics. `LogInfoTests` verifies supported object-to-string conversions.
+
+[NuciLog.Core.ArchitectureTests](NuciLog.Core.ArchitectureTests/) is an NUnit and ArchUnitNET project that references both the production project and the unit test project. It embeds the production, unit-test, and architecture-test sources plus the solution and project files as resources, then enforces the compiled dependency boundaries, the documented layer namespace, acyclicity, the public type surface, the extension-point contracts, and the C# source, formatting, indentation, naming, namespace, member-organisation, null-handling, statement, structural, API, interface, enumeration, and test-source conventions. The `SourceFileConventionTests` and `ArchitectureTestSourceConventionTests` fixtures hold the source-file and test-source convention rules separately from the compiled dependency rules.
 
 Current verification gaps are:
 - No explicit tests cover `SourceContext`, `NullLogger`, `LogInfoKey` equality in isolation, or the numeric `LogLevel` assignments.
@@ -300,7 +304,7 @@ Execute the principal automated verification with:
 dotnet test --verbosity normal
 ```
 
-This command currently compiles both projects and passes 513 tests. Restore completes without vulnerability warnings.
+This command currently compiles all three projects and passes 513 unit tests and 219 architecture tests. Restore completes without vulnerability warnings.
 
 ## ⚠️ Design Constraints
 
@@ -363,6 +367,7 @@ Names must remain non-null and stable for any downstream parser. Status extensio
 | Levels, operations, and statuses | [NuciLog.Core/LogLevel.cs](NuciLog.Core/LogLevel.cs), [NuciLog.Core/Operation.cs](NuciLog.Core/Operation.cs), [NuciLog.Core/OperationStatus.cs](NuciLog.Core/OperationStatus.cs) |
 | No-op implementation | [NuciLog.Core/NullLogger.cs](NuciLog.Core/NullLogger.cs) |
 | Production package configuration | [NuciLog.Core/NuciLog.Core.csproj](NuciLog.Core/NuciLog.Core.csproj) |
+| Architecture and convention fitness rules | [NuciLog.Core.ArchitectureTests](NuciLog.Core.ArchitectureTests/), [NuciLog.Core.ArchitectureTests/NuciLog.Core.ArchitectureTests.csproj](NuciLog.Core.ArchitectureTests/NuciLog.Core.ArchitectureTests.csproj) |
 | Unit verification | [NuciLog.Core.UnitTests](NuciLog.Core.UnitTests/), [NuciLog.Core.UnitTests/NuciLog.Core.UnitTests.csproj](NuciLog.Core.UnitTests/NuciLog.Core.UnitTests.csproj) |
 | Continuous integration | [.github/workflows/dotnet.yml](.github/workflows/dotnet.yml) |
 | Security scanning | [.github/workflows/security.yml](.github/workflows/security.yml) |

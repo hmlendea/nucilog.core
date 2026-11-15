@@ -8,6 +8,7 @@ using NuciLog.Core.UnitTests.Helpers;
 
 namespace NuciLog.Core.UnitTests
 {
+    [TestFixture]
     public sealed class LogInfoTests
     {
         [Test]
@@ -25,7 +26,7 @@ namespace NuciLog.Core.UnitTests
         {
             LogInfo sut = new(TestLogInfoKey.TestKey, (object)null);
 
-            Assert.That(sut.Value, Is.EqualTo(string.Empty));
+            Assert.That(sut.Value, Is.Empty);
         }
 
         [Test]
@@ -42,7 +43,7 @@ namespace NuciLog.Core.UnitTests
             DateTime value = new(2026, 4, 21, 10, 30, 45, DateTimeKind.Utc);
             LogInfo sut = new(TestLogInfoKey.TestKey, value);
 
-            Assert.That(sut.Value, Is.EqualTo(value.ToString("o")));
+            Assert.That(sut.Value, Is.EqualTo(value.ToString("o", CultureInfo.InvariantCulture)));
         }
 
         [Test]
@@ -51,7 +52,7 @@ namespace NuciLog.Core.UnitTests
             DateTimeOffset value = new(2026, 4, 21, 10, 30, 45, TimeSpan.FromHours(2));
             LogInfo sut = new(TestLogInfoKey.TestKey, value);
 
-            Assert.That(sut.Value, Is.EqualTo(value.ToString("o")));
+            Assert.That(sut.Value, Is.EqualTo(value.ToString("o", CultureInfo.InvariantCulture)));
         }
 
         [Test]
@@ -60,7 +61,7 @@ namespace NuciLog.Core.UnitTests
             TimeSpan value = TimeSpan.FromMinutes(95);
             LogInfo sut = new(TestLogInfoKey.TestKey, value);
 
-            Assert.That(sut.Value, Is.EqualTo(value.ToString("c")));
+            Assert.That(sut.Value, Is.EqualTo(value.ToString("c", CultureInfo.InvariantCulture)));
         }
 
         [Test]
@@ -142,17 +143,6 @@ namespace NuciLog.Core.UnitTests
             LogInfo sut = new(TestLogInfoKey.TestKey, value, "yyyy-MM-dd");
 
             Assert.That(sut.Value, Is.EqualTo("2026-04-21"));
-        }
-
-        private sealed class CustomValue(string value)
-        {
-            public override string ToString() => $"custom-{value}";
-        }
-
-        private enum TestEnum
-        {
-            First,
-            Second
         }
     }
 }

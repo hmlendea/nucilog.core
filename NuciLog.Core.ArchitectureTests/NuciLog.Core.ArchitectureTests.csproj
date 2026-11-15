@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>NuciLog.Core.ArchitectureTests</RootNamespace>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <ExcludeFromCodeCoverage>true</ExcludeFromCodeCoverage>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.9.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.12.0" />
+    <PackageReference Include="NUnit" Version="5.0.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="6.3.1" />
+    <PackageReference Include="TngTech.ArchUnitNET.NUnit" Version="0.13.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../NuciLog.Core/NuciLog.Core.csproj" />
+    <ProjectReference Include="../NuciLog.Core.UnitTests/NuciLog.Core.UnitTests.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="../NuciLog.Core/**/*.cs" Exclude="../NuciLog.Core/bin/**/*.cs;../NuciLog.Core/obj/**/*.cs">
+      <LogicalName>ProductionSources/%(RecursiveDir)%(Filename)%(Extension)</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="../NuciLog.Core.UnitTests/**/*.cs" Exclude="../NuciLog.Core.UnitTests/bin/**/*.cs;../NuciLog.Core.UnitTests/obj/**/*.cs">
+      <LogicalName>UnitTestSources/%(RecursiveDir)%(Filename)%(Extension)</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="./**/*.cs" Exclude="./bin/**/*.cs;./obj/**/*.cs">
+      <LogicalName>ArchitectureTestSources/%(RecursiveDir)%(Filename)%(Extension)</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="../NuciLog.Core.slnx">
+      <LogicalName>ProjectFiles/NuciLog.Core.slnx</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="../NuciLog.Core/NuciLog.Core.csproj">
+      <LogicalName>ProjectFiles/NuciLog.Core/NuciLog.Core.csproj</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="../NuciLog.Core.UnitTests/NuciLog.Core.UnitTests.csproj">
+      <LogicalName>ProjectFiles/NuciLog.Core.UnitTests/NuciLog.Core.UnitTests.csproj</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="./NuciLog.Core.ArchitectureTests.csproj">
+      <LogicalName>ProjectFiles/NuciLog.Core.ArchitectureTests/NuciLog.Core.ArchitectureTests.csproj</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

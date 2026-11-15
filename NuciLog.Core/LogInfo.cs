@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -25,12 +26,12 @@ namespace NuciLog.Core
         }
 
         public LogInfo(LogInfoKey key, DateTime value, string format)
-            : this(key, value.ToString(format)) { }
+            : this(key, value.ToString(format, CultureInfo.InvariantCulture)) { }
 
         public LogInfo(LogInfoKey key, DateTimeOffset value, string format)
-            : this(key, value.ToString(format)) { }
+            : this(key, value.ToString(format, CultureInfo.InvariantCulture)) { }
 
-        string GetStringValue(object rawValue)
+        private string GetStringValue(object rawValue)
         {
             if (rawValue is null)
             {
@@ -44,17 +45,17 @@ namespace NuciLog.Core
 
             if (rawValue is DateTime dateTimeValue)
             {
-                return dateTimeValue.ToString("o");
+                return dateTimeValue.ToString("o", CultureInfo.InvariantCulture);
             }
 
             if (rawValue is DateTimeOffset dateTimeOffsetValue)
             {
-                return dateTimeOffsetValue.ToString("o");
+                return dateTimeOffsetValue.ToString("o", CultureInfo.InvariantCulture);
             }
 
             if (rawValue is TimeSpan timeSpanValue)
             {
-                return timeSpanValue.ToString("c");
+                return timeSpanValue.ToString("c", CultureInfo.InvariantCulture);
             }
 
             if (rawValue is Enum enumValue)
@@ -69,14 +70,14 @@ namespace NuciLog.Core
 
             if (rawValue is IDictionary dictionaryValue)
             {
-                var builder = new StringBuilder();
+                StringBuilder builder = new();
 
                 foreach (DictionaryEntry entry in dictionaryValue)
                 {
                     builder
-                        .Append(Convert.ToString(entry.Key) ?? string.Empty)
+                        .Append(GetStringRepresentation(entry.Key))
                         .Append('=')
-                        .Append(Convert.ToString(entry.Value) ?? string.Empty)
+                        .Append(GetStringRepresentation(entry.Value))
                         .Append(';');
                 }
 
@@ -106,9 +107,9 @@ namespace NuciLog.Core
                         object value = itemType.GetProperty("Value")?.GetValue(item);
 
                         builder
-                            .Append(Convert.ToString(key) ?? string.Empty)
+                            .Append(GetStringRepresentation(key))
                             .Append('=')
-                            .Append(Convert.ToString(value) ?? string.Empty)
+                            .Append(GetStringRepresentation(value))
                             .Append(';');
                     }
 
@@ -119,6 +120,18 @@ namespace NuciLog.Core
             }
 
             return rawValue.ToString();
+        }
+
+        private string GetStringRepresentation(object rawValue)
+        {
+            string stringValue = Convert.ToString(rawValue);
+
+            if (stringValue is null)
+            {
+                return string.Empty;
+            }
+
+            return stringValue;
         }
     }
 }

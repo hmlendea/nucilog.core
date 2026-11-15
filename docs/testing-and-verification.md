@@ -20,6 +20,8 @@ Test organisation, coverage strategy, and behavioural contracts for NuciLog.Core
 NuciLog.Core.UnitTests/
 ├── NuciLog.Core.UnitTests.csproj
 ├── Helpers/
+│   ├── CustomValue.cs
+│   ├── TestEnum.cs
 │   ├── TestLogger.cs
 │   ├── TestLogInfoKey.cs
 │   └── TestLogValues.cs
@@ -31,6 +33,38 @@ NuciLog.Core.UnitTests/
 ├── LoggerTests6Fatal.cs
 ├── LogInfoTests.cs
 └── LogMessageBuilderTests.cs
+
+NuciLog.Core.ArchitectureTests/
+├── NuciLog.Core.ArchitectureTests.csproj
+├── ArchitectureResources.cs
+├── ProductionArchitecture.cs
+├── ApiConventionTests.cs
+├── ArchitectureTestSourceConventionTests.cs
+├── CodingConventionTests.cs
+├── CompiledConventionTests.cs
+├── ConstantConventionTests.cs
+├── DependencyBoundaryTests.cs
+├── DocumentationConventionTests.cs
+├── ExpressionBodyConventionTests.cs
+├── FormattingConventionTests.cs
+├── IndentationConventionTests.cs
+├── InterfaceAndEnumerationConventionTests.cs
+├── LayerDependencyTests.cs
+├── LowLevelConventionTests.cs
+├── MemberOrderingDetailedTests.cs
+├── MemberOrganisationTests.cs
+├── NamespaceAndUsingConventionTests.cs
+├── NamingConventionTests.cs
+├── NullHandlingConventionTests.cs
+├── ProjectConventionTests.cs
+├── RepositoryConventionTests.cs
+├── SolutionConventionTests.cs
+├── SourceFileConventionTests.cs
+├── StatementConventionTests.cs
+├── StructuralConventionTests.cs
+├── TestSourceConventionTests.cs
+├── TypeDeclarationConventionTests.cs
+└── UnitTestConventionTests.cs
 ```
 
 ### Project Configuration
@@ -39,19 +73,63 @@ NuciLog.Core.UnitTests/
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
     <IsPackable>false</IsPackable>
-    <Nullable>enable</Nullable>
+    <IsTestProject>true</IsTestProject>
+    <ExcludeFromCodeCoverage>true</ExcludeFromCodeCoverage>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.12.0" />
+    <PackageReference Include="Moq" Version="4.21.0" />
     <PackageReference Include="NUnit" Version="5.0.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="6.3.1" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.12.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NuciLog.Core\NuciLog.Core.csproj" />
   </ItemGroup>
 </Project>
 ```
+
+### Architecture Test Configuration
+
+```xml
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <ExcludeFromCodeCoverage>true</ExcludeFromCodeCoverage>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.9.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.12.0" />
+    <PackageReference Include="NUnit" Version="5.0.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="6.3.1" />
+    <PackageReference Include="TngTech.ArchUnitNET.NUnit" Version="0.13.5" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../NuciLog.Core/NuciLog.Core.csproj" />
+    <ProjectReference Include="../NuciLog.Core.UnitTests/NuciLog.Core.UnitTests.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="../NuciLog.Core/**/*.cs" Exclude="../NuciLog.Core/bin/**/*.cs;../NuciLog.Core/obj/**/*.cs">
+      <LogicalName>ProductionSources/%(RecursiveDir)%(Filename)%(Extension)</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="../NuciLog.Core.UnitTests/**/*.cs" Exclude="../NuciLog.Core.UnitTests/bin/**/*.cs;../NuciLog.Core.UnitTests/obj/**/*.cs">
+      <LogicalName>UnitTestSources/%(RecursiveDir)%(Filename)%(Extension)</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="./**/*.cs" Exclude="./bin/**/*.cs;./obj/**/*.cs">
+      <LogicalName>ArchitectureTestSources/%(RecursiveDir)%(Filename)%(Extension)</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>
+```
+
+> Scoped exception: the production and unit-test projects remain nullable-oblivious because enabling nullable references surfaces roughly nine hundred pre-existing warnings across the preserved overload matrix. The architecture test project is nullable-aware.
 
 ---
 
@@ -78,6 +156,40 @@ Each log level has a dedicated test class (6 total):
 |------|-------|
 | `LogInfoTests.cs` | `LogInfo` construction, value conversion, edge cases |
 | `LogMessageBuilderTests.cs` | `LogMessageBuilder.Build`, sanitisation, masking, de-duplication, exception enrichment |
+
+### Architecture Test Fixtures
+
+The `NuciLog.Core.ArchitectureTests` project holds the fitness rules. Compiled dependency and boundary rules use ArchUnitNET over a single reused production model, while source-file, convention, project, and solution rules use Roslyn syntax analysis and evaluated project metadata over resources embedded from the repository.
+
+| Fixture | Focus |
+|---------|-------|
+| `DependencyBoundaryTests.cs` | Assembly references, public type surface, namespace boundary, immutability, friend-assembly absence |
+| `LayerDependencyTests.cs` | Single production namespace, forbidden infrastructure dependencies, acyclicity |
+| `CompiledConventionTests.cs` | Compiled type and member contracts, `LogLevel` severity values, extensibility |
+| `SourceFileConventionTests.cs` | One matching type per file, block namespaces, parameter limits, no `ref`/`out` or optional parameters |
+| `ArchitectureTestSourceConventionTests.cs` | Architecture-test source, signature, selector, description, and Rule fixtures |
+| `CodingConventionTests.cs` | Explicit types, no ternaries, `??`, tuples, regions, `const`, records, `init`, or inline fully qualified types |
+| `FormattingConventionTests.cs` | Whitespace, line endings, indentation, using-group ordering, attribute placement |
+| `IndentationConventionTests.cs` | Opening braces on their own line, braced `else` clauses, continuation operators at line end, one statement per line, continuation indentation |
+| `NamespaceAndUsingConventionTests.cs` | Usings outside the namespace, group ordering, namespace rules |
+| `NamingConventionTests.cs` | Aliases, PascalCase, member casing, private-field casing, interface prefix, boolean names |
+| `TypeDeclarationConventionTests.cs` | Explicit accessibility, no preview features, sealed eligible classes, no empty marker interfaces |
+| `MemberOrganisationTests.cs` | Member accessibility and kind ordering, field ordering |
+| `MemberOrderingDetailedTests.cs` | Accessibility ordering within each member and field group, non-empty member groups |
+| `ConstantConventionTests.cs` | Expression-bodied constants, unique enum values, non-duplicated literals |
+| `ExpressionBodyConventionTests.cs` | Expression bodies for single simple statements and computed getters |
+| `LowLevelConventionTests.cs` | Compound increment, no unsafe or fixed code, no `goto` or labels, restricted operators |
+| `NullHandlingConventionTests.cs` | Null patterns, no `??`, no null-forgiving operator, preferred casts |
+| `StatementConventionTests.cs` | No unreachable statements, non-empty catch blocks, bare rethrows, non-empty bodies |
+| `StructuralConventionTests.cs` | Braced control-flow bodies, contiguous overload grouping, no `ref`/`out`, public-method placement, no public fields |
+| `ApiConventionTests.cs` | Enumeration-abstracted collections, absent mapping classes, invariant date formatting, absent JSON attributes, BCL-only throws, no nested ternaries, no repeated array literals |
+| `InterfaceAndEnumerationConventionTests.cs` | Interface `I` prefix and colocation, no `.Interfaces` namespace, domain enumeration placement, absent custom exceptions, protected extensible constructors, equality consistency |
+| `DocumentationConventionTests.cs` | Non-empty summaries, summary or `inheritdoc` presence |
+| `ProjectConventionTests.cs` | Project properties, alphabetical packages, test flags, references, metadata |
+| `SolutionConventionTests.cs` | SDK-style solution, `Path`-only elements, documented ordering |
+| `RepositoryConventionTests.cs` | Workflow presence and steps, security workflow, licence, documentation and solution test references |
+| `TestSourceConventionTests.cs` | Unit-test naming, fixtures, seals, parameters, framework, portability |
+| `UnitTestConventionTests.cs` | NUnit constraint assertions, no alternative frameworks, deterministic APIs, no nested helpers, one type per file, setup naming, fluent test naming, static expected values |
 
 ### Naming Convention
 
@@ -374,6 +486,12 @@ dotnet test NuciLog.Core.UnitTests/NuciLog.Core.UnitTests.csproj --filter "Fully
 
 # Generate TRX report
 dotnet test NuciLog.Core.UnitTests/NuciLog.Core.UnitTests.csproj --logger "trx;LogFileName=test_results.trx"
+
+# Run the architecture and convention fitness tests
+dotnet test NuciLog.Core.ArchitectureTests/NuciLog.Core.ArchitectureTests.csproj
+
+# Run the entire solution (unit and architecture tests)
+dotnet test NuciLog.Core.slnx
 ```
 
 ### IDE
