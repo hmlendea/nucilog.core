@@ -382,6 +382,16 @@ dotnet test NuciLog.Core.UnitTests/NuciLog.Core.UnitTests.csproj --logger "trx;L
 - **Visual Studio:** Test Explorer
 - **JetBrains Rider:** Unit Test Sessions
 
+### Security Scanning
+```yaml
+# .github/workflows/security.yml
+- name: Check for vulnerable packages
+  run: dotnet list package --vulnerable --include-transitive
+
+- name: Run CodeQL Analysis
+  uses: github/codeql-action/init@v4
+```
+
 ### CI/CD
 
 ```yaml
@@ -487,3 +497,4 @@ Before merging changes, verify:
 | **Assertions** | NUnit `Assert.That` with constraints |
 | **Execution** | `dotnet test` with NUnit 3 adapter |
 | **CI** | GitHub Actions `dotnet.yml` workflow |
+| **Security** | GitHub Actions `security.yml` workflow |

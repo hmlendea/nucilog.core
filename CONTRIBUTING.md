@@ -68,7 +68,7 @@ dotnet restore
 - Keep PRs focused and atomic.
 - Revise documentation if applicable.
 - Include tests for any new functionality.
-- Ensure the CI checks pass.
+- Ensure the CI checks pass, including the build and security scan workflows.
 
 ### Testing
 

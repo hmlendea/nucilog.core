@@ -268,6 +268,7 @@ NuciLog.Core is deployed as an in-process class library rather than an independe
 | I/O | The base library performs none; `NullLogger` discards and custom subclasses select destinations. | Filesystem, network, credentials, retries, and disposal remain external responsibilities. |
 | Packaging | Version 3.0.0, `net10.0`, NuGet metadata, Source Link, and symbol package configuration reside in the production project. | Target-framework or public-contract changes affect package compatibility. |
 | Continuous integration | The GitHub Actions workflow restores, compiles, and tests on Ubuntu with .NET 10 for `master` pushes and pull requests. | CI verifies one operating system and performs no package publication. |
+| Security scanning | The GitHub Actions Security workflow checks for vulnerable packages with `dotnet list package --vulnerable --include-transitive` and runs CodeQL analysis for C# on `master` pushes, pull requests, and a weekly schedule. | Findings appear in GitHub Code Scanning; dependency vulnerabilities fail the workflow when known advisories exist. |
 
 ## 🛡️ Compatibility Contracts
 
@@ -364,6 +365,7 @@ Names must remain non-null and stable for any downstream parser. Status extensio
 | Production package configuration | [NuciLog.Core/NuciLog.Core.csproj](NuciLog.Core/NuciLog.Core.csproj) |
 | Unit verification | [NuciLog.Core.UnitTests](NuciLog.Core.UnitTests/), [NuciLog.Core.UnitTests/NuciLog.Core.UnitTests.csproj](NuciLog.Core.UnitTests/NuciLog.Core.UnitTests.csproj) |
 | Continuous integration | [.github/workflows/dotnet.yml](.github/workflows/dotnet.yml) |
+| Security scanning | [.github/workflows/security.yml](.github/workflows/security.yml) |
 
 ## 📚 Related Documentation
 
